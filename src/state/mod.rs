@@ -62,24 +62,6 @@ impl AppState {
     }
 }
 
-// Helper to get setting value
-pub async fn get_setting(db: &DbPool, key: &str) -> Result<Option<String>> {
-    let row: Option<(String,)> = sqlx::query_as("SELECT value FROM settings WHERE key = ?")
-        .bind(key)
-        .fetch_optional(db)
-        .await?;
-    Ok(row.map(|r| r.0))
-}
-
-pub async fn get_settings_group(db: &DbPool, group: &str) -> Result<Vec<(String, String)>> {
-    let rows = sqlx::query_as::<_, (String, String)>(
-        "SELECT key, value FROM settings WHERE \"group\" = ? ORDER BY key"
-    )
-    .bind(group)
-    .fetch_all(db)
-    .await?;
-    Ok(rows)
-}
 
 pub async fn get_all_settings_map(db: &DbPool) -> Result<std::collections::HashMap<String, String>> {
     let rows = sqlx::query_as::<_, (String, String)>("SELECT key, value FROM settings")

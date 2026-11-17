@@ -5,8 +5,8 @@ use crate::models::*;
 use crate::views::{AdminHeroView, AdminServiceView, AdminPortfolioView, AdminNewsView, AdminMediaView, AdminSettingView, AdminSettingGroupView};
 use crate::state::get_all_settings_map;
 use crate::utils::{process_upload, delete_file, generate_slug, ensure_unique_slug};
-use crate::middleware::auth::{ADMIN_SESSION_KEY, ADMIN_USERNAME_KEY};
-use crate::filters::{self, Or};
+use crate::middleware::auth::ADMIN_USERNAME_KEY;
+use crate::filters;
 use askama::Template;
 use std::collections::HashMap;
 use serde_json::json;
@@ -15,21 +15,10 @@ use chrono::Datelike;
 // ============ Admin Templates ============
 
 #[derive(Template)]
-#[template(path = "admin/layout.html")]
-pub struct AdminLayoutTemplate {
-    pub site: SiteInfo,
-    pub page: AdminPageInfo,
-    pub settings: HashMap<String, String>,
-    pub current_user: String,
-    pub content: String,
-}
-
-#[derive(Template)]
 #[template(path = "admin/login.html")]
 pub struct LoginTemplate {
     pub site: SiteInfo,
     pub page: AdminPageInfo,
-    pub settings: HashMap<String, String>,
     pub error: String,
 }
 
@@ -38,7 +27,6 @@ pub struct LoginTemplate {
 pub struct DashboardTemplate {
     pub site: SiteInfo,
     pub page: AdminPageInfo,
-    pub settings: HashMap<String, String>,
     pub current_user: String,
     pub stats: DashboardStats,
     pub recent_news: Vec<AdminNewsView>,
@@ -50,7 +38,6 @@ pub struct DashboardTemplate {
 pub struct ServicesListTemplate {
     pub site: SiteInfo,
     pub page: AdminPageInfo,
-    pub settings: HashMap<String, String>,
     pub current_user: String,
     pub services: Vec<AdminServiceView>,
 }
@@ -60,11 +47,9 @@ pub struct ServicesListTemplate {
 pub struct ServiceFormTemplate {
     pub site: SiteInfo,
     pub page: AdminPageInfo,
-    pub settings: HashMap<String, String>,
     pub current_user: String,
     pub service: AdminServiceView,
     pub is_edit: bool,
-    pub media_files: Vec<AdminMediaView>,
 }
 
 #[derive(Template)]
@@ -72,7 +57,6 @@ pub struct ServiceFormTemplate {
 pub struct PortfoliosListTemplate {
     pub site: SiteInfo,
     pub page: AdminPageInfo,
-    pub settings: HashMap<String, String>,
     pub current_user: String,
     pub portfolios: Vec<AdminPortfolioView>,
 }
@@ -82,11 +66,9 @@ pub struct PortfoliosListTemplate {
 pub struct PortfolioFormTemplate {
     pub site: SiteInfo,
     pub page: AdminPageInfo,
-    pub settings: HashMap<String, String>,
     pub current_user: String,
     pub portfolio: AdminPortfolioView,
     pub is_edit: bool,
-    pub media_files: Vec<AdminMediaView>,
 }
 
 #[derive(Template)]
@@ -94,7 +76,6 @@ pub struct PortfolioFormTemplate {
 pub struct NewsListTemplate {
     pub site: SiteInfo,
     pub page: AdminPageInfo,
-    pub settings: HashMap<String, String>,
     pub current_user: String,
     pub news: Vec<AdminNewsView>,
     pub current_page: i32,
@@ -106,11 +87,9 @@ pub struct NewsListTemplate {
 pub struct NewsFormTemplate {
     pub site: SiteInfo,
     pub page: AdminPageInfo,
-    pub settings: HashMap<String, String>,
     pub current_user: String,
     pub article: AdminNewsView,
     pub is_edit: bool,
-    pub media_files: Vec<AdminMediaView>,
 }
 
 #[derive(Template)]
@@ -118,10 +97,8 @@ pub struct NewsFormTemplate {
 pub struct HeroListTemplate {
     pub site: SiteInfo,
     pub page: AdminPageInfo,
-    pub settings: HashMap<String, String>,
     pub current_user: String,
     pub heroes: Vec<AdminHeroView>,
-    pub media_files: Vec<AdminMediaView>,
 }
 
 #[derive(Template)]
@@ -129,11 +106,9 @@ pub struct HeroListTemplate {
 pub struct HeroFormTemplate {
     pub site: SiteInfo,
     pub page: AdminPageInfo,
-    pub settings: HashMap<String, String>,
     pub current_user: String,
     pub hero: AdminHeroView,
     pub is_edit: bool,
-    pub media_files: Vec<AdminMediaView>,
 }
 
 #[derive(Template)]
@@ -141,7 +116,6 @@ pub struct HeroFormTemplate {
 pub struct MediaListTemplate {
     pub site: SiteInfo,
     pub page: AdminPageInfo,
-    pub settings: HashMap<String, String>,
     pub current_user: String,
     pub media: Vec<AdminMediaView>,
     pub current_page: i32,
@@ -153,16 +127,14 @@ pub struct MediaListTemplate {
 pub struct SettingsListTemplate {
     pub site: SiteInfo,
     pub page: AdminPageInfo,
-    pub settings: HashMap<String, String>,
     pub current_user: String,
-    pub settings_list: Vec<AdminSettingView>,
     pub groups: Vec<AdminSettingGroupView>,
 }
 
 // ============ Admin Handlers ============
 
 #[handler]
-pub async fn admin_login_page(req: &mut Request, depot: &mut Depot, res: &mut Response) {
+pub async fn admin_login_page(_req: &mut Request, depot: &mut Depot, res: &mut Response) {
     let state = depot.obtain::<AppState>().unwrap();
     let config = &state.config;
     let db = &state.db;
@@ -177,7 +149,6 @@ pub async fn admin_login_page(req: &mut Request, depot: &mut Depot, res: &mut Re
     let template = LoginTemplate {
         site,
         page,
-        settings,
         error: String::new(),
     };
 
@@ -185,7 +156,7 @@ pub async fn admin_login_page(req: &mut Request, depot: &mut Depot, res: &mut Re
 }
 
 #[handler]
-pub async fn admin_dashboard(req: &mut Request, depot: &mut Depot, res: &mut Response) {
+pub async fn admin_dashboard(_req: &mut Request, depot: &mut Depot, res: &mut Response) {
     let state = depot.obtain::<AppState>().unwrap();
     let db = &state.db;
     let config = &state.config;
@@ -229,7 +200,6 @@ pub async fn admin_dashboard(req: &mut Request, depot: &mut Depot, res: &mut Res
     let template = DashboardTemplate {
         site,
         page,
-        settings,
         current_user: username,
         stats,
         recent_news,
@@ -242,7 +212,7 @@ pub async fn admin_dashboard(req: &mut Request, depot: &mut Depot, res: &mut Res
 // ============ Services Admin ============
 
 #[handler]
-pub async fn admin_services_list(req: &mut Request, depot: &mut Depot, res: &mut Response) {
+pub async fn admin_services_list(_req: &mut Request, depot: &mut Depot, res: &mut Response) {
     let state = depot.obtain::<AppState>().unwrap();
     let db = &state.db;
     let config = &state.config;
@@ -269,14 +239,14 @@ pub async fn admin_services_list(req: &mut Request, depot: &mut Depot, res: &mut
     };
 
     let template = ServicesListTemplate {
-        site, page, settings, current_user: username, services,
+        site, page, current_user: username, services,
     };
 
     res.render(Text::Html(template.render().unwrap_or_default()));
 }
 
 #[handler]
-pub async fn admin_service_new(req: &mut Request, depot: &mut Depot, res: &mut Response) {
+pub async fn admin_service_new(_req: &mut Request, depot: &mut Depot, res: &mut Response) {
     let state = depot.obtain::<AppState>().unwrap();
     let db = &state.db;
     let config = &state.config;
@@ -288,12 +258,6 @@ pub async fn admin_service_new(req: &mut Request, depot: &mut Depot, res: &mut R
         .and_then(|session| session.get::<String>(ADMIN_USERNAME_KEY))
         .unwrap_or_default();
 
-    let media_files = sqlx::query_as::<_, MediaFile>("SELECT * FROM media_files ORDER BY created_at DESC LIMIT 50")
-        .fetch_all(db).await.unwrap_or_default()
-        .into_iter()
-        .map(AdminMediaView::from)
-        .collect();
-
     let page = AdminPageInfo {
         title: "Tambah Layanan Baru".to_string(),
         breadcrumb: vec![
@@ -304,7 +268,7 @@ pub async fn admin_service_new(req: &mut Request, depot: &mut Depot, res: &mut R
     };
 
     let template = ServiceFormTemplate {
-        site, page, settings, current_user: username, service: AdminServiceView::default(), is_edit: false, media_files,
+        site, page, current_user: username, service: AdminServiceView::default(), is_edit: false,
     };
 
     res.render(Text::Html(template.render().unwrap_or_default()));
@@ -337,12 +301,6 @@ pub async fn admin_service_edit(req: &mut Request, depot: &mut Depot, res: &mut 
         }
     };
 
-    let media_files = sqlx::query_as::<_, MediaFile>("SELECT * FROM media_files ORDER BY created_at DESC LIMIT 50")
-        .fetch_all(db).await.unwrap_or_default()
-        .into_iter()
-        .map(AdminMediaView::from)
-        .collect();
-
     let page = AdminPageInfo {
         title: format!("Edit: {}", service.title),
         breadcrumb: vec![
@@ -353,7 +311,7 @@ pub async fn admin_service_edit(req: &mut Request, depot: &mut Depot, res: &mut 
     };
 
     let template = ServiceFormTemplate {
-        site, page, settings, current_user: username, service, is_edit: true, media_files,
+        site, page, current_user: username, service, is_edit: true,
     };
 
     res.render(Text::Html(template.render().unwrap_or_default()));
@@ -440,7 +398,7 @@ pub async fn admin_service_delete(req: &mut Request, depot: &mut Depot, res: &mu
 // ============ Portfolios Admin ============
 
 #[handler]
-pub async fn admin_portfolios_list(req: &mut Request, depot: &mut Depot, res: &mut Response) {
+pub async fn admin_portfolios_list(_req: &mut Request, depot: &mut Depot, res: &mut Response) {
     let state = depot.obtain::<AppState>().unwrap();
     let db = &state.db;
     let config = &state.config;
@@ -467,14 +425,14 @@ pub async fn admin_portfolios_list(req: &mut Request, depot: &mut Depot, res: &m
     };
 
     let template = PortfoliosListTemplate {
-        site, page, settings, current_user: username, portfolios,
+        site, page, current_user: username, portfolios,
     };
 
     res.render(Text::Html(template.render().unwrap_or_default()));
 }
 
 #[handler]
-pub async fn admin_portfolio_new(req: &mut Request, depot: &mut Depot, res: &mut Response) {
+pub async fn admin_portfolio_new(_req: &mut Request, depot: &mut Depot, res: &mut Response) {
     let state = depot.obtain::<AppState>().unwrap();
     let db = &state.db;
     let config = &state.config;
@@ -486,12 +444,6 @@ pub async fn admin_portfolio_new(req: &mut Request, depot: &mut Depot, res: &mut
         .and_then(|session| session.get::<String>(ADMIN_USERNAME_KEY))
         .unwrap_or_default();
 
-    let media_files = sqlx::query_as::<_, MediaFile>("SELECT * FROM media_files ORDER BY created_at DESC LIMIT 50")
-        .fetch_all(db).await.unwrap_or_default()
-        .into_iter()
-        .map(AdminMediaView::from)
-        .collect();
-
     let page = AdminPageInfo {
         title: "Tambah Portfolio Baru".to_string(),
         breadcrumb: vec![
@@ -502,7 +454,7 @@ pub async fn admin_portfolio_new(req: &mut Request, depot: &mut Depot, res: &mut
     };
 
     let template = PortfolioFormTemplate {
-        site, page, settings, current_user: username, portfolio: AdminPortfolioView::default(), is_edit: false, media_files,
+        site, page, current_user: username, portfolio: AdminPortfolioView::default(), is_edit: false,
     };
 
     res.render(Text::Html(template.render().unwrap_or_default()));
@@ -535,12 +487,6 @@ pub async fn admin_portfolio_edit(req: &mut Request, depot: &mut Depot, res: &mu
         }
     };
 
-    let media_files = sqlx::query_as::<_, MediaFile>("SELECT * FROM media_files ORDER BY created_at DESC LIMIT 50")
-        .fetch_all(db).await.unwrap_or_default()
-        .into_iter()
-        .map(AdminMediaView::from)
-        .collect();
-
     let page = AdminPageInfo {
         title: format!("Edit: {}", portfolio.title),
         breadcrumb: vec![
@@ -551,7 +497,7 @@ pub async fn admin_portfolio_edit(req: &mut Request, depot: &mut Depot, res: &mu
     };
 
     let template = PortfolioFormTemplate {
-        site, page, settings, current_user: username, portfolio, is_edit: true, media_files,
+        site, page, current_user: username, portfolio, is_edit: true,
     };
 
     res.render(Text::Html(template.render().unwrap_or_default()));
@@ -682,14 +628,14 @@ pub async fn admin_news_list(req: &mut Request, depot: &mut Depot, res: &mut Res
     };
 
     let template = NewsListTemplate {
-        site, page, settings, current_user: username, news, current_page: page_num, total_pages,
+        site, page, current_user: username, news, current_page: page_num, total_pages,
     };
 
     res.render(Text::Html(template.render().unwrap_or_default()));
 }
 
 #[handler]
-pub async fn admin_news_new(req: &mut Request, depot: &mut Depot, res: &mut Response) {
+pub async fn admin_news_new(_req: &mut Request, depot: &mut Depot, res: &mut Response) {
     let state = depot.obtain::<AppState>().unwrap();
     let db = &state.db;
     let config = &state.config;
@@ -701,12 +647,6 @@ pub async fn admin_news_new(req: &mut Request, depot: &mut Depot, res: &mut Resp
         .and_then(|session| session.get::<String>(ADMIN_USERNAME_KEY))
         .unwrap_or_default();
 
-    let media_files = sqlx::query_as::<_, MediaFile>("SELECT * FROM media_files ORDER BY created_at DESC LIMIT 50")
-        .fetch_all(db).await.unwrap_or_default()
-        .into_iter()
-        .map(AdminMediaView::from)
-        .collect();
-
     let page = AdminPageInfo {
         title: "Tambah Artikel Baru".to_string(),
         breadcrumb: vec![
@@ -717,7 +657,7 @@ pub async fn admin_news_new(req: &mut Request, depot: &mut Depot, res: &mut Resp
     };
 
     let template = NewsFormTemplate {
-        site, page, settings, current_user: username, article: AdminNewsView::default(), is_edit: false, media_files,
+        site, page, current_user: username, article: AdminNewsView::default(), is_edit: false,
     };
 
     res.render(Text::Html(template.render().unwrap_or_default()));
@@ -750,12 +690,6 @@ pub async fn admin_news_edit(req: &mut Request, depot: &mut Depot, res: &mut Res
         }
     };
 
-    let media_files = sqlx::query_as::<_, MediaFile>("SELECT * FROM media_files ORDER BY created_at DESC LIMIT 50")
-        .fetch_all(db).await.unwrap_or_default()
-        .into_iter()
-        .map(AdminMediaView::from)
-        .collect();
-
     let page = AdminPageInfo {
         title: format!("Edit: {}", article.title),
         breadcrumb: vec![
@@ -766,7 +700,7 @@ pub async fn admin_news_edit(req: &mut Request, depot: &mut Depot, res: &mut Res
     };
 
     let template = NewsFormTemplate {
-        site, page, settings, current_user: username, article, is_edit: true, media_files,
+        site, page, current_user: username, article, is_edit: true,
     };
 
     res.render(Text::Html(template.render().unwrap_or_default()));
@@ -856,7 +790,7 @@ pub async fn admin_news_delete(req: &mut Request, depot: &mut Depot, res: &mut R
 // ============ Hero Banner Admin ============
 
 #[handler]
-pub async fn admin_hero_list(req: &mut Request, depot: &mut Depot, res: &mut Response) {
+pub async fn admin_hero_list(_req: &mut Request, depot: &mut Depot, res: &mut Response) {
     let state = depot.obtain::<AppState>().unwrap();
     let db = &state.db;
     let config = &state.config;
@@ -873,12 +807,6 @@ pub async fn admin_hero_list(req: &mut Request, depot: &mut Depot, res: &mut Res
         .into_iter()
         .map(AdminHeroView::from)
         .collect();
-    let media_files = sqlx::query_as::<_, MediaFile>("SELECT * FROM media_files ORDER BY created_at DESC LIMIT 50")
-        .fetch_all(db).await.unwrap_or_default()
-        .into_iter()
-        .map(AdminMediaView::from)
-        .collect();
-
     let page = AdminPageInfo {
         title: "Kelola Hero Banner".to_string(),
         breadcrumb: vec![
@@ -888,14 +816,14 @@ pub async fn admin_hero_list(req: &mut Request, depot: &mut Depot, res: &mut Res
     };
 
     let template = HeroListTemplate {
-        site, page, settings, current_user: username, heroes, media_files,
+        site, page, current_user: username, heroes,
     };
 
     res.render(Text::Html(template.render().unwrap_or_default()));
 }
 
 #[handler]
-pub async fn admin_hero_new(req: &mut Request, depot: &mut Depot, res: &mut Response) {
+pub async fn admin_hero_new(_req: &mut Request, depot: &mut Depot, res: &mut Response) {
     let state = depot.obtain::<AppState>().unwrap();
     let db = &state.db;
     let config = &state.config;
@@ -907,12 +835,6 @@ pub async fn admin_hero_new(req: &mut Request, depot: &mut Depot, res: &mut Resp
         .and_then(|session| session.get::<String>(ADMIN_USERNAME_KEY))
         .unwrap_or_default();
 
-    let media_files = sqlx::query_as::<_, MediaFile>("SELECT * FROM media_files ORDER BY created_at DESC LIMIT 50")
-        .fetch_all(db).await.unwrap_or_default()
-        .into_iter()
-        .map(AdminMediaView::from)
-        .collect();
-
     let page = AdminPageInfo {
         title: "Tambah Hero Banner".to_string(),
         breadcrumb: vec![
@@ -923,7 +845,7 @@ pub async fn admin_hero_new(req: &mut Request, depot: &mut Depot, res: &mut Resp
     };
 
     let template = HeroFormTemplate {
-        site, page, settings, current_user: username, hero: AdminHeroView::default(), is_edit: false, media_files,
+        site, page, current_user: username, hero: AdminHeroView::default(), is_edit: false,
     };
 
     res.render(Text::Html(template.render().unwrap_or_default()));
@@ -956,12 +878,6 @@ pub async fn admin_hero_edit(req: &mut Request, depot: &mut Depot, res: &mut Res
         }
     };
 
-    let media_files = sqlx::query_as::<_, MediaFile>("SELECT * FROM media_files ORDER BY created_at DESC LIMIT 50")
-        .fetch_all(db).await.unwrap_or_default()
-        .into_iter()
-        .map(AdminMediaView::from)
-        .collect();
-
     let page = AdminPageInfo {
         title: "Edit Hero Banner".to_string(),
         breadcrumb: vec![
@@ -972,7 +888,7 @@ pub async fn admin_hero_edit(req: &mut Request, depot: &mut Depot, res: &mut Res
     };
 
     let template = HeroFormTemplate {
-        site, page, settings, current_user: username, hero, is_edit: true, media_files,
+        site, page, current_user: username, hero, is_edit: true,
     };
 
     res.render(Text::Html(template.render().unwrap_or_default()));
@@ -1084,7 +1000,7 @@ pub async fn admin_media_list(req: &mut Request, depot: &mut Depot, res: &mut Re
     };
 
     let template = MediaListTemplate {
-        site, page, settings, current_user: username, media, current_page: page_num, total_pages,
+        site, page, current_user: username, media, current_page: page_num, total_pages,
     };
 
     res.render(Text::Html(template.render().unwrap_or_default()));
@@ -1163,7 +1079,7 @@ pub async fn admin_media_delete(req: &mut Request, depot: &mut Depot, res: &mut 
 // ============ Settings Admin ============
 
 #[handler]
-pub async fn admin_settings_list(req: &mut Request, depot: &mut Depot, res: &mut Response) {
+pub async fn admin_settings_list(_req: &mut Request, depot: &mut Depot, res: &mut Response) {
     let state = depot.obtain::<AppState>().unwrap();
     let db = &state.db;
     let config = &state.config;
@@ -1226,7 +1142,7 @@ pub async fn admin_settings_list(req: &mut Request, depot: &mut Depot, res: &mut
     };
 
     let template = SettingsListTemplate {
-        site, page, settings, current_user: username, settings_list, groups,
+        site, page, current_user: username, groups,
     };
 
     res.render(Text::Html(template.render().unwrap_or_default()));

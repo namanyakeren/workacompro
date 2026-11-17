@@ -28,8 +28,6 @@ pub struct DatabaseConfig {
 pub struct AuthConfig {
     pub admin_username: String,
     pub admin_password_hash: String, // Argon2 hash
-    pub jwt_secret: String,
-    pub jwt_expiry_hours: i64,
     pub session_secret: String,
 }
 

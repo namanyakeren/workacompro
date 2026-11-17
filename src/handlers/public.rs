@@ -4,8 +4,7 @@ use crate::config::AppConfig;
 use crate::models::*;
 use crate::views::{HeroView, ServiceView, PortfolioView, NewsView};
 use crate::state::get_all_settings_map;
-use crate::utils::{generate_slug, ensure_unique_slug};
-use crate::filters::{self, Or};
+use crate::filters;
 use askama::Template;
 use serde::Deserialize;
 use serde_json::json;
@@ -15,20 +14,10 @@ use chrono::Datelike;
 // ============ Templates ============
 
 #[derive(Template)]
-#[template(path = "public/layout.html")]
-pub struct LayoutTemplate {
-    pub site: SiteInfo,
-    pub page: PageInfo,
-    pub settings: HashMap<String, String>,
-    pub content: String,
-}
-
-#[derive(Template)]
 #[template(path = "public/home.html")]
 pub struct HomeTemplate {
     pub site: SiteInfo,
     pub page: PageInfo,
-    pub settings: HashMap<String, String>,
     pub hero: HeroView,
     pub services: Vec<ServiceView>,
     pub featured_portfolios: Vec<PortfolioView>,
@@ -40,7 +29,6 @@ pub struct HomeTemplate {
 pub struct ServicesTemplate {
     pub site: SiteInfo,
     pub page: PageInfo,
-    pub settings: HashMap<String, String>,
     pub services: Vec<ServiceView>,
     pub categories: Vec<String>,
 }
@@ -50,7 +38,6 @@ pub struct ServicesTemplate {
 pub struct ServiceDetailTemplate {
     pub site: SiteInfo,
     pub page: PageInfo,
-    pub settings: HashMap<String, String>,
     pub service: ServiceView,
     pub related_services: Vec<ServiceView>,
 }
@@ -60,7 +47,6 @@ pub struct ServiceDetailTemplate {
 pub struct PortfolioTemplate {
     pub site: SiteInfo,
     pub page: PageInfo,
-    pub settings: HashMap<String, String>,
     pub portfolios: Vec<PortfolioView>,
     pub categories: Vec<String>,
 }
@@ -70,7 +56,6 @@ pub struct PortfolioTemplate {
 pub struct PortfolioDetailTemplate {
     pub site: SiteInfo,
     pub page: PageInfo,
-    pub settings: HashMap<String, String>,
     pub portfolio: PortfolioView,
     pub related_portfolios: Vec<PortfolioView>,
 }
@@ -80,7 +65,6 @@ pub struct PortfolioDetailTemplate {
 pub struct NewsTemplate {
     pub site: SiteInfo,
     pub page: PageInfo,
-    pub settings: HashMap<String, String>,
     pub news: Vec<NewsView>,
     pub categories: Vec<String>,
     pub current_page: i32,
@@ -92,7 +76,6 @@ pub struct NewsTemplate {
 pub struct NewsDetailTemplate {
     pub site: SiteInfo,
     pub page: PageInfo,
-    pub settings: HashMap<String, String>,
     pub article: NewsView,
     pub related_news: Vec<NewsView>,
 }
@@ -102,7 +85,6 @@ pub struct NewsDetailTemplate {
 pub struct AboutTemplate {
     pub site: SiteInfo,
     pub page: PageInfo,
-    pub settings: HashMap<String, String>,
     pub team: Vec<TeamMember>,
     pub klbi_codes: Vec<KLBICode>,
 }
@@ -112,13 +94,12 @@ pub struct AboutTemplate {
 pub struct ContactTemplate {
     pub site: SiteInfo,
     pub page: PageInfo,
-    pub settings: HashMap<String, String>,
 }
 
 // ============ Public Handlers ============
 
 #[handler]
-pub async fn home_handler(req: &mut Request, depot: &mut Depot, res: &mut Response) {
+pub async fn home_handler(_req: &mut Request, depot: &mut Depot, res: &mut Response) {
     let state = depot.obtain::<AppState>().unwrap();
     let db = &state.db;
     let config = &state.config;
@@ -175,7 +156,6 @@ pub async fn home_handler(req: &mut Request, depot: &mut Depot, res: &mut Respon
     let template = HomeTemplate {
         site,
         page,
-        settings,
         hero,
         services,
         featured_portfolios,
@@ -186,7 +166,7 @@ pub async fn home_handler(req: &mut Request, depot: &mut Depot, res: &mut Respon
 }
 
 #[handler]
-pub async fn services_handler(req: &mut Request, depot: &mut Depot, res: &mut Response) {
+pub async fn services_handler(_req: &mut Request, depot: &mut Depot, res: &mut Response) {
     let state = depot.obtain::<AppState>().unwrap();
     let db = &state.db;
     let config = &state.config;
@@ -219,7 +199,6 @@ pub async fn services_handler(req: &mut Request, depot: &mut Depot, res: &mut Re
     let template = ServicesTemplate {
         site,
         page,
-        settings,
         services,
         categories,
     };
@@ -277,7 +256,6 @@ pub async fn service_detail_handler(req: &mut Request, depot: &mut Depot, res: &
     let template = ServiceDetailTemplate {
         site,
         page,
-        settings,
         service,
         related_services,
     };
@@ -286,7 +264,7 @@ pub async fn service_detail_handler(req: &mut Request, depot: &mut Depot, res: &
 }
 
 #[handler]
-pub async fn portfolio_handler(req: &mut Request, depot: &mut Depot, res: &mut Response) {
+pub async fn portfolio_handler(_req: &mut Request, depot: &mut Depot, res: &mut Response) {
     let state = depot.obtain::<AppState>().unwrap();
     let db = &state.db;
     let config = &state.config;
@@ -319,7 +297,6 @@ pub async fn portfolio_handler(req: &mut Request, depot: &mut Depot, res: &mut R
     let template = PortfolioTemplate {
         site,
         page,
-        settings,
         portfolios,
         categories,
     };
@@ -377,7 +354,6 @@ pub async fn portfolio_detail_handler(req: &mut Request, depot: &mut Depot, res:
     let template = PortfolioDetailTemplate {
         site,
         page,
-        settings,
         portfolio,
         related_portfolios,
     };
@@ -433,7 +409,6 @@ pub async fn news_handler(req: &mut Request, depot: &mut Depot, res: &mut Respon
     let template = NewsTemplate {
         site,
         page,
-        settings,
         news,
         categories,
         current_page: page_num,
@@ -493,7 +468,6 @@ pub async fn news_detail_handler(req: &mut Request, depot: &mut Depot, res: &mut
     let template = NewsDetailTemplate {
         site,
         page,
-        settings,
         article,
         related_news,
     };
@@ -502,7 +476,7 @@ pub async fn news_detail_handler(req: &mut Request, depot: &mut Depot, res: &mut
 }
 
 #[handler]
-pub async fn about_handler(req: &mut Request, depot: &mut Depot, res: &mut Response) {
+pub async fn about_handler(_req: &mut Request, depot: &mut Depot, res: &mut Response) {
     let state = depot.obtain::<AppState>().unwrap();
     let db = &state.db;
     let config = &state.config;
@@ -546,7 +520,6 @@ pub async fn about_handler(req: &mut Request, depot: &mut Depot, res: &mut Respo
     let template = AboutTemplate {
         site,
         page,
-        settings,
         team,
         klbi_codes,
     };
@@ -555,7 +528,7 @@ pub async fn about_handler(req: &mut Request, depot: &mut Depot, res: &mut Respo
 }
 
 #[handler]
-pub async fn contact_handler(req: &mut Request, depot: &mut Depot, res: &mut Response) {
+pub async fn contact_handler(_req: &mut Request, depot: &mut Depot, res: &mut Response) {
     let state = depot.obtain::<AppState>().unwrap();
     let config = &state.config;
     let db = &state.db;
@@ -572,17 +545,37 @@ pub async fn contact_handler(req: &mut Request, depot: &mut Depot, res: &mut Res
     let template = ContactTemplate {
         site,
         page,
-        settings,
     };
 
     res.render(Text::Html(template.render().unwrap_or_default()));
 }
 
 #[handler]
-pub async fn contact_submit_handler(req: &mut Request, depot: &mut Depot, res: &mut Response) {
+pub async fn contact_submit_handler(req: &mut Request, _depot: &mut Depot, res: &mut Response) {
     let form = req.parse_form::<ContactForm>().await.unwrap_or_default();
-    tracing::info!("Contact form submitted: {:?}", form);
-    
+
+    let is_valid = !form.name.trim().is_empty()
+        && form.email.contains('@')
+        && !form.subject.trim().is_empty()
+        && !form.message.trim().is_empty();
+
+    if !is_valid {
+        res.status_code(StatusCode::BAD_REQUEST);
+        res.render(Json(crate::models::ApiResponse::<()>::err(
+            "Mohon lengkapi nama, email, subjek, dan pesan Anda.".to_string(),
+            None,
+        )));
+        return;
+    }
+
+    tracing::info!(
+        name = %form.name,
+        email = %form.email,
+        phone = ?form.phone,
+        subject = %form.subject,
+        "Contact form submitted"
+    );
+
     res.render(Json(crate::models::ApiResponse::ok(json!({
         "message": "Pesan berhasil dikirim. Kami akan menghubungi Anda segera."
     }))));

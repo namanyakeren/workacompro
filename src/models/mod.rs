@@ -184,14 +184,6 @@ pub struct NewsForm {
 }
 
 #[derive(Debug, Deserialize, Serialize, Default)]
-pub struct SettingForm {
-    pub key: String,
-    pub value: String,
-    pub description: Option<String>,
-    pub group: String,
-}
-
-#[derive(Debug, Deserialize, Serialize, Default)]
 pub struct LoginForm {
     pub username: String,
     pub password: String,
@@ -216,27 +208,7 @@ impl<T> ApiResponse<T> {
     }
 }
 
-#[derive(Debug, Serialize)]
-pub struct PaginatedResponse<T> {
-    pub items: Vec<T>,
-    pub total: i64,
-    pub page: i32,
-    pub per_page: i32,
-    pub total_pages: i32,
-}
-
 // ============ Template Context Types ============
-
-#[derive(Debug, Serialize)]
-pub struct PageContext {
-    pub site: SiteInfo,
-    pub page: PageInfo,
-    pub hero: Option<HeroBanner>,
-    pub services: Vec<Service>,
-    pub portfolios: Vec<Portfolio>,
-    pub news: Vec<NewsArticle>,
-    pub settings: std::collections::HashMap<String, String>,
-}
 
 #[derive(Debug, Serialize, Clone)]
 pub struct SiteInfo {

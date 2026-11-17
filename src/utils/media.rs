@@ -1,5 +1,5 @@
 use anyhow::Result;
-use image::{ImageFormat, DynamicImage};
+use image::ImageFormat;
 use std::io::Cursor;
 use uuid::Uuid;
 use chrono::Utc;

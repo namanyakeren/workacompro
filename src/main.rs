@@ -3,7 +3,6 @@ use salvo::session::{SessionHandler, MemoryStore};
 use salvo::cors::Cors;
 use salvo::compression::Compression;
 use salvo::http::Method;
-use sqlx::sqlite::SqlitePoolOptions;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 mod config;

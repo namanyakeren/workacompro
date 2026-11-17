@@ -11,8 +11,6 @@ database.max_connections = 5
 # Generate password hash with: echo -n "your_password" | cargo run --example hash_password
 auth.admin_username = "worka_admin"
 auth.admin_password_hash = "$argon2id$v=19$m=19456,t=2,p=1$CKJ6R0SQzwvpHD74KtU8Vw$yVU4Ym5LX6jPNPsAhGuld98HPiohvWmAZOvSqNrKPco"  # default: "worka2024!"
-auth.jwt_secret = "change-this-super-secret-jwt-key-in-production-min-32-chars"
-auth.jwt_expiry_hours = 24
 auth.session_secret = "e45b21141ba0d97abbe270672ab225c5e8900ba944fa2446163970e8fedf8cac2fd4caef3581506b7eb4e0091347f3b039e686ce22ed8671f15eb7aa964d9210"
 
 # Upload Configuration
