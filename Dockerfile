@@ -28,7 +28,9 @@ COPY config ./config
 COPY static ./static
 
 # Build application
-RUN cargo build --release
+# Touch the entry point so Cargo always rebuilds the real binary instead of
+# reusing the dummy one compiled above (copied sources may have older mtimes).
+RUN touch src/main.rs && cargo build --release
 
 # Stage 2: Runtime
 FROM debian:bookworm-slim AS runtime
@@ -69,7 +71,7 @@ EXPOSE 8080
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1
+    CMD wget --no-verbose --tries=1 -O /dev/null http://127.0.0.1:8080/ || exit 1
 
 # Use tini for proper signal handling
 ENTRYPOINT ["tini", "--"]

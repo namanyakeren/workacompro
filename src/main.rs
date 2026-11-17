@@ -1,5 +1,6 @@
 use salvo::prelude::*;
 use salvo::session::{SessionHandler, MemoryStore};
+use salvo::serve_static::StaticDir;
 use salvo::cors::Cors;
 use salvo::compression::Compression;
 use salvo::http::Method;
@@ -71,10 +72,10 @@ async fn main() -> anyhow::Result<()> {
         .push(Router::with_path("/api/contact").post(public::contact_submit_handler))
         .push(Router::with_path("/newsletter").post(public::newsletter_submit_handler))
         // Static files
-        .push(Router::with_path("/static/<**path>").get(StaticFile::new("static/")))
-        .push(Router::with_path("/css/<**path>").get(StaticFile::new("static/css/")))
-        .push(Router::with_path("/uploads/<**path>").get(StaticFile::new(config.upload.upload_dir.clone())))
-        .push(Router::with_path("/images/<**path>").get(StaticFile::new("static/images/")))
+        .push(Router::with_path("/static/<**path>").get(StaticDir::new("static")))
+        .push(Router::with_path("/css/<**path>").get(StaticDir::new("static/css")))
+        .push(Router::with_path("/uploads/<**path>").get(StaticDir::new(config.upload.upload_dir.clone())))
+        .push(Router::with_path("/images/<**path>").get(StaticDir::new("static/images")))
         // Admin routes
         .push(
             Router::with_path("/admin/login")
