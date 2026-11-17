@@ -1,0 +1,9 @@
+# Build artifacts
+target/
+.git/
+.env
+.env.local
+data/
+static/uploads/*
+!static/uploads/.gitkeep
+*.log

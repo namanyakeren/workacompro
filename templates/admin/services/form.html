@@ -1,0 +1,152 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+            <h2 class="text-xl font-semibold text-slate-900">{% if is_edit %}Edit Layanan{% else %}Tambah Layanan Baru{% endif %}</h2>
+            <p class="text-slate-500 text-sm">Isi formulir di bawah untuk {% if is_edit %}memperbarui{% else %}menambahkan{% endif %} layanan</p>
+        </div>
+        <a href="/admin/services" class="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg font-medium hover:bg-slate-200 transition">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            Kembali
+        </a>
+    </div>
+    
+    <form id="service-form" hx-post="{% if is_edit %}/admin/services/{{ service.id }}/save{% else %}/admin/services{% endif %}" hx-target="#form-response" hx-swap="innerHTML" class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-6">
+        <div id="form-response"></div>
+        
+        <!-- Basic Info -->
+        <fieldset>
+            <legend class="text-lg font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-100">Informasi Dasar</legend>
+            <div class="space-y-4">
+                <div>
+                    <label for="title" class="block text-sm font-medium text-slate-700 mb-2">Judul Layanan <span class="text-red-500">*</span></label>
+                    <input type="text" id="title" name="title" required value="{{ service.title }}" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition">
+                </div>
+                <div>
+                    <label for="slug" class="block text-sm font-medium text-slate-700 mb-2">Slug (URL) <span class="text-red-500">*</span></label>
+                    <input type="text" id="slug" name="slug" value="{{ service.slug }}" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" placeholder="akan di-generate otomatis dari judul">
+                    <p class="text-xs text-slate-500 mt-1">Kosongkan untuk auto-generate dari judul</p>
+                </div>
+                <div>
+                    <label for="category" class="block text-sm font-medium text-slate-700 mb-2">Kategori</label>
+                    <input type="text" id="category" name="category" value="{{ service.category }}" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" placeholder="Contoh: Software Development, IT Consulting, Design">
+                </div>
+            </div>
+        </fieldset>
+        
+        <!-- Descriptions -->
+        <fieldset>
+            <legend class="text-lg font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-100">Deskripsi</legend>
+            <div class="space-y-4">
+                <div>
+                    <label for="short_description" class="block text-sm font-medium text-slate-700 mb-2">Deskripsi Singkat (untuk kartu/preview)</label>
+                    <textarea id="short_description" name="short_description" rows="3" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition resize-none">{{ service.short_description }}</textarea>
+                </div>
+                <div>
+                    <label for="full_description" class="block text-sm font-medium text-slate-700 mb-2">Deskripsi Lengkap (HTML didukung)</label>
+                    <textarea id="full_description" name="full_description" rows="8" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition resize-none font-mono text-sm">{{ service.full_description }}</textarea>
+                    <p class="text-xs text-slate-500 mt-1">Gunakan tag HTML standar: <p>, <ul><li>, <strong>, <em>, <h3>, dll.</p>
+                </div>
+            </div>
+        </fieldset>
+        
+        <!-- Icon & Image -->
+        <fieldset>
+            <legend class="text-lg font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-100">Ikon & Gambar</legend>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label for="icon" class="block text-sm font-medium text-slate-700 mb-2">Nama Ikon Lucide</label>
+                    <input type="text" id="icon" name="icon" value="{{ service.icon }}" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" placeholder="Contoh: cpu, code, server, database, palette, shield">
+                    <p class="text-xs text-slate-500 mt-1">Lihat daftar ikon di <a href="https://lucide.dev/icons/" target="_blank" class="text-primary hover:underline">lucide.dev</a></p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Gambar Layanan</label>
+                    <div class="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-primary transition">
+                        <input type="hidden" name="image_id" id="image_id" value="{{ service.image_id }}">
+                        <div id="image-preview" class="mb-3">
+                            {% if !service.image_path.is_empty() %}
+                            <img src="{{ service.image_path }}" alt="Current image" class="max-h-32 mx-auto rounded-lg">
+                            {% endif %}
+                        </div>
+                        <button type="button" onclick="document.getElementById('image-upload').click()" class="text-primary hover:underline font-medium">
+                            {% if is_edit %}Ganti Gambar{% else %}Pilih Gambar{% endif %}
+                        </button>
+                        <input type="file" id="image-upload" name="image_file" accept="image/*" class="hidden" onchange="previewImage(this, 'image-preview', 'image_id')">
+                        <p class="text-xs text-slate-500 mt-2">Pilih dari Media Library atau upload baru</p>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        
+        <!-- Features -->
+        <fieldset>
+            <legend class="text-lg font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-100">Fitur (JSON Array)</legend>
+            <div>
+                <textarea id="features" name="features" rows="6" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition resize-none font-mono text-sm" placeholder='["Fitur 1", "Fitur 2", "Fitur 3"]'>{{ service.features }}</textarea>
+                <p class="text-xs text-slate-500 mt-1">Format JSON array string. Setiap item akan ditampilkan sebagai fitur layanan.</p>
+            </div>
+        </fieldset>
+        
+        <!-- Settings -->
+        <fieldset>
+            <legend class="text-lg font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-100">Pengaturan</legend>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="flex items-center gap-3">
+                    <input type="checkbox" id="is_active" name="is_active" value="true" {% if service.is_active %}checked{% endif %} class="w-4 h-4 text-primary border-slate-300 rounded focus:ring-primary">
+                    <label for="is_active" class="text-sm font-medium text-slate-700">Aktif</label>
+                </div>
+                <div class="flex items-center gap-3">
+                    <input type="checkbox" id="is_featured" name="is_featured" value="true" {% if service.is_featured %}checked{% endif %} class="w-4 h-4 text-primary border-slate-300 rounded focus:ring-primary">
+                    <label for="is_featured" class="text-sm font-medium text-slate-700">Unggulan (tampil di beranda)</label>
+                </div>
+                <div>
+                    <label for="sort_order" class="block text-sm font-medium text-slate-700 mb-2">Urutan Tampil</label>
+                    <input type="number" id="sort_order" name="sort_order" value="{{ service.sort_order }}" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition">
+                </div>
+            </div>
+        </fieldset>
+        
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row gap-4 pt-4 border-t border-slate-100">
+            <button type="submit" class="flex-1 sm:flex-none px-6 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-blue-600 transition shadow-lg shadow-primary/25">
+                <i data-lucide="save" class="w-4 h-4 inline mr-2"></i>
+                {% if is_edit %}Perbarui{% else %}Simpan{% endif %} Layanan
+            </button>
+            <a href="/admin/services" class="flex-1 sm:flex-none px-6 py-3 bg-slate-100 text-slate-700 rounded-lg font-semibold hover:bg-slate-200 transition text-center">
+                Batal
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    lucide.createIcons();
+});
+
+function previewImage(input, previewId, hiddenId) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById(previewId).innerHTML = `<img src="${e.target.result}" alt="Preview" class="max-h-32 mx-auto rounded-lg">`;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+// Auto-generate slug from title
+document.getElementById('title')?.addEventListener('blur', function() {
+    const slugInput = document.getElementById('slug');
+    if (!slugInput.value) {
+        slugInput.value = this.value
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)/g, '');
+    }
+});
+</script>
+{% endblock %}

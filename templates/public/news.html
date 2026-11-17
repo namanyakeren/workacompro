@@ -1,0 +1,149 @@
+{% extends "public/layout.html" %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="pt-32 pb-16 bg-slate-900 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="flex items-center space-x-2 text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
+            <a href="/" class="hover:text-white transition">Beranda</a>
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            <span class="text-white">Berita & Artikel</span>
+        </nav>
+        <h1 class="text-4xl sm:text-5xl font-bold mb-4">Berita & Artikel</h1>
+        <p class="text-lg text-slate-300 max-w-2xl">Wawasan teknologi, tips praktis, dan update terbaru dari tim WORKA SOLUTION</p>
+    </div>
+</section>
+
+<!-- News Grid -->
+<section class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Category Filter -->
+        {% if !categories.is_empty() %}
+        <div class="flex flex-wrap gap-3 mb-12" role="group" aria-label="Filter kategori berita">
+            <button class="px-4 py-2 bg-primary text-white rounded-full text-sm font-medium" data-category="all">Semua</button>
+            {% for cat in categories %}
+            <button class="px-4 py-2 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-primary hover:text-white transition" data-category="{{ cat| lower| replace(" ", "-") }}">{{ cat }}</button>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="news-grid">
+            {% for article in news %}
+            <article class="news-card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow border border-slate-100 h-full flex flex-col" data-category="{% if !article.category.is_empty() %}{{ article.category| lower| replace(" ", "-") }}{% else %}lainnya{% endif %}">
+                {% if !article.thumbnail_path.is_empty() %}
+                <div class="aspect-video overflow-hidden relative">
+                    <img src="{{ article.thumbnail_path }}" alt="{{ article.title }}" class="w-full h-full object-cover">
+                    {% if article.is_published %}
+                    <span class="absolute top-3 right-3 px-2 py-1 bg-green-500 text-white text-xs font-medium rounded-full">Published</span>
+                    {% else %}
+                    <span class="absolute top-3 right-3 px-2 py-1 bg-amber-500 text-white text-xs font-medium rounded-full">Draft</span>
+                    {% endif %}
+                </div>
+                {% endif %}
+                <div class="p-6 flex-1 flex flex-col">
+                    <div class="flex items-center gap-3 text-sm text-slate-500 mb-3">
+                        {% if !article.category.is_empty() %}
+                        <span class="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs">{{ article.category }}</span>
+                        {% endif %}
+                        <time datetime="{{ article.published_iso }}">
+                            {{ article.published_display }}
+                        </time>
+                    </div>
+                    <h3 class="text-lg font-semibold text-slate-900 mb-2 line-clamp-2">{{ article.title }}</h3>
+                    <p class="text-slate-600 text-sm mb-4 flex-1">{% if !article.excerpt.is_empty() %}{{ article.excerpt }}{% else %}{{ article.content| truncate(120) }}{% endif %}</p>
+                    <a href="/news/{{ article.slug }}" class="inline-flex items-center text-primary font-medium hover:text-blue-700 mt-auto">
+                        Baca Selengkapnya
+                        <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                    </a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        
+        {% if news.is_empty() %}
+        <div class="text-center py-16">
+            <i data-lucide="newspaper" class="w-16 h-16 text-slate-300 mx-auto mb-4"></i>
+            <h3 class="text-xl font-semibold text-slate-900 mb-2">Belum Ada Artikel</h3>
+            <p class="text-slate-600">Artikel akan segera diterbitkan oleh tim kami.</p>
+        </div>
+        {% endif %}
+        
+        <!-- Pagination -->
+        {% if total_pages > 1 %}
+        <nav class="mt-12 flex items-center justify-center gap-2" aria-label="Pagination">
+            {% if current_page > 1 %}
+            <a href="?page={{ current_page - 1 }}" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition">Sebelumnya</a>
+            {% endif %}
+            
+            {% for p in 1..=total_pages %}
+                {% if p == current_page %}
+                <span class="px-4 py-2 bg-primary text-white rounded-lg font-medium">{{ p }}</span>
+                {% else if p == 1 || p == total_pages || p >= current_page - 1 && p <= current_page + 1 %}
+                <a href="?page={{ p }}" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition">{{ p }}</a>
+                {% else %}
+                <span class="px-2 text-slate-400">...</span>
+                {% endif %}
+            {% endfor %}
+            
+            {% if current_page < total_pages %}
+            <a href="?page={{ current_page + 1 }}" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition">Selanjutnya</a>
+            {% endif %}
+        </nav>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Newsletter CTA -->
+<section class="py-24 bg-slate-900 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4">Jangan Lewatkan Update Terbaru</h2>
+        <p class="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">Dapatkan artikel teknologi, tips, dan insight langsung ke email Anda.</p>
+        <form class="max-w-md mx-auto flex gap-3" hx-post="/newsletter" hx-target="#newsletter-result" hx-swap="innerHTML">
+            <input type="email" name="email" placeholder="Email Anda" required class="flex-1 px-4 py-3 rounded-lg bg-slate-800 border border-slate-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 text-white placeholder-slate-500">
+            <button type="submit" class="px-6 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-blue-600 transition">
+                <i data-lucide="mail" class="w-5 h-5"></i>
+            </button>
+        </form>
+        <div id="newsletter-result" class="mt-4"></div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('[data-category]');
+    const newsCards = document.querySelectorAll('.news-card');
+    
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const category = btn.dataset.category;
+            
+            filterButtons.forEach(b => {
+                b.classList.remove('bg-primary', 'text-white');
+                b.classList.add('bg-slate-100', 'text-slate-700');
+            });
+            btn.classList.remove('bg-slate-100', 'text-slate-700');
+            btn.classList.add('bg-primary', 'text-white');
+            
+            newsCards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'flex';
+                    card.style.animation = 'fadeInUp 0.3s ease-out';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+    
+    lucide.createIcons();
+});
+</script>
+<style>
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+{% endblock %}

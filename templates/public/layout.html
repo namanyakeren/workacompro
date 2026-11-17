@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+    <meta name="description" content="{{ page.description }}">
+    <meta name="keywords" content="{{ site.seo.meta_keywords }}">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ page.title }}">
+    <meta property="og:description" content="{{ page.description }}">
+    <meta property="og:url" content="{{ page.url }}">
+    <meta property="og:image" content="{{ page.og_image }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ site.brand_name }}">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ page.title }}">
+    <meta name="twitter:description" content="{{ page.description }}">
+    <meta name="twitter:image" content="{{ page.og_image }}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '{{ site.primary_color }}',
+                        secondary: '{{ site.secondary_color }}',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Alpine.js for interactivity -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- HTMX for dynamic content -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-white text-slate-900 antialiased" x-data="{ mobileMenuOpen: false, scrolled: false }">
+    <!-- Header/Navbar -->
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" :class="{ 'bg-white/95 backdrop-blur-sm shadow-sm': scrolled, 'bg-transparent': !scrolled }" @scroll.window="scrolled = window.scrollY > 20">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
+            <div class="flex items-center justify-between h-16 lg:h-20">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="/" class="flex items-center space-x-2" aria-label="{{ site.brand_name }} - Home">
+                        {% if !site.logo.is_empty() %}
+                            <img src="{{ site.logo }}" alt="{{ site.brand_name }}" class="h-8 w-auto">
+                        {% else %}
+                            <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+                                <i data-lucide="cpu" class="w-5 h-5 text-white"></i>
+                            </div>
+                        {% endif %}
+                        <span class="text-xl font-bold text-slate-900 hidden sm:block">{{ site.brand_name }}</span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="/" class="text-slate-600 hover:text-primary font-medium transition">Beranda</a>
+                    <a href="/services" class="text-slate-600 hover:text-primary font-medium transition">Layanan</a>
+                    <a href="/portfolio" class="text-slate-600 hover:text-primary font-medium transition">Portfolio</a>
+                    <a href="/news" class="text-slate-600 hover:text-primary font-medium transition">Berita</a>
+                    <a href="/about" class="text-slate-600 hover:text-primary font-medium transition">Tentang</a>
+                    <a href="/contact" class="bg-primary text-white px-5 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition shadow-lg shadow-primary/25">Hubungi Kami</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="lg:hidden p-2 text-slate-600 hover:text-primary" @click="mobileMenuOpen = !mobileMenuOpen" aria-label="Toggle menu" aria-expanded="false">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- Mobile Menu -->
+        <div class="lg:hidden overflow-hidden transition-all duration-300" x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform -translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform translate-y-0" x-transition:leave-end="opacity-0 transform -translate-y-2" style="display: none;">
+            <div class="px-4 py-4 space-y-4 border-t border-slate-100 bg-white">
+                <a href="/" class="block text-slate-600 hover:text-primary font-medium py-2" @click="mobileMenuOpen = false">Beranda</a>
+                <a href="/services" class="block text-slate-600 hover:text-primary font-medium py-2" @click="mobileMenuOpen = false">Layanan</a>
+                <a href="/portfolio" class="block text-slate-600 hover:text-primary font-medium py-2" @click="mobileMenuOpen = false">Portfolio</a>
+                <a href="/news" class="block text-slate-600 hover:text-primary font-medium py-2" @click="mobileMenuOpen = false">Berita</a>
+                <a href="/about" class="block text-slate-600 hover:text-primary font-medium py-2" @click="mobileMenuOpen = false">Tentang</a>
+                <a href="/contact" class="block bg-primary text-white text-center py-3 rounded-lg font-medium mt-2" @click="mobileMenuOpen = false">Hubungi Kami</a>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-300" role="contentinfo">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <!-- Brand Info -->
+                <div class="lg:col-span-1">
+                    <a href="/" class="flex items-center space-x-2 mb-4" aria-label="{{ site.brand_name }} - Home">
+                        {% if !site.logo.is_empty() %}
+                            <img src="{{ site.logo }}" alt="{{ site.brand_name }}" class="h-8 w-auto">
+                        {% else %}
+                            <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+                                <i data-lucide="cpu" class="w-5 h-5 text-white"></i>
+                            </div>
+                        {% endif %}
+                        <span class="text-xl font-bold text-white">{{ site.brand_name }}</span>
+                    </a>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">{{ site.description }}</p>
+                    <div class="flex space-x-4">
+                        {% if !site.social_media.instagram.is_empty() %}
+                        <a href="{{ site.social_media.instagram }}" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition" aria-label="Instagram">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                        {% endif %}
+                        {% if !site.social_media.linkedin.is_empty() %}
+                        <a href="{{ site.social_media.linkedin }}" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition" aria-label="LinkedIn">
+                            <i data-lucide="linkedin" class="w-5 h-5"></i>
+                        </a>
+                        {% endif %}
+                        {% if !site.social_media.twitter.is_empty() %}
+                        <a href="{{ site.social_media.twitter }}" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition" aria-label="Twitter">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        {% endif %}
+                        {% if !site.social_media.youtube.is_empty() %}
+                        <a href="{{ site.social_media.youtube }}" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition" aria-label="YouTube">
+                            <i data-lucide="youtube" class="w-5 h-5"></i>
+                        </a>
+                        {% endif %}
+                        {% if !site.social_media.github.is_empty() %}
+                        <a href="{{ site.social_media.github }}" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition" aria-label="GitHub">
+                            <i data-lucide="github" class="w-5 h-5"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Tautan Cepat</h3>
+                    <nav aria-label="Footer navigation">
+                        <ul class="space-y-3 text-sm">
+                            <li><a href="/" class="text-slate-400 hover:text-white transition">Beranda</a></li>
+                            <li><a href="/services" class="text-slate-400 hover:text-white transition">Layanan</a></li>
+                            <li><a href="/portfolio" class="text-slate-400 hover:text-white transition">Portfolio</a></li>
+                            <li><a href="/news" class="text-slate-400 hover:text-white transition">Berita & Artikel</a></li>
+                            <li><a href="/about" class="text-slate-400 hover:text-white transition">Tentang Kami</a></li>
+                            <li><a href="/contact" class="text-slate-400 hover:text-white transition">Kontak</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                
+                <!-- Services -->
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Layanan Utama</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="/services#software" class="text-slate-400 hover:text-white transition">Pengembangan Software</a></li>
+                        <li><a href="/services#consulting" class="text-slate-400 hover:text-white transition">Konsultasi IT</a></li>
+                        <li><a href="/services#design" class="text-slate-400 hover:text-white transition">Desain Grafis & UI/UX</a></li>
+                        <li><a href="/services#network" class="text-slate-400 hover:text-white transition">Jaringan & Keamanan</a></li>
+                        <li><a href="/services#hardware" class="text-slate-400 hover:text-white transition">Perbaikan Hardware</a></li>
+                        <li><a href="/services#managed" class="text-slate-400 hover:text-white transition">Managed IT Services</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Kontak Kami</h3>
+                    <address class="not-italic text-sm space-y-3">
+                        <p class="text-slate-400 flex items-start space-x-3">
+                            <i data-lucide="map-pin" class="w-5 h-5 mt-0.5 flex-shrink-0"></i>
+                            <span>{{ site.address }}</span>
+                        </p>
+                        <p class="text-slate-400 flex items-center space-x-3">
+                            <i data-lucide="phone" class="w-5 h-5 flex-shrink-0"></i>
+                            <a href="tel:{{ site.phone }}" class="hover:text-white transition">{{ site.phone }}</a>
+                        </p>
+                        <p class="text-slate-400 flex items-center space-x-3">
+                            <i data-lucide="mail" class="w-5 h-5 flex-shrink-0"></i>
+                            <a href="mailto:{{ site.email }}" class="hover:text-white transition">{{ site.email }}</a>
+                        </p>
+                        <p class="text-slate-400 flex items-center space-x-3">
+                            <i data-lucide="globe" class="w-5 h-5 flex-shrink-0"></i>
+                            <a href="{{ site.website }}" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">{{ site.website }}</a>
+                        </p>
+                    </address>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="mt-12 pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-slate-500 text-sm">
+                    &copy; {{ site.current_year }} {{ site.brand_name }}. Hak cipta dilindungi.
+                </p>
+                <p class="text-slate-600 text-xs">
+                    {{ site.legal_name }} — PT Perorangan | 14 KLBI Teknologi Terdaftar
+                </p>
+                <div class="flex items-center space-x-4 text-xs text-slate-600">
+                    <a href="/privacy" class="hover:text-white transition">Kebijakan Privasi</a>
+                    <span aria-hidden="true">·</span>
+                    <a href="/terms" class="hover:text-white transition">Syarat & Ketentuan</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Hidden Admin Access Trigger -->
+    <div id="admin-trigger" class="fixed bottom-4 right-4 z-40" x-data="adminTrigger()"></div>
+
+    <!-- Lucide Icons Init -->
+    <script>
+        lucide.createIcons();
+    </script>
+    
+    {% block scripts %}{% endblock %}
+    
+    <!-- Admin Trigger Component -->
+    <script>
+        function adminTrigger() {
+            return {
+                clickCount: 0,
+                clickTimer: null,
+                init() {
+                    this.$el.innerHTML = `
+                        <button 
+                            @click="handleClick" 
+                            class="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-400 flex items-center justify-center transition-all duration-200 shadow-lg"
+                            aria-label="Settings"
+                            title="Pengaturan"
+                        >
+                            <i data-lucide="settings" class="w-5 h-5"></i>
+                        </button>
+                    `;
+                    lucide.createIcons();
+                },
+                handleClick() {
+                    this.clickCount++;
+                    if (this.clickCount === 1) {
+                        this.clickTimer = setTimeout(() => { this.clickCount = 0; }, 2000);
+                    } else if (this.clickCount >= 5) {
+                        clearTimeout(this.clickTimer);
+                        this.clickCount = 0;
+                        window.location.href = '/admin/login';
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

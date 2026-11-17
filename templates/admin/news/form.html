@@ -1,0 +1,140 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+            <h2 class="text-xl font-semibold text-slate-900">{% if is_edit %}Edit Artikel{% else %}Tambah Artikel Baru{% endif %}</h2>
+            <p class="text-slate-500 text-sm">Tulis dan kelola artikel website</p>
+        </div>
+        <a href="/admin/news" class="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg font-medium hover:bg-slate-200 transition">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            Kembali
+        </a>
+    </div>
+    
+    <form id="news-form" hx-post="{% if is_edit %}/admin/news/{{ article.id }}/save{% else %}/admin/news{% endif %}" hx-target="#form-response" hx-swap="innerHTML" class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-6">
+        <div id="form-response"></div>
+        
+        <fieldset>
+            <legend class="text-lg font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-100">Informasi Artikel</legend>
+            <div class="space-y-4">
+                <div>
+                    <label for="title" class="block text-sm font-medium text-slate-700 mb-2">Judul Artikel <span class="text-red-500">*</span></label>
+                    <input type="text" id="title" name="title" required value="{{ article.title }}" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition">
+                </div>
+                <div>
+                    <label for="slug" class="block text-sm font-medium text-slate-700 mb-2">Slug (URL) <span class="text-red-500">*</span></label>
+                    <input type="text" id="slug" name="slug" value="{{ article.slug }}" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" placeholder="auto-generate">
+                    <p class="text-xs text-slate-500 mt-1">Kosongkan untuk auto-generate</p>
+                </div>
+                <div>
+                    <label for="category" class="block text-sm font-medium text-slate-700 mb-2">Kategori</label>
+                    <input type="text" id="category" name="category" value="{{ article.category }}" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" placeholder="Teknologi, Tips, Update, Case Study">
+                </div>
+            </div>
+        </fieldset>
+        
+        <fieldset>
+            <legend class="text-lg font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-100">Konten</legend>
+            <div class="space-y-4">
+                <div>
+                    <label for="excerpt" class="block text-sm font-medium text-slate-700 mb-2">Ringkasan (Excerpt)</label>
+                    <textarea id="excerpt" name="excerpt" rows="3" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition resize-none">{{ article.excerpt }}</textarea>
+                    <p class="text-xs text-slate-500 mt-1">Ditampilkan di daftar artikel & SEO meta description</p>
+                </div>
+                <div>
+                    <label for="content" class="block text-sm font-medium text-slate-700 mb-2">Konten Lengkap (HTML)</label>
+                    <textarea id="content" name="content" rows="15" required class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition resize-none font-mono text-sm">{{ article.content }}</textarea>
+                    <p class="text-xs text-slate-500 mt-1">Gunakan HTML: <p>, <h2>, <h3>, <ul><li>, <ol><li>, <strong>, <em>, <blockquote>, <code>, <pre>, <img>, <a>, <table></p>
+                </div>
+            </div>
+        </fieldset>
+        
+        <fieldset>
+            <legend class="text-lg font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-100">Thumbnail</legend>
+            <div class="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-primary transition">
+                <input type="hidden" name="thumbnail_id" id="thumbnail_id" value="{{ article.thumbnail_id }}">
+                <div id="thumb-preview" class="mb-3">
+                    {% if !article.thumbnail_path.is_empty() %}
+                    <img src="{{ article.thumbnail_path }}" alt="Current thumbnail" class="max-h-32 mx-auto rounded-lg">
+                    {% endif %}
+                </div>
+                <button type="button" onclick="document.getElementById('thumb-upload').click()" class="text-primary hover:underline font-medium">
+                    {% if is_edit %}Ganti{% else %}Pilih Gambar{% endif %}
+                </button>
+                <input type="file" id="thumb-upload" name="thumbnail_file" accept="image/*" class="hidden" onchange="previewImage(this, 'thumb-preview', 'thumbnail_id')">
+                <p class="text-xs text-slate-500 mt-2">Rekomendasi: 1200x630px (rasio 1.91:1)</p>
+            </div>
+        </fieldset>
+        
+        <fieldset>
+            <legend class="text-lg font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-100">Tags & SEO</legend>
+            <div class="space-y-4">
+                <div>
+                    <label for="tags" class="block text-sm font-medium text-slate-700 mb-2">Tags (JSON Array)</label>
+                    <textarea id="tags" name="tags" rows="3" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition resize-none font-mono text-sm" placeholder='["rust", "web-development", "backend"]'>{{ article.tags }}</textarea>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="meta_title" class="block text-sm font-medium text-slate-700 mb-2">Meta Title (SEO)</label>
+                        <input type="text" id="meta_title" name="meta_title" value="{{ article.meta_title }}" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" placeholder="Kosongkan untuk gunakan judul artikel">
+                    </div>
+                    <div>
+                        <label for="meta_description" class="block text-sm font-medium text-slate-700 mb-2">Meta Description (SEO)</label>
+                        <input type="text" id="meta_description" name="meta_description" value="{{ article.meta_description }}" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" placeholder="Kosongkan untuk gunakan excerpt">
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        
+        <fieldset>
+            <legend class="text-lg font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-100">Publikasi</legend>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="flex items-center gap-3">
+                    <input type="checkbox" id="is_published" name="is_published" value="true" {% if article.is_published %}checked{% endif %} class="w-4 h-4 text-primary border-slate-300 rounded focus:ring-primary">
+                    <label for="is_published" class="text-sm font-medium text-slate-700">Publikasikan sekarang</label>
+                </div>
+            </div>
+        </fieldset>
+        
+        <div class="flex flex-col sm:flex-row gap-4 pt-4 border-t border-slate-100">
+            <button type="submit" class="flex-1 sm:flex-none px-6 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-blue-600 transition shadow-lg shadow-primary/25">
+                <i data-lucide="save" class="w-4 h-4 inline mr-2"></i>
+                {% if is_edit %}Perbarui{% else %}Simpan{% endif %} Artikel
+            </button>
+            <a href="/admin/news" class="flex-1 sm:flex-none px-6 py-3 bg-slate-100 text-slate-700 rounded-lg font-semibold hover:bg-slate-200 transition text-center">
+                Batal
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    lucide.createIcons();
+});
+
+function previewImage(input, previewId, hiddenId) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById(previewId).innerHTML = `<img src="${e.target.result}" alt="Preview" class="max-h-32 mx-auto rounded-lg">`;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+document.getElementById('title')?.addEventListener('blur', function() {
+    const slugInput = document.getElementById('slug');
+    if (!slugInput.value) {
+        slugInput.value = this.value
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)/g, '');
+    }
+});
+</script>
+{% endblock %}

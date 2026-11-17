@@ -1,0 +1,43 @@
+# Server Configuration
+server.host = "0.0.0.0"
+server.port = 8080
+server.base_url = "http://localhost:8080"
+
+# Database Configuration
+database.url = "sqlite://data/worka.db?mode=rwc"
+database.max_connections = 5
+
+# Auth Configuration (CHANGE THESE IN PRODUCTION!)
+# Generate password hash with: echo -n "your_password" | cargo run --example hash_password
+auth.admin_username = "worka_admin"
+auth.admin_password_hash = "$argon2id$v=19$m=19456,t=2,p=1$CKJ6R0SQzwvpHD74KtU8Vw$yVU4Ym5LX6jPNPsAhGuld98HPiohvWmAZOvSqNrKPco"  # default: "worka2024!"
+auth.jwt_secret = "change-this-super-secret-jwt-key-in-production-min-32-chars"
+auth.jwt_expiry_hours = 24
+auth.session_secret = "e45b21141ba0d97abbe270672ab225c5e8900ba944fa2446163970e8fedf8cac2fd4caef3581506b7eb4e0091347f3b039e686ce22ed8671f15eb7aa964d9210"
+
+# Upload Configuration
+upload.max_size_mb = 10
+upload.allowed_extensions = ["jpg", "jpeg", "png", "webp", "gif", "svg"]
+upload.upload_dir = "static/uploads"
+upload.serve_path = "/uploads"
+
+# Application Information
+app.brand_name = "WORKA SOLUTION"
+app.legal_name = "PT. WIH ORANG KAYA"
+app.tagline = "Solusi Teknologi Terintegrasi untuk Bisnis Modern"
+app.description = "WORKA SOLUTION menyediakan layanan teknologi informasi lengkap: pengembangan software, konsultasi IT, desain grafis, jaringan & keamanan, hingga perbaikan hardware. Solusi teknologi terintegrasi untuk bisnis modern."
+app.address = "Jl. Teknologi No. 123, Jakarta Selatan 12345"
+app.phone = "+62 21 1234 5678"
+app.email = "hello@worka.solution"
+app.website = "https://worka.solution"
+
+app.social_media.instagram = "https://instagram.com/workasolution"
+app.social_media.linkedin = "https://linkedin.com/company/worka-solution"
+app.social_media.twitter = "https://twitter.com/workasolution"
+app.social_media.youtube = "https://youtube.com/@workasolution"
+app.social_media.github = "https://github.com/worka-solution"
+
+app.seo.meta_title = "WORKA SOLUTION - Solusi Teknologi Terintegrasi"
+app.seo.meta_description = "WORKA SOLUTION menyediakan layanan IT lengkap: software development, IT consulting, graphic design, network & security, hardware repair. PT Perorangan dengan 14 KLBI teknologi."
+app.seo.meta_keywords = "software development, IT consulting, graphic design, network security, hardware repair, teknologi informasi, WORKA SOLUTION"
+app.seo.og_image = "/images/og-image.svg"

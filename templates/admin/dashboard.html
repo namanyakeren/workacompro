@@ -1,0 +1,120 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Stats -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <i data-lucide="briefcase" class="w-6 h-6 text-primary"></i>
+                </div>
+            </div>
+            <p class="text-3xl font-bold text-slate-900">{{ stats.total_services }}</p>
+            <p class="text-slate-500 text-sm mt-1">Total Layanan</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
+                    <i data-lucide="folder-kanban" class="w-6 h-6 text-emerald-600"></i>
+                </div>
+            </div>
+            <p class="text-3xl font-bold text-slate-900">{{ stats.total_portfolios }}</p>
+            <p class="text-slate-500 text-sm mt-1">Total Portfolio</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center">
+                    <i data-lucide="newspaper" class="w-6 h-6 text-amber-600"></i>
+                </div>
+            </div>
+            <p class="text-3xl font-bold text-slate-900">{{ stats.total_news }}</p>
+            <p class="text-slate-500 text-sm mt-1">Total Artikel</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-xl bg-sky-100 flex items-center justify-center">
+                    <i data-lucide="images" class="w-6 h-6 text-sky-600"></i>
+                </div>
+            </div>
+            <p class="text-3xl font-bold text-slate-900">{{ stats.total_media }}</p>
+            <p class="text-slate-500 text-sm mt-1">File Media</p>
+        </div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+        <h2 class="text-lg font-semibold text-slate-900 mb-4">Aksi Cepat</h2>
+        <div class="flex flex-wrap gap-3">
+            <a href="/admin/services/new" class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-blue-700 transition">
+                <i data-lucide="plus" class="w-4 h-4"></i> Layanan Baru
+            </a>
+            <a href="/admin/portfolios/new" class="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 text-white rounded-lg font-medium hover:bg-slate-700 transition">
+                <i data-lucide="plus" class="w-4 h-4"></i> Portfolio Baru
+            </a>
+            <a href="/admin/news/new" class="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 transition">
+                <i data-lucide="plus" class="w-4 h-4"></i> Artikel Baru
+            </a>
+            <a href="/admin/media" class="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-100 text-slate-700 rounded-lg font-medium hover:bg-slate-200 transition">
+                <i data-lucide="upload" class="w-4 h-4"></i> Upload Media
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Recent news -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-slate-900">Artikel Terbaru</h2>
+                <a href="/admin/news" class="text-sm text-primary hover:text-blue-700">Lihat semua</a>
+            </div>
+            {% if recent_news.is_empty() %}
+            <p class="text-slate-500 text-sm">Belum ada artikel.</p>
+            {% else %}
+            <ul class="divide-y divide-slate-100">
+                {% for article in recent_news %}
+                <li class="py-3 flex items-center justify-between gap-4">
+                    <div class="min-w-0">
+                        <p class="font-medium text-slate-900 truncate">{{ article.title }}</p>
+                        <p class="text-xs text-slate-500">{{ article.published_display }}</p>
+                    </div>
+                    {% if article.is_published %}
+                    <span class="px-2 py-0.5 bg-green-100 text-green-800 rounded-full text-xs">Published</span>
+                    {% else %}
+                    <span class="px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full text-xs">Draft</span>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+
+        <!-- Recent portfolios -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-slate-900">Portfolio Terbaru</h2>
+                <a href="/admin/portfolios" class="text-sm text-primary hover:text-blue-700">Lihat semua</a>
+            </div>
+            {% if recent_portfolios.is_empty() %}
+            <p class="text-slate-500 text-sm">Belum ada portfolio.</p>
+            {% else %}
+            <ul class="divide-y divide-slate-100">
+                {% for portfolio in recent_portfolios %}
+                <li class="py-3 flex items-center justify-between gap-4">
+                    <div class="min-w-0">
+                        <p class="font-medium text-slate-900 truncate">{{ portfolio.title }}</p>
+                        <p class="text-xs text-slate-500">{{ portfolio.category }}</p>
+                    </div>
+                    {% if portfolio.is_active %}
+                    <span class="px-2 py-0.5 bg-green-100 text-green-800 rounded-full text-xs">Aktif</span>
+                    {% else %}
+                    <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full text-xs">Nonaktif</span>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

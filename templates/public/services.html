@@ -1,0 +1,120 @@
+{% extends "public/layout.html" %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="pt-32 pb-16 bg-slate-900 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="flex items-center space-x-2 text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
+            <a href="/" class="hover:text-white transition">Beranda</a>
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            <span class="text-white">Layanan</span>
+        </nav>
+        <h1 class="text-4xl sm:text-5xl font-bold mb-4">Layanan Kami</h1>
+        <p class="text-lg text-slate-300 max-w-2xl">Solusi teknologi terintegrasi untuk mendukung transformasi digital bisnis Anda</p>
+    </div>
+</section>
+
+<!-- Services Grid -->
+<section class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Category Filter -->
+        {% if !categories.is_empty() %}
+        <div class="flex flex-wrap gap-3 mb-12" role="group" aria-label="Filter kategori layanan">
+            <button class="px-4 py-2 bg-primary text-white rounded-full text-sm font-medium" data-category="all">Semua</button>
+            {% for cat in categories %}
+            <button class="px-4 py-2 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-primary hover:text-white transition" data-category="{{ cat| lower| replace(' ', '-') }}">{{ cat }}</button>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="services-grid">
+            {% for service in services %}
+            <article class="service-card bg-white rounded-2xl p-8 hover:shadow-xl transition-all duration-300 border border-slate-100 group h-full flex flex-col" data-category="{% if !service.category.is_empty() %}{{ service.category| lower| replace(" ", "-") }}{% else %}lainnya{% endif %}">
+                {% if !service.image_path.is_empty() %}
+                <div class="aspect-video mb-6 rounded-xl overflow-hidden">
+                    <img src="{{ service.image_path }}" alt="{{ service.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                </div>
+                {% endif %}
+                <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+                    {% if !service.icon.is_empty() %}
+                    <i data-lucide="{{ service.icon }}" class="w-7 h-7 text-primary group-hover:text-white transition-colors"></i>
+                    {% else %}
+                    <i data-lucide="cpu" class="w-7 h-7 text-primary group-hover:text-white transition-colors"></i>
+                    {% endif %}
+                </div>
+                {% if !service.category.is_empty() %}
+                <span class="inline-block px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full mb-3">{{ service.category }}</span>
+                {% endif %}
+                <h3 class="text-xl font-semibold text-slate-900 mb-3">{{ service.title }}</h3>
+                <p class="text-slate-600 mb-6 flex-1">{% if !service.short_description.is_empty() %}{{ service.short_description }}{% else %}Deskripsi layanan akan segera ditambahkan.{% endif %}</p>
+                <a href="/services/{{ service.slug }}" class="inline-flex items-center text-primary font-medium hover:text-blue-700 group mt-auto">
+                    Selengkapnya
+                    <i data-lucide="arrow-right" class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </article>
+            {% endfor %}
+        </div>
+        
+        {% if services.is_empty() %}
+        <div class="text-center py-16">
+            <i data-lucide="box" class="w-16 h-16 text-slate-300 mx-auto mb-4"></i>
+            <h3 class="text-xl font-semibold text-slate-900 mb-2">Belum Ada Layanan</h3>
+            <p class="text-slate-600">Layanan akan segera ditambahkan oleh admin.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-24 bg-slate-900 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4">Butuh Solusi Custom?</h2>
+        <p class="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">Tidak menemukan layanan yang cocok? Tim kami siap mendesain solusi khusus untuk kebutuhan unik bisnis Anda.</p>
+        <a href="/contact" class="inline-flex items-center px-8 py-4 bg-primary text-white rounded-lg font-semibold hover:bg-blue-600 transition shadow-lg shadow-primary/25">
+            Diskusikan Kebutuhan Anda
+            <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+        </a>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('[data-category]');
+    const serviceCards = document.querySelectorAll('.service-card');
+    
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const category = btn.dataset.category;
+            
+            // Update active button
+            filterButtons.forEach(b => {
+                b.classList.remove('bg-primary', 'text-white');
+                b.classList.add('bg-slate-100', 'text-slate-700');
+            });
+            btn.classList.remove('bg-slate-100', 'text-slate-700');
+            btn.classList.add('bg-primary', 'text-white');
+            
+            // Filter cards
+            serviceCards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'flex';
+                    card.style.animation = 'fadeInUp 0.3s ease-out';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+    
+    lucide.createIcons();
+});
+</script>
+<style>
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+{% endblock %}

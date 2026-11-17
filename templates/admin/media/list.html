@@ -1,0 +1,232 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+<div class="flex flex-col gap-6">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h2 class="text-xl font-semibold text-slate-900">Media Library</h2>
+            <p class="text-slate-500 text-sm">Kelola gambar dan file media website</p>
+        </div>
+        <div class="flex gap-3">
+            <button id="upload-btn" class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-blue-600 transition">
+                <i data-lucide="upload" class="w-4 h-4"></i>
+                Upload File
+            </button>
+        </div>
+    </div>
+    
+    <!-- Upload Modal -->
+    <div id="upload-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/50" role="dialog" aria-modal="true" aria-labelledby="upload-modal-title">
+        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full">
+            <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                <h3 id="upload-modal-title" class="text-lg font-semibold text-slate-900">Upload Media</h3>
+                <button onclick="closeUploadModal()" class="p-1 text-slate-400 hover:text-slate-600" aria-label="Tutup">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <form id="upload-form" hx-post="/admin/media/upload" hx-target="#upload-result" hx-swap="innerHTML" class="space-y-4">
+                    <div id="upload-result"></div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Pilih File (Max 10MB)</label>
+                        <div class="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-primary transition" id="drop-zone">
+                            <input type="file" id="media-files" name="files" multiple accept="image/*,.svg" class="hidden" onchange="handleFiles(this.files)">
+                            <i data-lucide="upload-cloud" class="w-12 h-12 text-slate-300 mx-auto mb-3"></i>
+                            <p class="text-slate-600">Drag & drop file di sini atau klik untuk pilih</p>
+                            <p class="text-xs text-slate-500 mt-1">Format: JPG, PNG, WebP, GIF, SVG</p>
+                        </div>
+                    </div>
+                    <div id="file-list" class="space-y-2 max-h-48 overflow-y-auto hidden"></div>
+                    <div class="flex gap-3 pt-4">
+                        <button type="button" onclick="closeUploadModal()" class="flex-1 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg font-medium hover:bg-slate-200 transition">
+                            Batal
+                        </button>
+                        <button type="submit" id="upload-submit" class="flex-1 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-blue-600 transition" disabled>
+                            <i data-lucide="upload" class="w-4 h-4 inline mr-2"></i>
+                            Upload
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Media Grid -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100">
+        {% if !media.is_empty() %}
+        <div class="p-4">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4" id="media-grid">
+                {% for file in media %}
+                <div class="media-item group relative bg-slate-50 rounded-lg overflow-hidden border border-slate-100" data-id="{{ file.id }}">
+                    <div class="aspect-square relative overflow-hidden">
+                        {% if !file.path.is_empty() %}
+                        <img src="{{ file.path }}" alt="{{ file.original_name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        {% else %}
+                        <div class="w-full h-full flex items-center justify-center bg-slate-100">
+                            <i data-lucide="file" class="w-10 h-10 text-slate-400"></i>
+                        </div>
+                        {% endif %}
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                            <button onclick="copyToClipboard('{{ file.path }}')" class="p-2 bg-white rounded-lg shadow-lg" aria-label="Copy URL">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                            <button hx-delete="/admin/media/{{ file.id }}" hx-confirm="Hapus file ini?" hx-target="closest .media-item" hx-swap="outerHTML swap:1s" class="p-2 bg-white rounded-lg shadow-lg" aria-label="Hapus">
+                                <i data-lucide="trash-2" class="w-4 h-4 text-red-600"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-3 min-h-[60px]">
+                        <p class="text-xs font-medium text-slate-900 truncate" title="{{ file.original_name }}">{{ file.original_name }}</p>
+                        <p class="text-xs text-slate-500">{{ file.size_bytes| filesize }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Pagination -->
+            {% if total_pages > 1 %}
+            <div class="mt-6 flex items-center justify-between">
+                <p class="text-sm text-slate-500">Halaman {{ current_page }} dari {{ total_pages }}</p>
+                <nav class="flex gap-2" aria-label="Pagination">
+                    {% if current_page > 1 %}
+                    <a href="?page={{ current_page - 1 }}" class="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition">Sebelumnya</a>
+                    {% endif %}
+                    {% for p in 1..=total_pages %}
+                        {% if p == current_page %}
+                        <span class="px-3 py-1.5 bg-primary text-white rounded-lg text-sm font-medium">{{ p }}</span>
+                        {% else if p == 1 || p == total_pages || p >= current_page - 1 && p <= current_page + 1 %}
+                        <a href="?page={{ p }}" class="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition">{{ p }}</a>
+                        {% else %}
+                        <span class="px-2 text-slate-400">...</span>
+                        {% endif %}
+                    {% endfor %}
+                    {% if current_page < total_pages %}
+                    <a href="?page={{ current_page + 1 }}" class="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition">Selanjutnya</a>
+                    {% endif %}
+                </nav>
+            </div>
+            {% endif %}
+        </div>
+        {% else %}
+        <div class="text-center py-16">
+            <i data-lucide="images" class="w-16 h-16 text-slate-300 mx-auto mb-4"></i>
+            <h3 class="text-lg font-medium text-slate-900 mb-1">Belum Ada Media</h3>
+            <p class="text-slate-500 mb-4">Upload gambar atau file pertama Anda.</p>
+            <button onclick="openUploadModal()" class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-blue-600 transition">
+                <i data-lucide="upload" class="w-4 h-4"></i>
+                Upload File
+            </button>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    lucide.createIcons();
+    
+    // Drop zone handlers
+    const dropZone = document.getElementById('drop-zone');
+    if (dropZone) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+        
+        dropZone.addEventListener('drop', handleDrop, false);
+        dropZone.addEventListener('click', () => document.getElementById('media-files').click());
+    }
+});
+
+function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+}
+
+function highlight() {
+    document.getElementById('drop-zone').classList.add('border-primary', 'bg-primary/5');
+}
+
+function unhighlight() {
+    document.getElementById('drop-zone').classList.remove('border-primary', 'bg-primary/5');
+}
+
+function handleDrop(e) {
+    const dt = e.dataTransfer;
+    const files = dt.files;
+    handleFiles(files);
+}
+
+function handleFiles(files) {
+    const fileList = document.getElementById('file-list');
+    const submitBtn = document.getElementById('upload-submit');
+    fileList.classList.remove('hidden');
+    fileList.innerHTML = '';
+    
+    Array.from(files).forEach(file => {
+        if (file.size > 10 * 1024 * 1024) {
+            alert(`File ${file.name} terlalu besar (max 10MB)`);
+            return;
+        }
+        const div = document.createElement('div');
+        div.className = 'flex items-center gap-3 p-2 bg-slate-50 rounded-lg';
+        div.innerHTML = `
+            <i data-lucide="${file.type.startsWith('image/') ? 'image' : 'file'}" class="w-5 h-5 text-primary"></i>
+            <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-slate-900 truncate">${file.name}</p>
+                <p class="text-xs text-slate-500">${formatBytes(file.size)}</p>
+            </div>
+        `;
+        fileList.appendChild(div);
+    });
+    
+    lucide.createIcons();
+    submitBtn.disabled = files.length === 0;
+}
+
+function formatBytes(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+function openUploadModal() {
+    document.getElementById('upload-modal').classList.remove('hidden');
+    document.getElementById('upload-modal').classList.add('flex');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeUploadModal() {
+    document.getElementById('upload-modal').classList.add('hidden');
+    document.getElementById('upload-modal').classList.remove('flex');
+    document.body.style.overflow = '';
+    document.getElementById('upload-form').reset();
+    document.getElementById('file-list').innerHTML = '';
+    document.getElementById('file-list').classList.add('hidden');
+    document.getElementById('upload-submit').disabled = true;
+    document.getElementById('upload-result').innerHTML = '';
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        // Show toast notification
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+        toast.textContent = 'URL disalin!';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
+    });
+}
+</script>
+{% endblock %}

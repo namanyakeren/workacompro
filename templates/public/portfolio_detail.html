@@ -1,0 +1,146 @@
+{% extends "public/layout.html" %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<section class="pt-32 pb-8 bg-white border-b border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="flex items-center space-x-2 text-sm text-slate-500" aria-label="Breadcrumb">
+            <a href="/" class="hover:text-primary transition">Beranda</a>
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            <a href="/portfolio" class="hover:text-primary transition">Portfolio</a>
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            <span class="text-slate-900">{{ portfolio.title }}</span>
+        </nav>
+    </div>
+</section>
+
+<!-- Portfolio Hero -->
+<section class="py-16 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-3 gap-12">
+            <div class="lg:col-span-2">
+                {% if !portfolio.thumbnail_path.is_empty() %}
+                <div class="aspect-video rounded-2xl overflow-hidden shadow-xl mb-8">
+                    <img src="{{ portfolio.thumbnail_path }}" alt="{{ portfolio.title }}" class="w-full h-full object-cover">
+                </div>
+                {% endif %}
+                
+                <div class="prose prose-slate max-w-none">
+                    {% if !portfolio.full_description.is_empty() %}{{ portfolio.full_description| safe }}{% else if !portfolio.short_description.is_empty() %}{{ portfolio.short_description| safe }}{% else %}Deskripsi lengkap proyek akan segera ditambahkan.{% endif %}
+                </div>
+                
+                {% if portfolio.gallery_images != "[]" %}
+                <h3 class="text-2xl font-bold text-slate-900 mt-12 mb-6">Galeri Proyek</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {% set gallery = portfolio.gallery_images| from_json %}
+                    {% for img in gallery %}
+                    <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+                        <img src="{{ img }}" alt="{{ portfolio.title }} - Gallery" class="w-full h-full object-cover">
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="space-y-8">
+                <!-- Project Info Card -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                    <h3 class="text-lg font-semibold text-slate-900 mb-4 pb-4 border-b border-slate-100">Informasi Proyek</h3>
+                    <dl class="space-y-4 text-sm">
+                        {% if !portfolio.client_name.is_empty() %}
+                        <div class="flex justify-between">
+                            <dt class="text-slate-500">Klien</dt>
+                            <dd class="font-medium text-slate-900">{{ portfolio.client_name }}</dd>
+                        </div>
+                        {% endif %}
+                        {% if !portfolio.category.is_empty() %}
+                        <div class="flex justify-between">
+                            <dt class="text-slate-500">Kategori</dt>
+                            <dd class="font-medium text-slate-900">{{ portfolio.category }}</dd>
+                        </div>
+                        {% endif %}
+                        {% if !portfolio.start_date_display.is_empty() %}
+                        <div class="flex justify-between">
+                            <dt class="text-slate-500">Periode</dt>
+                            <dd class="font-medium text-slate-900">
+                                {{ portfolio.start_date_display }}{% if !portfolio.end_date_display.is_empty() %} - {{ portfolio.end_date_display }}{% else %} - Selesai{% endif %}
+                            </dd>
+                        </div>
+                        {% endif %}
+                        {% if portfolio.technologies != "[]" %}
+                        <div>
+                            <dt class="text-slate-500 mb-2 block">Teknologi</dt>
+                            <dd>
+                                <div class="flex flex-wrap gap-2">
+                                    {% set techs = portfolio.technologies| from_json %}
+                                    {% for tech in techs %}
+                                    <span class="px-3 py-1 text-xs bg-primary/10 text-primary rounded-full">{{ tech }}</span>
+                                    {% endfor %}
+                                </div>
+                            </dd>
+                        </div>
+                        {% endif %}
+                        {% if !portfolio.project_url.is_empty() %}
+                        <div class="pt-4 border-t border-slate-100">
+                            <a href="{{ portfolio.project_url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-primary font-medium hover:text-blue-700">
+                                Kunjungi Website
+                                <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                            </a>
+                        </div>
+                        {% endif %}
+                    </dl>
+                </div>
+                
+                <!-- CTA Card -->
+                <div class="bg-primary rounded-2xl p-6 text-white text-center">
+                    <h3 class="text-lg font-semibold mb-2">Tertarik dengan Proyek Serupa?</h3>
+                    <p class="text-blue-100 text-sm mb-4">Tim kami siap membantu mewujudkan visi Anda.</p>
+                    <a href="/contact" class="inline-flex items-center px-6 py-3 bg-white text-primary rounded-lg font-semibold hover:bg-slate-100 transition">
+                        Diskusikan Proyek Anda
+                        <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Related Portfolios -->
+{% if !related_portfolios.is_empty() %}
+<section class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-slate-900 text-center mb-12">Proyek Lainnya</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% for p in related_portfolios %}
+            <article class="group overflow-hidden rounded-2xl bg-slate-100 h-full">
+                {% if !p.thumbnail_path.is_empty() %}
+                <div class="aspect-video overflow-hidden">
+                    <img src="{{ p.thumbnail_path }}" alt="{{ p.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                </div>
+                {% endif %}
+                <div class="p-6">
+                    {% if !p.category.is_empty() %}
+                    <span class="inline-block px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full mb-3">{{ p.category }}</span>
+                    {% endif %}
+                    <h3 class="text-xl font-semibold text-slate-900 mb-2">{{ p.title }}</h3>
+                    <p class="text-slate-600 text-sm mb-4">{{ p.short_description| truncate(80) }}</p>
+                    <a href="/portfolio/{{ p.slug }}" class="inline-flex items-center text-primary font-medium hover:text-blue-700">
+                        Lihat Detail
+                        <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                    </a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    lucide.createIcons();
+});
+</script>
+{% endblock %}

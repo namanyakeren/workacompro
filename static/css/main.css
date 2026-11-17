@@ -1,0 +1,140 @@
+/* Main Styles for WORKA SOLUTION */
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Prose styles for content */
+.prose {
+    @apply text-slate-700 leading-relaxed;
+}
+.prose h1 { @apply text-3xl font-bold text-slate-900 mt-8 mb-4; }
+.prose h2 { @apply text-2xl font-bold text-slate-900 mt-8 mb-3; }
+.prose h3 { @apply text-xl font-semibold text-slate-900 mt-6 mb-2; }
+.prose p { @apply mb-4; }
+.prose ul { @apply list-disc list-inside mb-4 space-y-2; }
+.prose ol { @apply list-decimal list-inside mb-4 space-y-2; }
+.prose li { @apply ml-4; }
+.prose strong { @apply font-semibold text-slate-900; }
+.prose em { @apply italic; }
+.prose blockquote { @apply border-l-4 border-primary pl-4 italic text-slate-600 my-4; }
+.prose code { @apply bg-slate-100 text-primary px-1.5 py-0.5 rounded text-sm font-mono; }
+.prose pre { @apply bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto my-4; }
+.prose pre code { @apply bg-transparent text-inherit p-0; }
+.prose a { @apply text-primary hover:text-blue-700 underline; }
+.prose img { @apply rounded-xl my-6 max-w-full h-auto; }
+.prose table { @apply w-full border-collapse my-6; }
+.prose th, .prose td { @apply border border-slate-200 px-4 py-2; }
+.prose th { @apply bg-slate-50 font-semibold; }
+
+/* Focus styles */
+*:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2;
+}
+
+/* Button transitions */
+button, .btn {
+    @apply transition-all duration-200;
+}
+
+/* Card hover effects */
+.card-hover {
+    @apply transition-all duration-300;
+}
+.card-hover:hover {
+    @apply shadow-xl -translate-y-1;
+}
+
+/* Form styles */
+input, textarea, select {
+    @apply transition-all duration-200;
+}
+input:focus, textarea:focus, select:focus {
+    @apply border-primary ring-2 ring-primary/20;
+}
+
+/* Hero section */
+.hero-gradient {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+}
+
+/* Admin specific */
+.admin-sidebar {
+    @apply bg-slate-900 text-slate-300;
+}
+.admin-sidebar a:hover {
+    @apply bg-slate-800 text-white;
+}
+
+/* HTMX loading states */
+.htmx-request {
+    @apply opacity-50 pointer-events-none;
+}
+.htmx-request .htmx-indicator {
+    @apply inline-block;
+}
+.htmx-indicator {
+    @apply hidden;
+}
+
+/* Toast notifications */
+.toast {
+    @apply fixed bottom-4 right-4 z-50 animate-slide-up;
+}
+@keyframes slide-up {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Table responsive */
+.table-responsive {
+    @apply overflow-x-auto;
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+    @apply fixed inset-0 bg-black/50 z-40;
+}
+
+/* Image optimization */
+img {
+    @apply max-w-full h-auto;
+}
+
+/* Print styles */
+@media print {
+    header, footer, .no-print {
+        display: none !important;
+    }
+    main {
+        @apply pt-0;
+    }
+}

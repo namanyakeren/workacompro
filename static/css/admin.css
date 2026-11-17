@@ -1,0 +1,230 @@
+/* Admin Panel Styles for WORKA SOLUTION */
+
+/* Sidebar */
+#sidebar {
+    transition: transform 0.3s ease;
+}
+
+@media (max-width: 1023px) {
+    #sidebar {
+        transform: translateX(-100%);
+    }
+    #sidebar:not(.hidden) {
+        transform: translateX(0);
+    }
+}
+
+/* Table styles */
+.table-container {
+    @apply overflow-x-auto;
+}
+
+table {
+    @apply w-full border-collapse;
+}
+
+th, td {
+    @apply px-4 py-3 text-left;
+}
+
+th {
+    @apply text-xs font-semibold uppercase tracking-wider;
+}
+
+tbody tr {
+    @apply border-b border-slate-100 transition-colors;
+}
+
+tbody tr:last-child {
+    @apply border-b-0;
+}
+
+/* Badge styles */
+.badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.badge-success {
+    @apply bg-green-100 text-green-800;
+}
+
+.badge-warning {
+    @apply bg-amber-100 text-amber-800;
+}
+
+.badge-danger {
+    @apply bg-red-100 text-red-800;
+}
+
+.badge-primary {
+    @apply bg-primary/10 text-primary;
+}
+
+.badge-info {
+    @apply bg-slate-100 text-slate-600;
+}
+
+/* Form styles */
+.form-group {
+    @apply space-y-2;
+}
+
+.form-label {
+    @apply block text-sm font-medium text-slate-700;
+}
+
+.form-input {
+    @apply w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition;
+}
+
+.form-input:disabled {
+    @apply bg-slate-50 cursor-not-allowed;
+}
+
+.form-textarea {
+    @apply form-input resize-none font-mono text-sm;
+}
+
+.form-select {
+    @apply form-input appearance-none bg-white;
+}
+
+.form-checkbox {
+    @apply w-4 h-4 text-primary border-slate-300 rounded focus:ring-primary;
+}
+
+/* Media grid */
+.media-grid {
+    @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4;
+}
+
+.media-item {
+    @apply bg-slate-50 rounded-lg overflow-hidden border border-slate-100 transition-all duration-200;
+}
+
+.media-item:hover {
+    @apply shadow-lg border-slate-200;
+}
+
+/* Modal */
+.modal {
+    @apply fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50;
+}
+
+.modal-content {
+    @apply bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto;
+}
+
+/* Upload drop zone */
+.drop-zone {
+    @apply border-2 border-dashed border-slate-300 rounded-lg p-8 text-center transition-all duration-200 cursor-pointer;
+}
+
+.drop-zone:hover, .drop-zone.drag-active {
+    @apply border-primary bg-primary/5;
+}
+
+.drop-zone.drag-active {
+    @apply scale-[1.01];
+}
+
+/* Pagination */
+.pagination {
+    @apply flex items-center justify-center gap-2;
+}
+
+.pagination a, .pagination span {
+    @apply px-3 py-1.5 rounded-lg text-sm transition;
+}
+
+.pagination a {
+    @apply bg-white border border-slate-300 text-slate-700 hover:bg-slate-50;
+}
+
+.pagination .active {
+    @apply bg-primary text-white;
+}
+
+.pagination .ellipsis {
+    @apply px-2 text-slate-400 cursor-default;
+}
+
+/* Dashboard stats cards */
+.stat-card {
+    @apply bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow;
+}
+
+.stat-value {
+    @apply text-3xl font-bold text-primary;
+}
+
+.stat-label {
+    @apply text-sm text-slate-600 mt-1;
+}
+
+/* Loading states */
+.loading-skeleton {
+    @apply bg-slate-200 animate-pulse rounded;
+}
+
+/* Toast notifications */
+.toast-container {
+    @apply fixed bottom-4 right-4 z-50 flex flex-col gap-2;
+}
+
+.toast {
+    @apply px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 min-w-[280px] max-w-md animate-slide-in;
+}
+
+.toast-success {
+    @apply bg-green-600 text-white;
+}
+
+.toast-error {
+    @apply bg-red-600 text-white;
+}
+
+.toast-info {
+    @apply bg-blue-600 text-white;
+}
+
+@keyframes slide-in {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Code/pre blocks in admin */
+.admin-content pre {
+    @apply bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto my-4 text-sm;
+}
+
+.admin-content code {
+    @apply bg-slate-100 text-primary px-1.5 py-0.5 rounded text-sm font-mono;
+}
+
+.admin-content pre code {
+    @apply bg-transparent text-inherit p-0;
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+    .table-responsive {
+        @apply overflow-x-auto -mx-4 px-4;
+    }
+    
+    .media-grid {
+        @apply grid-cols-2 sm:grid-cols-3;
+    }
+}
+
+/* Focus visible for accessibility */
+*:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-white;
+}
+
+/* Dark mode support for admin (optional) */
+@media (prefers-color-scheme: dark) {
+    .admin-dark {
+        @apply bg-slate-900 text-slate-100;
+    }
+}

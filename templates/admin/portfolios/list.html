@@ -1,0 +1,101 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+<div class="flex flex-col gap-6">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h2 class="text-xl font-semibold text-slate-900">Kelola Portfolio</h2>
+            <p class="text-slate-500 text-sm">Tambah, edit, dan kelola portfolio proyek</p>
+        </div>
+        <a href="/admin/portfolios/new" class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-blue-600 transition">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            Tambah Portfolio
+        </a>
+    </div>
+    
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        {% if !portfolios.is_empty() %}
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-slate-50 border-b border-slate-100">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Thumbnail</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Portfolio</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Kategori</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    {% for portfolio in portfolios %}
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4">
+                            {% if !portfolio.thumbnail_path.is_empty() %}
+                            <img src="{{ portfolio.thumbnail_path }}" alt="" class="w-16 h-10 object-cover rounded-lg">
+                            {% else %}
+                            <div class="w-16 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="image" class="w-4 h-4 text-slate-400"></i>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            <p class="font-medium text-slate-900">{{ portfolio.title }}</p>
+                            <p class="text-sm text-slate-500 truncate max-w-xs">{{ portfolio.slug }}</p>
+                            {% if !portfolio.client_name.is_empty() %}
+                            <p class="text-xs text-slate-400">{{ portfolio.client_name }}</p>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if !portfolio.category.is_empty() %}
+                            <span class="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full">{{ portfolio.category }}</span>
+                            {% else %}
+                            <span class="text-slate-400 text-sm">-</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {% if portfolio.is_active %}bg-green-100 text-green-800{% else %}bg-slate-100 text-slate-600{% endif %}">
+                                    {% if portfolio.is_active %}Aktif{% else %}Nonaktif{% endif %}
+                                </span>
+                                {% if portfolio.is_featured %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">Unggulan</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <a href="/admin/portfolios/{{ portfolio.id }}/edit" class="p-2 text-slate-500 hover:text-primary hover:bg-slate-100 rounded-lg transition" aria-label="Edit {{ portfolio.title }}">
+                                    <i data-lucide="edit" class="w-4 h-4"></i>
+                                </a>
+                                <button hx-delete="/admin/portfolios/{{ portfolio.id }}" hx-confirm="Hapus portfolio ini?" hx-target="closest tr" hx-swap="outerHTML swap:1s" class="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition" aria-label="Hapus {{ portfolio.title }}">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-16">
+            <i data-lucide="folder-kanban" class="w-16 h-16 text-slate-300 mx-auto mb-4"></i>
+            <h3 class="text-lg font-medium text-slate-900 mb-1">Belum Ada Portfolio</h3>
+            <p class="text-slate-500 mb-4">Tambahkan portfolio proyek pertama Anda.</p>
+            <a href="/admin/portfolios/new" class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-blue-600 transition">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                Tambah Portfolio
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    lucide.createIcons();
+});
+</script>
+{% endblock %}

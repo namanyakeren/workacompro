@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  worka-solution:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: worka-solution
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8080}:8080"
+    environment:
+      - RUN_MODE=production
+      - RUST_LOG=info,worka_solution=debug
+      # Server
+      - WORKA_SERVER_HOST=0.0.0.0
+      - WORKA_SERVER_PORT=8080
+      - WORKA_SERVER_BASE_URL=${BASE_URL:-http://localhost:8080}
+      # Database
+      - WORKA_DATABASE_URL=sqlite:///app/data/worka.db?mode=rwc
+      - WORKA_DATABASE_MAX_CONNECTIONS=5
+      # Auth (CHANGE IN PRODUCTION!)
+      - WORKA_AUTH_ADMIN_USERNAME=${ADMIN_USERNAME:-worka_admin}
+      - WORKA_AUTH_ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH}
+      - WORKA_AUTH_JWT_SECRET=${JWT_SECRET:-change-this-in-production-min-32-chars}
+      - WORKA_AUTH_JWT_EXPIRY_HOURS=24
+      - WORKA_AUTH_SESSION_SECRET=${SESSION_SECRET:-e45b21141ba0d97abbe270672ab225c5e8900ba944fa2446163970e8fedf8cac2fd4caef3581506b7eb4e0091347f3b039e686ce22ed8671f15eb7aa964d9210}
+      # Upload
+      - WORKA_UPLOAD_MAX_SIZE_MB=10
+      - WORKA_UPLOAD_ALLOWED_EXTENSIONS=jpg,jpeg,png,webp,gif,svg
+      - WORKA_UPLOAD_UPLOAD_DIR=/app/static/uploads
+      - WORKA_UPLOAD_SERVE_PATH=/uploads
+      # App Info
+      - WORKA_APP_BRAND_NAME=WORKA SOLUTION
+      - WORKA_APP_LEGAL_NAME=PT. WIH ORANG KAYA
+      - WORKA_APP_TAGLINE=Solusi Teknologi Terintegrasi untuk Bisnis Modern
+      - WORKA_APP_ADDRESS=Jl. Teknologi No. 123, Jakarta Selatan 12345
+      - WORKA_APP_PHONE=+62 21 1234 5678
+      - WORKA_APP_EMAIL=hello@worka.solution
+      - WORKA_APP_WEBSITE=https://worka.solution
+      - WORKA_APP_SOCIAL_MEDIA_INSTAGRAM=https://instagram.com/workasolution
+      - WORKA_APP_SOCIAL_MEDIA_LINKEDIN=https://linkedin.com/company/worka-solution
+      - WORKA_APP_SOCIAL_MEDIA_TWITTER=https://twitter.com/workasolution
+      - WORKA_APP_SOCIAL_MEDIA_YOUTUBE=https://youtube.com/@workasolution
+      - WORKA_APP_SOCIAL_MEDIA_GITHUB=https://github.com/worka-solution
+      - WORKA_APP_SEO_META_TITLE=WORKA SOLUTION - Solusi Teknologi Terintegrasi
+      - WORKA_APP_SEO_META_DESCRIPTION=WORKA SOLUTION menyediakan layanan IT lengkap: software development, IT consulting, graphic design, network & security, hardware repair.
+      - WORKA_APP_SEO_META_KEYWORDS=software development, IT consulting, graphic design, network security, hardware repair, teknologi informasi
+      - WORKA_APP_SEO_OG_IMAGE=/images/og-image.jpg
+    volumes:
+      - worka_data:/app/data
+      - worka_uploads:/app/static/uploads
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+volumes:
+  worka_data:
+    driver: local
+  worka_uploads:
+    driver: local
+
+networks:
+  default:
+    name: worka-network

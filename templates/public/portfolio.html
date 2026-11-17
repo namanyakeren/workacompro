@@ -1,0 +1,124 @@
+{% extends "public/layout.html" %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="pt-32 pb-16 bg-slate-900 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="flex items-center space-x-2 text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
+            <a href="/" class="hover:text-white transition">Beranda</a>
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            <span class="text-white">Portfolio</span>
+        </nav>
+        <h1 class="text-4xl sm:text-5xl font-bold mb-4">Portfolio Kami</h1>
+        <p class="text-lg text-slate-300 max-w-2xl">Proyek-proyek nyata yang telah kami kerjakan untuk berbagai klien dari berbagai industri</p>
+    </div>
+</section>
+
+<!-- Portfolio Grid -->
+<section class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Category Filter -->
+        {% if !categories.is_empty() %}
+        <div class="flex flex-wrap gap-3 mb-12" role="group" aria-label="Filter kategori portfolio">
+            <button class="px-4 py-2 bg-primary text-white rounded-full text-sm font-medium" data-category="all">Semua</button>
+            {% for cat in categories %}
+            <button class="px-4 py-2 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-primary hover:text-white transition" data-category="{{ cat| lower| replace(" ", "-") }}">{{ cat }}</button>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="portfolio-grid">
+            {% for portfolio in portfolios %}
+            <article class="portfolio-card group overflow-hidden rounded-2xl bg-slate-100 h-full" data-category="{% if !portfolio.category.is_empty() %}{{ portfolio.category| lower| replace(" ", "-") }}{% else %}lainnya{% endif %}">
+                {% if !portfolio.thumbnail_path.is_empty() %}
+                <div class="aspect-video overflow-hidden relative">
+                    <img src="{{ portfolio.thumbnail_path }}" alt="{{ portfolio.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </div>
+                {% else %}
+                <div class="aspect-video flex items-center justify-center bg-slate-200 relative">
+                    <i data-lucide="image" class="w-12 h-12 text-slate-400"></i>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </div>
+                {% endif %}
+                <div class="p-6">
+                    <div class="flex items-center gap-2 mb-3">
+                        {% if !portfolio.category.is_empty() %}
+                        <span class="px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">{{ portfolio.category }}</span>
+                        {% endif %}
+                        {% if portfolio.is_featured %}
+                        <span class="px-3 py-1 text-xs font-medium bg-amber/10 text-amber-600 rounded-full">Unggulan</span>
+                        {% endif %}
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-900 mb-2">{{ portfolio.title }}</h3>
+                    <p class="text-slate-600 text-sm mb-4">{% if !portfolio.short_description.is_empty() %}{{ portfolio.short_description }}{% else %}Deskripsi proyek{% endif %}</p>
+                    <a href="/portfolio/{{ portfolio.slug }}" class="inline-flex items-center text-primary font-medium hover:text-blue-700">
+                        Detail Proyek
+                        <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                    </a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        
+        {% if portfolios.is_empty() %}
+        <div class="text-center py-16">
+            <i data-lucide="folder" class="w-16 h-16 text-slate-300 mx-auto mb-4"></i>
+            <h3 class="text-xl font-semibold text-slate-900 mb-2">Belum Ada Portfolio</h3>
+            <p class="text-slate-600">Portfolio akan segera ditambahkan oleh admin.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-24 bg-slate-900 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4">Punya Proyek untuk Kami?</h2>
+        <p class="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">Mari kolaborasi menciptakan solusi teknologi yang berdampak untuk bisnis Anda.</p>
+        <a href="/contact" class="inline-flex items-center px-8 py-4 bg-primary text-white rounded-lg font-semibold hover:bg-blue-600 transition shadow-lg shadow-primary/25">
+            Mulai Diskusi
+            <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+        </a>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('[data-category]');
+    const portfolioCards = document.querySelectorAll('.portfolio-card');
+    
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const category = btn.dataset.category;
+            
+            filterButtons.forEach(b => {
+                b.classList.remove('bg-primary', 'text-white');
+                b.classList.add('bg-slate-100', 'text-slate-700');
+            });
+            btn.classList.remove('bg-slate-100', 'text-slate-700');
+            btn.classList.add('bg-primary', 'text-white');
+            
+            portfolioCards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeInUp 0.3s ease-out';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+    
+    lucide.createIcons();
+});
+</script>
+<style>
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+{% endblock %}

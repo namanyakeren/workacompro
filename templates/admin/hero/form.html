@@ -1,0 +1,124 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+            <h2 class="text-xl font-semibold text-slate-900">{% if is_edit %}Edit Hero Banner{% else %}Tambah Hero Banner Baru{% endif %}</h2>
+            <p class="text-slate-500 text-sm">Kelola banner utama halaman beranda</p>
+        </div>
+        <a href="/admin/hero" class="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg font-medium hover:bg-slate-200 transition">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            Kembali
+        </a>
+    </div>
+    
+    <form id="hero-form" hx-post="{% if is_edit %}/admin/hero/{{ hero.id }}/save{% else %}/admin/hero{% endif %}" hx-target="#form-response" hx-swap="innerHTML" class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-6">
+        <div id="form-response"></div>
+        
+        <fieldset>
+            <legend class="text-lg font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-100">Konten Banner</legend>
+            <div class="space-y-4">
+                <div>
+                    <label for="title" class="block text-sm font-medium text-slate-700 mb-2">Judul Utama <span class="text-red-500">*</span></label>
+                    <input type="text" id="title" name="title" required value="{{ hero.title }}" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition">
+                </div>
+                <div>
+                    <label for="subtitle" class="block text-sm font-medium text-slate-700 mb-2">Sub Judul</label>
+                    <input type="text" id="subtitle" name="subtitle" value="{{ hero.subtitle }}" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition">
+                </div>
+                <div>
+                    <label for="description" class="block text-sm font-medium text-slate-700 mb-2">Deskripsi</label>
+                    <textarea id="description" name="description" rows="3" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition resize-none">{{ hero.description }}</textarea>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="cta_text" class="block text-sm font-medium text-slate-700 mb-2">Teks Tombol CTA</label>
+                        <input type="text" id="cta_text" name="cta_text" value="{{ hero.cta_text }}" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" placeholder="Mulai Proyek, Hubungi Kami, dll">
+                    </div>
+                    <div>
+                        <label for="cta_link" class="block text-sm font-medium text-slate-700 mb-2">Link CTA</label>
+                        <input type="text" id="cta_link" name="cta_link" value="{{ hero.cta_link }}" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" placeholder="/contact atau URL penuh">
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        
+        <fieldset>
+            <legend class="text-lg font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-100">Gambar & Warna</legend>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Gambar Background</label>
+                    <div class="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-primary transition">
+                        <input type="hidden" name="image_id" id="image_id" value="{{ hero.image_id }}">
+                        <div id="image-preview" class="mb-3">
+                            {% if !hero.image_path.is_empty() %}
+                            <img src="{{ hero.image_path }}" alt="Current image" class="max-h-32 mx-auto rounded-lg">
+                            {% endif %}
+                        </div>
+                        <button type="button" onclick="document.getElementById('image-upload').click()" class="text-primary hover:underline font-medium">
+                            {% if is_edit %}Ganti Gambar{% else %}Pilih Gambar{% endif %}
+                        </button>
+                        <input type="file" id="image-upload" name="image_file" accept="image/*" class="hidden" onchange="previewImage(this, 'image-preview', 'image_id')">
+                        <p class="text-xs text-slate-500 mt-2">Rekomendasi: 1920x1080px atau lebih besar</p>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="background_color" class="block text-sm font-medium text-slate-700 mb-2">Warna Background</label>
+                        <input type="color" id="background_color" name="background_color" value="{{ hero.background_color }}" class="w-full h-10 border border-slate-300 rounded-lg cursor-pointer">
+                        <p class="text-xs text-slate-500 mt-1">Default: {{ site.hero_background_color }}</p>
+                    </div>
+                    <div>
+                        <label for="text_color" class="block text-sm font-medium text-slate-700 mb-2">Warna Teks</label>
+                        <input type="color" id="text_color" name="text_color" value="{{ hero.text_color }}" class="w-full h-10 border border-slate-300 rounded-lg cursor-pointer">
+                        <p class="text-xs text-slate-500 mt-1">Default: {{ site.hero_text_color }}</p>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        
+        <fieldset>
+            <legend class="text-lg font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-100">Pengaturan</legend>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="flex items-center gap-3">
+                    <input type="checkbox" id="is_active" name="is_active" value="true" {% if hero.is_active %}checked{% endif %} class="w-4 h-4 text-primary border-slate-300 rounded focus:ring-primary">
+                    <label for="is_active" class="text-sm font-medium text-slate-700">Aktif (tampilkan di beranda)</label>
+                </div>
+                <div>
+                    <label for="sort_order" class="block text-sm font-medium text-slate-700 mb-2">Urutan</label>
+                    <input type="number" id="sort_order" name="sort_order" value="{{ hero.sort_order }}" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition">
+                </div>
+            </div>
+        </fieldset>
+        
+        <div class="flex flex-col sm:flex-row gap-4 pt-4 border-t border-slate-100">
+            <button type="submit" class="flex-1 sm:flex-none px-6 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-blue-600 transition shadow-lg shadow-primary/25">
+                <i data-lucide="save" class="w-4 h-4 inline mr-2"></i>
+                {% if is_edit %}Perbarui{% else %}Simpan{% endif %} Banner
+            </button>
+            <a href="/admin/hero" class="flex-1 sm:flex-none px-6 py-3 bg-slate-100 text-slate-700 rounded-lg font-semibold hover:bg-slate-200 transition text-center">
+                Batal
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    lucide.createIcons();
+});
+
+function previewImage(input, previewId, hiddenId) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById(previewId).innerHTML = `<img src="${e.target.result}" alt="Preview" class="max-h-32 mx-auto rounded-lg">`;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
+{% endblock %}
