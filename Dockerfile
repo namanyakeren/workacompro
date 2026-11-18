@@ -15,7 +15,6 @@ WORKDIR /app
 
 # Copy Cargo files first for better caching
 COPY Cargo.toml Cargo.lock ./
-COPY migrations ./migrations
 
 # Create dummy main.rs to cache dependencies
 RUN mkdir -p src && echo "fn main() {}" > src/main.rs
@@ -26,6 +25,7 @@ COPY src ./src
 COPY templates ./templates
 COPY config ./config
 COPY static ./static
+COPY migrations ./migrations
 
 # Build application
 # Touch the entry point so Cargo always rebuilds the real binary instead of
