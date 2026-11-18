@@ -2,109 +2,116 @@
 
 {% block content %}
 <!-- Breadcrumb -->
-<section class="pt-32 pb-8 bg-white border-b border-slate-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <nav class="flex items-center space-x-2 text-sm text-slate-500" aria-label="Breadcrumb">
-            <a href="/" class="hover:text-primary transition">Beranda</a>
-            <i data-lucide="chevron-right" class="w-4 h-4"></i>
-            <a href="/news" class="hover:text-primary transition">Berita & Artikel</a>
-            <i data-lucide="chevron-right" class="w-4 h-4"></i>
-            <span class="text-slate-900">{{ article.title }}</span>
+<section class="border-b border-line bg-surface pt-28">
+    <div class="mx-auto max-w-8xl px-5 pb-6 sm:px-8 lg:px-12">
+        <nav class="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.16em] text-muted" aria-label="Breadcrumb">
+            <a href="/" class="transition-colors hover:text-primary">Beranda</a>
+            <i data-lucide="chevron-right" class="h-3 w-3"></i>
+            <a href="/news" class="transition-colors hover:text-primary">Berita &amp; Artikel</a>
+            <i data-lucide="chevron-right" class="h-3 w-3"></i>
+            <span class="text-ink">{{ article.title }}</span>
         </nav>
     </div>
 </section>
 
-<!-- Article Hero -->
-<article class="py-16 bg-white">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <header class="mb-8">
-            <div class="flex items-center gap-3 text-sm text-slate-500 mb-4">
+<!-- Article -->
+<article class="py-16 lg:py-20">
+    <div class="mx-auto max-w-3xl px-5 sm:px-8">
+        <header>
+            <div class="flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.16em] text-muted">
                 {% if !article.category.is_empty() %}
-                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs">{{ article.category }}</span>
+                <span class="font-semibold text-primary">{{ article.category }}</span>
+                <span aria-hidden="true">&middot;</span>
                 {% endif %}
-                <time datetime="{{ article.published_iso }}">
-                    {{ article.published_display_long }}
-                </time>
+                <time datetime="{{ article.published_iso }}">{{ article.published_display_long }}</time>
                 {% if !article.author.is_empty() %}
-                <span>·</span>
+                <span aria-hidden="true">&middot;</span>
                 <span>{{ article.author }}</span>
                 {% endif %}
             </div>
-            <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">{{ article.title }}</h1>
+
+            <h1 class="mt-6 font-display text-3xl font-light leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl">{{ article.title }}</h1>
         </header>
-        
+
         {% if !article.thumbnail_path.is_empty() %}
-        <figure class="mb-10">
-            <img src="{{ article.thumbnail_path }}" alt="{{ article.title }}" class="w-full aspect-video object-cover rounded-2xl shadow-lg">
+        <figure class="mt-10">
+            <img src="{{ article.thumbnail_path }}" alt="{{ article.title }}" class="aspect-video w-full rounded-2xl border border-line object-cover">
         </figure>
         {% endif %}
-        
-        <div class="prose prose-slate prose-lg max-w-none" x-data="{ tocOpen: false }">
+
+        <div class="prose mt-12 max-w-none text-lg">
             {{ article.content| safe }}
         </div>
-        
+
         <!-- Tags -->
         {% if article.tags != "[]" %}
-        <footer class="mt-12 pt-8 border-t border-slate-200">
-            <div class="flex flex-wrap gap-2">
+        <footer class="mt-14 border-t border-line pt-8">
+            <div class="flex flex-wrap items-center gap-2">
                 {% set tags = article.tags| from_json %}
                 {% for tag in tags %}
-                <a href="/news?tag={{ tag }}" class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm hover:bg-primary hover:text-white transition">
-                    {{ tag }}
-                </a>
+                <a href="/news?tag={{ tag }}" class="chip transition-colors hover:border-primary hover:text-primary">{{ tag }}</a>
                 {% endfor %}
             </div>
         </footer>
         {% endif %}
-        
+
         <!-- Share -->
-        <div class="mt-10 pt-8 border-t border-slate-200 flex flex-wrap items-center gap-4">
-            <span class="font-medium text-slate-700">Bagikan:</span>
+        <div class="mt-8 flex flex-wrap items-center gap-4 border-t border-line pt-8">
+            <span class="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">Bagikan</span>
             <div class="flex gap-2">
-                <a href="https://twitter.com/intent/tweet?text={{ article.title| urlencode }}&url={{ page.url| urlencode }}" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition" aria-label="Share on Twitter">
-                    <i data-lucide="twitter" class="w-5 h-5 text-slate-600"></i>
+                <a href="https://twitter.com/intent/tweet?text={{ article.title| urlencode }}&url={{ page.url| urlencode }}" target="_blank" rel="noopener noreferrer" class="flex h-10 w-10 items-center justify-center rounded-full border border-line text-muted transition-colors hover:border-primary hover:text-primary" aria-label="Bagikan ke Twitter">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.9l-4.7-6.2L5.9 22H2.8l7.3-8.3L2 2h7l4.2 5.6L18.9 2zm-2.4 18h1.9L7.6 3.9H5.6L16.5 20z"/></svg>
                 </a>
-                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ page.url| urlencode }}" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition" aria-label="Share on LinkedIn">
-                    <i data-lucide="linkedin" class="w-5 h-5 text-slate-600"></i>
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ page.url| urlencode }}" target="_blank" rel="noopener noreferrer" class="flex h-10 w-10 items-center justify-center rounded-full border border-line text-muted transition-colors hover:border-primary hover:text-primary" aria-label="Bagikan ke LinkedIn">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05C20.3 8.65 21 11.1 21 14.3V21h-4v-5.9c0-1.4-.02-3.2-1.95-3.2-1.95 0-2.25 1.52-2.25 3.1V21H9z"/></svg>
                 </a>
-                <a href="https://wa.me/?text={{ article.title| urlencode }}%20{{ page.url| urlencode }}" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition" aria-label="Share on WhatsApp">
-                    <i data-lucide="message-circle" class="w-5 h-5 text-slate-600"></i>
+                <a href="https://wa.me/?text={{ article.title| urlencode }}%20{{ page.url| urlencode }}" target="_blank" rel="noopener noreferrer" class="flex h-10 w-10 items-center justify-center rounded-full border border-line text-muted transition-colors hover:border-primary hover:text-primary" aria-label="Bagikan ke WhatsApp">
+                    <i data-lucide="message-circle" class="h-4 w-4"></i>
                 </a>
-                <button onclick="navigator.clipboard.writeText('{{ page.url }}')" class="w-10 h-10 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition" aria-label="Copy link">
-                    <i data-lucide="link" class="w-5 h-5 text-slate-600"></i>
+                <button type="button" onclick="navigator.clipboard.writeText('{{ page.url }}')" class="flex h-10 w-10 items-center justify-center rounded-full border border-line text-muted transition-colors hover:border-primary hover:text-primary" aria-label="Salin tautan">
+                    <i data-lucide="link" class="h-4 w-4"></i>
                 </button>
             </div>
         </div>
     </div>
 </article>
 
-<!-- Related News -->
+<!-- Related -->
 {% if !related_news.is_empty() %}
-<section class="py-16 bg-slate-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-2xl font-bold text-slate-900 mb-8">Artikel Terkait</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<section class="border-t border-line bg-surface py-20 lg:py-24">
+    <div class="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <span class="eyebrow">Bacaan lain</span>
+                <h2 class="mt-5 font-display text-3xl font-light tracking-tight text-ink sm:text-4xl">Artikel terkait</h2>
+            </div>
+            <a href="/news" class="link-line self-start text-sm sm:self-auto">
+                Semua artikel
+                <i data-lucide="arrow-right" class="h-4 w-4"></i>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
             {% for a in related_news %}
-            <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow border border-slate-100 h-full flex flex-col">
+            <article class="card-lift group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-paper">
                 {% if !a.thumbnail_path.is_empty() %}
-                <div class="aspect-video overflow-hidden">
-                    <img src="{{ a.thumbnail_path }}" alt="{{ a.title }}" class="w-full h-full object-cover">
+                <div class="aspect-[16/10] overflow-hidden">
+                    <img src="{{ a.thumbnail_path }}" alt="{{ a.title }}" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
                 {% endif %}
-                <div class="p-6 flex-1 flex flex-col">
-                    <div class="flex items-center gap-2 text-sm text-slate-500 mb-3">
+                <div class="flex flex-1 flex-col p-6">
+                    <div class="mb-3 flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-muted">
                         {% if !a.category.is_empty() %}
-                        <span class="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs">{{ a.category }}</span>
+                        <span class="font-semibold text-primary">{{ a.category }}</span>
+                        <span aria-hidden="true">&middot;</span>
                         {% endif %}
-                        <time datetime="{{ a.published_iso }}">
-                            {{ a.published_display }}
-                        </time>
+                        <time datetime="{{ a.published_iso }}">{{ a.published_display }}</time>
                     </div>
-                    <h3 class="text-lg font-semibold text-slate-900 mb-2 line-clamp-2">{{ a.title }}</h3>
-                    <p class="text-slate-600 text-sm mb-4 flex-1">{% if !a.excerpt.is_empty() %}{{ a.excerpt }}{% else %}{{ a.content| truncate(100) }}{% endif %}</p>
-                    <a href="/news/{{ a.slug }}" class="inline-flex items-center text-primary font-medium hover:text-blue-700 mt-auto">
-                        Baca Selengkapnya
-                        <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                    <h3 class="font-display text-lg font-medium leading-snug tracking-tight text-ink">{{ a.title }}</h3>
+                    <p class="mt-2 flex-1 text-sm leading-relaxed text-muted">{% if !a.excerpt.is_empty() %}{{ a.excerpt }}{% else %}{{ a.content| truncate(100) }}{% endif %}</p>
+                    <a href="/news/{{ a.slug }}" class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-primary">
+                        Baca selengkapnya
+                        <i data-lucide="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1"></i>
                     </a>
                 </div>
             </article>
@@ -113,23 +120,11 @@
     </div>
 </section>
 {% endif %}
-
-<!-- CTA -->
-<section class="py-24 bg-primary text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl sm:text-4xl font-bold mb-4">Ingin Membaca Lebih Banyak?</h2>
-        <p class="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">Jelajahi semua artikel dan wawasan teknologi dari tim kami.</p>
-        <a href="/news" class="inline-flex items-center px-8 py-4 bg-white text-primary rounded-lg font-semibold hover:bg-slate-100 transition shadow-xl">
-            Semua Artikel
-            <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
-        </a>
-    </div>
-</section>
 {% endblock %}
 
 {% block scripts %}
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function () {
     lucide.createIcons();
 });
 </script>

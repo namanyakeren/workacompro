@@ -628,10 +628,10 @@ fn build_site_info(config: &AppConfig, settings: &HashMap<String, String>) -> Si
         email: setting_value(settings, "site_email", &config.app.email),
         website: setting_value(settings, "site_website", &config.app.website),
         logo: setting_value(settings, "site_logo", ""),
-        primary_color: setting_value(settings, "primary_color", "#3b82f6"),
-        secondary_color: setting_value(settings, "secondary_color", "#64748b"),
-        hero_background_color: setting_value(settings, "hero_background_color", "#0f172a"),
-        hero_text_color: setting_value(settings, "hero_text_color", "#ffffff"),
+        primary_color: setting_value(settings, "primary_color", "#12463d"),
+        secondary_color: setting_value(settings, "secondary_color", "#e2542c"),
+        hero_background_color: setting_value(settings, "hero_background_color", "#f6f1e8"),
+        hero_text_color: setting_value(settings, "hero_text_color", "#151310"),
         social_media: SocialMediaInfo {
             instagram: setting_value(settings, "social_instagram", config.app.social_media.instagram.as_deref().unwrap_or("")),
             linkedin: setting_value(settings, "social_linkedin", config.app.social_media.linkedin.as_deref().unwrap_or("")),
@@ -657,16 +657,42 @@ async fn render_404(site: &SiteInfo, _settings: &HashMap<String, String>) -> Str
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 - Halaman Tidak Ditemukan - {}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {{
+            theme: {{
+                extend: {{
+                    colors: {{
+                        paper: '#f6f1e8',
+                        surface: '#fffdf8',
+                        ink: '#151310',
+                        muted: '#6c6359',
+                        line: '#e4d9c8',
+                        pine: '#12463d',
+                        'pine-deep': '#0a2e28'
+                    }},
+                    fontFamily: {{
+                        display: ['Fraunces', 'Georgia', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif']
+                    }}
+                }}
+            }}
+        }}
+    </script>
 </head>
-<body class="bg-slate-50 min-h-screen flex items-center justify-center">
-    <div class="text-center px-4">
-        <h1 class="text-9xl font-bold text-blue-600 mb-4">404</h1>
-        <h2 class="text-2xl font-semibold text-slate-800 mb-4">Halaman Tidak Ditemukan</h2>
-        <p class="text-slate-600 mb-8 max-w-md mx-auto">Maaf, halaman yang Anda cari tidak ada atau telah dipindahkan.</p>
-        <a href="/" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">Kembali ke Beranda</a>
+<body class="flex min-h-screen items-center justify-center bg-paper font-sans text-ink">
+    <div class="mx-auto max-w-md px-6 text-center">
+        <p class="text-[11px] font-semibold uppercase tracking-[0.26em] text-muted">Error 404</p>
+        <h1 class="mt-6 font-display text-7xl font-light tracking-tight text-pine">404</h1>
+        <h2 class="mt-4 font-display text-2xl font-medium text-ink">Halaman tidak ditemukan</h2>
+        <p class="mt-3 text-sm leading-relaxed text-muted">Maaf, halaman yang Anda cari tidak ada atau telah dipindahkan.</p>
+        <a href="/" class="mt-8 inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-semibold text-paper transition-colors hover:bg-pine">Kembali ke Beranda</a>
+        <p class="mt-10 text-xs text-muted">{}</p>
     </div>
 </body>
 </html>
-"#, site.brand_name)
+"#, site.brand_name, site.brand_name)
 }

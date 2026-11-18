@@ -1,158 +1,235 @@
 {% extends "public/layout.html" %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="relative min-h-screen flex items-center justify-center pt-16" 
-         style="background-color: {{ hero.background_color }};">
-    <div class="absolute inset-0 overflow-hidden">
-        {% if !hero.image_path.is_empty() %}
-        <img src="{{ hero.image_path }}" alt="" class="w-full h-full object-cover opacity-10">
-        {% endif %}
-        <div class="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-secondary/20"></div>
-    </div>
-    
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
-        <div class="text-center max-w-4xl mx-auto" 
-             style="color: {{ hero.text_color }};">
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 animate-fade-in-up">
-                {% if !hero.title.is_empty() %}{{ hero.title }}{% else %}{{ site.tagline }}{% endif %}
-            </h1>
-            {% if !hero.subtitle.is_empty() %}
-            <p class="text-xl sm:text-2xl mb-8 opacity-90 animate-fade-in-up" style="animation-delay: 100ms;">
-                {{ hero.subtitle }}
-            </p>
-            {% endif %}
-            {% if !hero.description.is_empty() %}
-            <p class="text-lg sm:text-xl mb-10 max-w-2xl mx-auto opacity-80 animate-fade-in-up" style="animation-delay: 200ms;">
-                {{ hero.description }}
-            </p>
-            {% endif %}
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up" style="animation-delay: 300ms;">
-                {% if !hero.cta_text.is_empty() %}
-                {% if !hero.cta_link.is_empty() %}
-                <a href="{{ hero.cta_link }}" class="w-full sm:w-auto bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition shadow-xl">
-                    {{ hero.cta_text }}
-                </a>
-                {% else %}
-                <a href="/contact" class="w-full sm:w-auto bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition shadow-xl">
-                    {{ hero.cta_text }}
-                </a>
-                {% endif %}
-                {% else %}
-                <a href="/contact" class="w-full sm:w-auto bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition shadow-xl">
-                    Mulai Proyek
-                </a>
-                {% endif %}
-                <a href="/portfolio" class="w-full sm:w-auto border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition">
-                    Lihat Portfolio
-                </a>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Scroll Indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce" aria-hidden="true">
-        <i data-lucide="chevron-down" class="w-6 h-6 text-white/60"></i>
-    </div>
-</section>
+<!-- Hero -->
+<section class="relative overflow-hidden" style="background-color: {{ hero.background_color }}; color: {{ hero.text_color }};">
+    <div class="paper-grid absolute inset-0" aria-hidden="true"></div>
+    <div class="orb absolute -right-40 -top-48 h-[44rem] w-[44rem] rounded-full" aria-hidden="true"></div>
+    <div class="orb-accent absolute -bottom-52 -left-40 h-[34rem] w-[34rem] rounded-full" aria-hidden="true"></div>
 
-<!-- Trusted By / Stats -->
-<section class="py-16 bg-white border-y border-slate-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div class="p-4">
-                <div class="text-3xl sm:text-4xl font-bold text-primary mb-2">14</div>
-                <div class="text-slate-600 text-sm">KLBI Terdaftar</div>
-            </div>
-            <div class="p-4">
-                <div class="text-3xl sm:text-4xl font-bold text-primary mb-2">50+</div>
-                <div class="text-slate-600 text-sm">Proyek Selesai</div>
-            </div>
-            <div class="p-4">
-                <div class="text-3xl sm:text-4xl font-bold text-primary mb-2">30+</div>
-                <div class="text-slate-600 text-sm">Klien Puas</div>
-            </div>
-            <div class="p-4">
-                <div class="text-3xl sm:text-4xl font-bold text-primary mb-2">10+</div>
-                <div class="text-slate-600 text-sm">Tahun Pengalaman</div>
-            </div>
-        </div>
-    </div>
-</section>
+    <div class="relative mx-auto max-w-8xl px-5 pb-20 pt-32 sm:px-8 lg:px-12 lg:pb-28 lg:pt-40">
+        <div class="grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
+            <!-- Copy -->
+            <div class="lg:col-span-7">
+                <div class="animate-fade-in-up">
+                    <span class="eyebrow">PT Perorangan &middot; 14 KLBI Teknologi</span>
+                </div>
 
-<!-- Services Overview -->
-<section id="services" class="py-24 bg-slate-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-16">
-            <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Layanan Unggulan</h2>
-            <p class="text-lg text-slate-600">Solusi teknologi terintegrasi untuk mendukung pertumbuhan bisnis Anda</p>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {% for service in services %}
-            <article class="bg-white rounded-2xl p-8 hover:shadow-xl transition-all duration-300 border border-slate-100 group h-full flex flex-col">
-                <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
-                    {% if !service.icon.is_empty() %}
-                    <i data-lucide="{{ service.icon }}" class="w-7 h-7 text-primary group-hover:text-white transition-colors"></i>
+                <h1 class="animate-fade-in-up mt-7 max-w-3xl font-display text-[2.55rem] font-light leading-[1.04] tracking-tightest text-balance sm:text-6xl lg:text-[4.25rem]" style="animation-delay: 80ms;">
+                    {% if !hero.title.is_empty() %}{{ hero.title }}{% else %}{{ site.tagline }}{% endif %}
+                </h1>
+
+                {% if !hero.subtitle.is_empty() %}
+                <p class="animate-fade-in-up mt-7 max-w-2xl text-lg leading-relaxed opacity-75 sm:text-xl" style="animation-delay: 160ms;">
+                    {{ hero.subtitle }}
+                </p>
+                {% endif %}
+
+                {% if !hero.description.is_empty() %}
+                <p class="animate-fade-in-up mt-5 max-w-xl text-base leading-relaxed opacity-60" style="animation-delay: 220ms;">
+                    {{ hero.description }}
+                </p>
+                {% endif %}
+
+                <div class="animate-fade-in-up mt-10 flex flex-col gap-4 sm:flex-row sm:items-center" style="animation-delay: 300ms;">
+                    {% if !hero.cta_text.is_empty() %}
+                    <a href="{% if !hero.cta_link.is_empty() %}{{ hero.cta_link }}{% else %}/contact{% endif %}"
+                       class="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-paper transition-colors hover:bg-pine-deep">
+                        {{ hero.cta_text }}
+                        <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
+                    </a>
+                    <a href="/portfolio" class="link-line self-start px-1 py-2 text-sm">
+                        Lihat Portfolio
+                        <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                    </a>
                     {% else %}
-                    <i data-lucide="cpu" class="w-7 h-7 text-primary group-hover:text-white transition-colors"></i>
+                    <a href="/portfolio"
+                       class="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-paper transition-colors hover:bg-pine-deep">
+                        Lihat Portfolio
+                        <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
+                    </a>
+                    <a href="/contact" class="link-line self-start px-1 py-2 text-sm">
+                        Hubungi Kami
+                        <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                    </a>
                     {% endif %}
                 </div>
-                <h3 class="text-xl font-semibold text-slate-900 mb-3">{{ service.title }}</h3>
-                <p class="text-slate-600 mb-6 flex-1">{% if !service.short_description.is_empty() %}{{ service.short_description }}{% else %}Deskripsi layanan akan segera ditambahkan.{% endif %}</p>
-                <a href="/services/{{ service.slug }}" class="inline-flex items-center text-primary font-medium hover:text-blue-700 group">
+
+                <div class="animate-fade-in-up mt-12 flex items-center gap-4 text-xs uppercase tracking-[0.18em] opacity-50" style="animation-delay: 380ms;">
+                    <span class="h-px w-8 bg-current"></span>
+                    <span>Software &middot; Design &middot; Network &middot; Support</span>
+                </div>
+            </div>
+
+            <!-- Visual -->
+            <div class="animate-fade-in-up lg:col-span-5" style="animation-delay: 260ms;">
+                {% if !hero.image_path.is_empty() %}
+                <div class="relative">
+                    <div class="absolute -inset-3 rounded-[2.5rem] border border-line/80" aria-hidden="true"></div>
+                    <div class="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-line bg-surface">
+                        <img src="{{ hero.image_path }}" alt="{{ site.brand_name }}" class="h-full w-full object-cover">
+                    </div>
+                </div>
+                {% else %}
+                <div class="relative mx-auto w-full max-w-md">
+                    <div class="absolute -inset-3 rounded-[2.5rem] border border-line/80" aria-hidden="true"></div>
+                    <div class="relative rounded-[2rem] border border-line bg-surface p-8 shadow-[0_45px_100px_-65px_rgba(10,46,40,0.65)]">
+                        <div class="flex items-start justify-between">
+                            <span class="font-display text-5xl font-light leading-none text-primary">W</span>
+                            <span class="chip">Est. 2024</span>
+                        </div>
+                        <p class="mt-9 text-sm leading-relaxed text-muted">
+                            Studio teknologi yang menangani perangkat lunak, desain, jaringan, dan infrastruktur dalam satu atap.
+                        </p>
+                        <div class="mt-9 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-line">
+                            <div class="bg-surface p-4">
+                                <div class="font-display text-2xl font-light text-ink">14</div>
+                                <div class="mt-1 text-[10px] uppercase tracking-[0.16em] text-muted">KLBI</div>
+                            </div>
+                            <div class="bg-surface p-4">
+                                <div class="font-display text-2xl font-light text-ink">50+</div>
+                                <div class="mt-1 text-[10px] uppercase tracking-[0.16em] text-muted">Proyek</div>
+                            </div>
+                            <div class="bg-surface p-4">
+                                <div class="font-display text-2xl font-light text-ink">30+</div>
+                                <div class="mt-1 text-[10px] uppercase tracking-[0.16em] text-muted">Klien</div>
+                            </div>
+                            <div class="bg-surface p-4">
+                                <div class="font-display text-2xl font-light text-ink">10+</div>
+                                <div class="mt-1 text-[10px] uppercase tracking-[0.16em] text-muted">Tahun</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats -->
+<section class="border-y border-line bg-surface">
+    <div class="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div class="grid grid-cols-2 lg:grid-cols-4">
+            <div class="border-b border-line px-2 py-10 lg:border-b-0 lg:border-r lg:px-8">
+                <div class="font-display text-4xl font-light tracking-tight text-ink">14</div>
+                <div class="mt-2 text-[11px] uppercase tracking-[0.18em] text-muted">KLBI Terdaftar</div>
+            </div>
+            <div class="border-b border-line px-2 py-10 lg:border-b-0 lg:border-r lg:px-8">
+                <div class="font-display text-4xl font-light tracking-tight text-ink">50+</div>
+                <div class="mt-2 text-[11px] uppercase tracking-[0.18em] text-muted">Proyek Selesai</div>
+            </div>
+            <div class="px-2 py-10 lg:border-r lg:border-line lg:px-8">
+                <div class="font-display text-4xl font-light tracking-tight text-ink">30+</div>
+                <div class="mt-2 text-[11px] uppercase tracking-[0.18em] text-muted">Klien Puas</div>
+            </div>
+            <div class="px-2 py-10 lg:px-8">
+                <div class="font-display text-4xl font-light tracking-tight text-ink">10+</div>
+                <div class="mt-2 text-[11px] uppercase tracking-[0.18em] text-muted">Tahun Pengalaman</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services -->
+<section id="services" class="py-24 lg:py-28">
+    <div class="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div class="mb-14 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <span class="eyebrow">01 &mdash; Layanan</span>
+                <h2 class="mt-5 max-w-2xl font-display text-4xl font-light tracking-tight text-ink sm:text-5xl">
+                    Layanan unggulan
+                </h2>
+                <p class="mt-4 max-w-xl text-base leading-relaxed text-muted">
+                    Solusi teknologi terintegrasi untuk mendukung pertumbuhan bisnis Anda.
+                </p>
+            </div>
+            <a href="/services" class="link-line self-start text-sm sm:self-auto">
+                Semua layanan
+                <i data-lucide="arrow-right" class="h-4 w-4"></i>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {% for service in services %}
+            <article class="card-lift group relative flex h-full flex-col rounded-2xl border border-line bg-surface p-8 hover:border-primary/40">
+                <div class="mb-8 flex items-start justify-between">
+                    <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-inset ring-primary/10 transition-colors group-hover:bg-primary group-hover:text-paper">
+                        {% if !service.icon.is_empty() %}
+                        <i data-lucide="{{ service.icon }}" class="h-5 w-5"></i>
+                        {% else %}
+                        <i data-lucide="cpu" class="h-5 w-5"></i>
+                        {% endif %}
+                    </span>
+                    <span class="font-display text-sm text-muted/50">0{{ loop.index }}</span>
+                </div>
+                <h3 class="font-display text-xl font-medium tracking-tight text-ink">{{ service.title }}</h3>
+                <p class="mt-3 flex-1 text-sm leading-relaxed text-muted">
+                    {% if !service.short_description.is_empty() %}{{ service.short_description }}{% else %}Deskripsi layanan akan segera ditambahkan.{% endif %}
+                </p>
+                <a href="/services/{{ service.slug }}" class="mt-7 inline-flex items-center gap-2 text-sm font-medium text-primary">
                     Selengkapnya
-                    <i data-lucide="arrow-right" class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"></i>
+                    <i data-lucide="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1"></i>
                 </a>
             </article>
             {% endfor %}
         </div>
-        
-        <div class="text-center mt-12">
-            <a href="/services" class="inline-flex items-center px-8 py-4 bg-primary text-white rounded-lg font-semibold hover:bg-blue-700 transition shadow-lg shadow-primary/25">
-                Semua Layanan
-                <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
-            </a>
+
+        {% if services.is_empty() %}
+        <div class="rounded-2xl border border-dashed border-line bg-surface px-6 py-16 text-center">
+            <span class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-inset ring-primary/10">
+                <i data-lucide="layers" class="h-5 w-5"></i>
+            </span>
+            <h3 class="mt-5 font-display text-xl font-medium text-ink">Layanan sedang disiapkan</h3>
+            <p class="mt-2 text-sm text-muted">Daftar layanan akan segera ditampilkan di sini.</p>
         </div>
+        {% endif %}
     </div>
 </section>
 
-<!-- Featured Portfolio -->
+<!-- Portfolio -->
 {% if !featured_portfolios.is_empty() %}
-<section id="portfolio" class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-12 gap-4">
+<section id="portfolio" class="border-y border-line bg-surface py-24 lg:py-28">
+    <div class="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div class="mb-14 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
-                <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-2">Portfolio Terpilih</h2>
-                <p class="text-lg text-slate-600">Beberapa proyek yang telah kami kerjakan untuk klien kami</p>
+                <span class="eyebrow">02 &mdash; Portfolio</span>
+                <h2 class="mt-5 max-w-2xl font-display text-4xl font-light tracking-tight text-ink sm:text-5xl">
+                    Proyek terpilih
+                </h2>
+                <p class="mt-4 max-w-xl text-base leading-relaxed text-muted">
+                    Beberapa proyek yang telah kami kerjakan untuk klien kami.
+                </p>
             </div>
-            <a href="/portfolio" class="inline-flex items-center text-primary font-medium hover:text-blue-700">
-                Lihat Semua
-                <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+            <a href="/portfolio" class="link-line self-start text-sm sm:self-auto">
+                Lihat semua
+                <i data-lucide="arrow-right" class="h-4 w-4"></i>
             </a>
         </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {% for portfolio in featured_portfolios %}
-            <article class="group overflow-hidden rounded-2xl bg-slate-100 h-full">
+            <article class="card-lift group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-paper">
                 {% if !portfolio.thumbnail_path.is_empty() %}
-                <div class="aspect-video overflow-hidden">
-                    <img src="{{ portfolio.thumbnail_path }}" alt="{{ portfolio.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <div class="aspect-[4/3] overflow-hidden">
+                    <img src="{{ portfolio.thumbnail_path }}" alt="{{ portfolio.title }}" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
                 {% else %}
-                <div class="aspect-video flex items-center justify-center bg-slate-200">
-                    <i data-lucide="image" class="w-12 h-12 text-slate-400"></i>
+                <div class="flex aspect-[4/3] items-center justify-center bg-line/40">
+                    <i data-lucide="image" class="h-10 w-10 text-muted/50"></i>
                 </div>
                 {% endif %}
-                <div class="p-6">
+                <div class="flex flex-1 flex-col p-6">
                     {% if !portfolio.category.is_empty() %}
-                    <span class="inline-block px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full mb-3">{{ portfolio.category }}</span>
+                    <span class="chip mb-4 self-start">{{ portfolio.category }}</span>
                     {% endif %}
-                    <h3 class="text-xl font-semibold text-slate-900 mb-2">{{ portfolio.title }}</h3>
-                    <p class="text-slate-600 text-sm mb-4">{% if !portfolio.short_description.is_empty() %}{{ portfolio.short_description }}{% else %}Deskripsi proyek{% endif %}</p>
-                    <a href="/portfolio/{{ portfolio.slug }}" class="inline-flex items-center text-primary font-medium hover:text-blue-700">
-                        Detail Proyek
-                        <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                    <h3 class="font-display text-xl font-medium tracking-tight text-ink">{{ portfolio.title }}</h3>
+                    <p class="mt-2 flex-1 text-sm leading-relaxed text-muted">
+                        {% if !portfolio.short_description.is_empty() %}{{ portfolio.short_description }}{% else %}Deskripsi proyek{% endif %}
+                    </p>
+                    <a href="/portfolio/{{ portfolio.slug }}" class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-primary">
+                        Detail proyek
+                        <i data-lucide="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1"></i>
                     </a>
                 </div>
             </article>
@@ -162,43 +239,49 @@
 </section>
 {% endif %}
 
-<!-- Latest News -->
+<!-- News -->
 {% if !latest_news.is_empty() %}
-<section id="news" class="py-24 bg-slate-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-12 gap-4">
+<section id="news" class="py-24 lg:py-28">
+    <div class="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div class="mb-14 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
-                <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-2">Berita & Artikel Terbaru</h2>
-                <p class="text-lg text-slate-600">Wawasan teknologi, tips, dan update terbaru dari tim kami</p>
+                <span class="eyebrow">03 &mdash; Berita</span>
+                <h2 class="mt-5 max-w-2xl font-display text-4xl font-light tracking-tight text-ink sm:text-5xl">
+                    Berita &amp; artikel
+                </h2>
+                <p class="mt-4 max-w-xl text-base leading-relaxed text-muted">
+                    Wawasan teknologi, tips, dan update terbaru dari tim kami.
+                </p>
             </div>
-            <a href="/news" class="inline-flex items-center text-primary font-medium hover:text-blue-700">
-                Lihat Semua
-                <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+            <a href="/news" class="link-line self-start text-sm sm:self-auto">
+                Lihat semua
+                <i data-lucide="arrow-right" class="h-4 w-4"></i>
             </a>
         </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
             {% for article in latest_news %}
-            <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow border border-slate-100 h-full flex flex-col">
+            <article class="card-lift group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface">
                 {% if !article.thumbnail_path.is_empty() %}
-                <div class="aspect-video overflow-hidden">
-                    <img src="{{ article.thumbnail_path }}" alt="{{ article.title }}" class="w-full h-full object-cover">
+                <div class="aspect-[16/10] overflow-hidden">
+                    <img src="{{ article.thumbnail_path }}" alt="{{ article.title }}" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
                 {% endif %}
-                <div class="p-6 flex-1 flex flex-col">
-                    <div class="flex items-center gap-3 text-sm text-slate-500 mb-3">
+                <div class="flex flex-1 flex-col p-6">
+                    <div class="mb-4 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.14em] text-muted">
                         {% if !article.category.is_empty() %}
-                        <span class="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs">{{ article.category }}</span>
+                        <span class="font-semibold text-primary">{{ article.category }}</span>
+                        <span aria-hidden="true">&middot;</span>
                         {% endif %}
-                        <time datetime="{{ article.published_iso }}">
-                            {{ article.published_display }}
-                        </time>
+                        <time datetime="{{ article.published_iso }}">{{ article.published_display }}</time>
                     </div>
-                    <h3 class="text-lg font-semibold text-slate-900 mb-2 line-clamp-2">{{ article.title }}</h3>
-                    <p class="text-slate-600 text-sm mb-4 flex-1">{% if !article.excerpt.is_empty() %}{{ article.excerpt }}{% else %}{{ article.content| truncate(120) }}{% endif %}</p>
-                    <a href="/news/{{ article.slug }}" class="inline-flex items-center text-primary font-medium hover:text-blue-700 mt-auto">
-                        Baca Selengkapnya
-                        <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                    <h3 class="font-display text-lg font-medium leading-snug tracking-tight text-ink">{{ article.title }}</h3>
+                    <p class="mt-3 flex-1 text-sm leading-relaxed text-muted">
+                        {% if !article.excerpt.is_empty() %}{{ article.excerpt }}{% else %}{{ article.content| truncate(120) }}{% endif %}
+                    </p>
+                    <a href="/news/{{ article.slug }}" class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-primary">
+                        Baca selengkapnya
+                        <i data-lucide="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1"></i>
                     </a>
                 </div>
             </article>
@@ -208,15 +291,27 @@
 </section>
 {% endif %}
 
-<!-- CTA Section -->
-<section class="py-24 bg-primary text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl sm:text-4xl font-bold mb-4">Siap Memulai Proyek Anda?</h2>
-        <p class="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">Tim kami siap membantu mengubah ide Anda menjadi solusi teknologi yang nyata. Mari diskusikan kebutuhan Anda.</p>
-        <a href="/contact" class="inline-flex items-center px-8 py-4 bg-white text-primary rounded-lg font-semibold hover:bg-slate-100 transition shadow-xl">
-            Hubungi Kami
-            <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
-        </a>
+<!-- CTA -->
+<section class="relative overflow-hidden bg-pine-deep py-24 text-paper lg:py-28">
+    <div class="paper-grid-dark absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div class="grid items-end gap-10 lg:grid-cols-12">
+            <div class="lg:col-span-8">
+                <span class="eyebrow eyebrow-inverse">Mulai kolaborasi</span>
+                <h2 class="mt-6 max-w-3xl font-display text-4xl font-light leading-tight tracking-tight text-paper sm:text-5xl">
+                    Siap memulai proyek Anda?
+                </h2>
+                <p class="mt-5 max-w-xl text-base leading-relaxed text-paper/60">
+                    Tim kami siap membantu mengubah ide Anda menjadi solusi teknologi yang nyata.
+                </p>
+            </div>
+            <div class="lg:col-span-4 lg:text-right">
+                <a href="/contact" class="inline-flex items-center gap-2 rounded-full bg-paper px-7 py-3.5 text-sm font-semibold text-pine-deep transition-colors hover:bg-white">
+                    Hubungi Kami
+                    <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
+                </a>
+            </div>
+        </div>
     </div>
 </section>
 {% endblock %}

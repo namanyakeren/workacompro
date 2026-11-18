@@ -1,11 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="WORKA SOLUTION">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#3b82f6"/>
-      <stop offset="1" stop-color="#1d4ed8"/>
-    </linearGradient>
-  </defs>
-  <rect width="64" height="64" rx="14" fill="url(#g)"/>
-  <path d="M16 20l6 24 5-16 5 16 6-24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="48" cy="20" r="3" fill="#fff"/>
+  <rect width="64" height="64" rx="15" fill="#12463d"/>
+  <path d="M15 19l6.5 26L32 30l10.5 15L49 19" fill="none" stroke="#f6f1e8" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="49" cy="49" r="3.5" fill="#e2542c"/>
 </svg>

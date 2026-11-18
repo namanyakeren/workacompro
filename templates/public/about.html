@@ -1,92 +1,123 @@
 {% extends "public/layout.html" %}
 
 {% block content %}
-<!-- Page Header -->
-<section class="pt-32 pb-16 bg-slate-900 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <nav class="flex items-center space-x-2 text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-            <a href="/" class="hover:text-white transition">Beranda</a>
-            <i data-lucide="chevron-right" class="w-4 h-4"></i>
-            <span class="text-white">Tentang Kami</span>
+<!-- Page header -->
+<section class="relative overflow-hidden bg-pine-deep text-paper">
+    <div class="paper-grid-dark absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-8xl px-5 pb-16 pt-32 sm:px-8 lg:px-12 lg:pb-20 lg:pt-36">
+        <nav class="mb-8 flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-paper/50" aria-label="Breadcrumb">
+            <a href="/" class="transition-colors hover:text-paper">Beranda</a>
+            <i data-lucide="chevron-right" class="h-3 w-3"></i>
+            <span class="text-paper">Tentang Kami</span>
         </nav>
-        <h1 class="text-4xl sm:text-5xl font-bold mb-4">Tentang {{ site.brand_name }}</h1>
-        <p class="text-lg text-slate-300 max-w-2xl">PT Perorangan dengan 14 KLBI teknologi terdaftar, menyediakan solusi IT terintegrasi sejak 2024</p>
+        <h1 class="max-w-3xl font-display text-4xl font-light leading-tight tracking-tight sm:text-6xl">Tentang {{ site.brand_name }}</h1>
+        <p class="mt-6 max-w-2xl text-base leading-relaxed text-paper/65 sm:text-lg">
+            PT Perorangan dengan 14 KLBI teknologi terdaftar, menyediakan solusi IT terintegrasi sejak 2024.
+        </p>
     </div>
 </section>
 
-<!-- Company Intro -->
-<section class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-                <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-6">Membangun Masa Depan Digital</h2>
-                <div class="prose prose-slate max-w-none text-lg">
+<!-- Intro -->
+<section class="py-24 lg:py-28">
+    <div class="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div class="grid items-start gap-14 lg:grid-cols-12">
+            <div class="lg:col-span-7">
+                <span class="eyebrow">Profil singkat</span>
+                <h2 class="mt-5 max-w-2xl font-display text-3xl font-light leading-tight tracking-tight text-ink sm:text-4xl">
+                    Membangun masa depan digital
+                </h2>
+                <div class="prose mt-8 max-w-none text-lg">
                     <p>{{ site.description }}</p>
                     <p>Kami percaya bahwa teknologi seharusnya menjadi pendorong bisnis, bukan beban. Dengan pendekatan holistik—dari perangkat keras hingga perangkat lunak, dari desain hingga keamanan—kami membantu bisnis Anda bertransformasi digital dengan lancar.</p>
                     <p>Sebagai PT Perorangan, kami memiliki fleksibilitas dan kecepatan dalam pengambilan keputusan, sambil mematuhi regulasi dengan 14 KLBI teknologi yang terdaftar resmi.</p>
                 </div>
             </div>
-            <div class="bg-slate-50 rounded-3xl p-8">
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="text-center">
-                        <div class="text-4xl font-bold text-primary mb-1">14</div>
-                        <div class="text-slate-600">KLBI Terdaftar</div>
+
+            <div class="lg:col-span-5">
+                <div class="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line">
+                    <div class="bg-surface p-7">
+                        <div class="font-display text-4xl font-light tracking-tight text-primary">14</div>
+                        <div class="mt-2 text-[11px] uppercase tracking-[0.16em] text-muted">KLBI Terdaftar</div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-bold text-primary mb-1">50</div>
-                        <div class="text-slate-600">Proyek Selesai</div>
+                    <div class="bg-surface p-7">
+                        <div class="font-display text-4xl font-light tracking-tight text-primary">50</div>
+                        <div class="mt-2 text-[11px] uppercase tracking-[0.16em] text-muted">Proyek Selesai</div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-bold text-primary mb-1">30</div>
-                        <div class="text-slate-600">Klien Puas</div>
+                    <div class="bg-surface p-7">
+                        <div class="font-display text-4xl font-light tracking-tight text-primary">30</div>
+                        <div class="mt-2 text-[11px] uppercase tracking-[0.16em] text-muted">Klien Puas</div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-bold text-primary mb-1">10</div>
-                        <div class="text-slate-600">Tahun Pengalaman</div>
+                    <div class="bg-surface p-7">
+                        <div class="font-display text-4xl font-light tracking-tight text-primary">10</div>
+                        <div class="mt-2 text-[11px] uppercase tracking-[0.16em] text-muted">Tahun Pengalaman</div>
                     </div>
+                </div>
+                <div class="mt-6 rounded-2xl border border-line bg-surface p-7">
+                    <p class="font-display text-lg font-medium tracking-tight text-ink">Satu atap untuk kebutuhan teknologi</p>
+                    <p class="mt-2 text-sm leading-relaxed text-muted">
+                        Software, desain, jaringan, dan dukungan operasional dikerjakan oleh satu tim yang saling terhubung.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Vision Mission Values -->
-<section class="py-24 bg-slate-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-16">
-            <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Visi, Misi, & Nilai Kami</h2>
+<!-- Vision / Mission / Values -->
+<section class="border-y border-line bg-surface py-24 lg:py-28">
+    <div class="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div class="mb-14 max-w-2xl">
+            <span class="eyebrow">Arah perusahaan</span>
+            <h2 class="mt-5 font-display text-4xl font-light tracking-tight text-ink sm:text-5xl">Visi, misi, &amp; nilai</h2>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <article class="bg-white rounded-2xl p-8 text-center hover:shadow-xl transition-shadow border border-slate-100">
-                <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
-                    <i data-lucide="eye" class="w-8 h-8 text-primary"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-slate-900 mb-3">Visi</h3>
-                <p class="text-slate-600">Menjadi mitra teknologi terpercaya #1 di Indonesia yang memberdayakan bisnis melalui inovasi digital yang berkelanjutan dan berdampak.</p>
+
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <article class="rounded-2xl border border-line bg-paper p-8">
+                <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-inset ring-primary/10">
+                    <i data-lucide="eye" class="h-5 w-5"></i>
+                </span>
+                <h3 class="mt-7 font-display text-xl font-medium tracking-tight text-ink">Visi</h3>
+                <p class="mt-3 text-sm leading-relaxed text-muted">
+                    Menjadi mitra teknologi terpercaya #1 di Indonesia yang memberdayakan bisnis melalui inovasi digital yang berkelanjutan dan berdampak.
+                </p>
             </article>
-            <article class="bg-white rounded-2xl p-8 text-center hover:shadow-xl transition-shadow border border-slate-100">
-                <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
-                    <i data-lucide="target" class="w-8 h-8 text-primary"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-slate-900 mb-3">Misi</h3>
-                <ul class="text-slate-600 space-y-2 text-left">
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-primary"></i>Menyediakan solusi IT end-to-end berkualitas</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-primary"></i>Membangun kemitraan jangka panjang dengan klien</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-primary"></i>Berinovasi terus menerus mengikuti perkembangan teknologi</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-primary"></i>Mendorong pertumbuhan talenta digital lokal</li>
+
+            <article class="rounded-2xl border border-line bg-paper p-8">
+                <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-inset ring-primary/10">
+                    <i data-lucide="target" class="h-5 w-5"></i>
+                </span>
+                <h3 class="mt-7 font-display text-xl font-medium tracking-tight text-ink">Misi</h3>
+                <ul class="mt-4 space-y-3 text-sm text-muted">
+                    <li class="flex items-start gap-2.5">
+                        <i data-lucide="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-primary"></i>
+                        <span>Menyediakan solusi IT end-to-end berkualitas</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <i data-lucide="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-primary"></i>
+                        <span>Membangun kemitraan jangka panjang dengan klien</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <i data-lucide="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-primary"></i>
+                        <span>Berinovasi mengikuti perkembangan teknologi</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <i data-lucide="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-primary"></i>
+                        <span>Mendorong pertumbuhan talenta digital lokal</span>
+                    </li>
                 </ul>
             </article>
-            <article class="bg-white rounded-2xl p-8 text-center hover:shadow-xl transition-shadow border border-slate-100">
-                <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
-                    <i data-lucide="heart" class="w-8 h-8 text-primary"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-slate-900 mb-3">Nilai Inti</h3>
-                <div class="flex flex-wrap justify-center gap-2 text-sm">
-                    <span class="px-3 py-1 bg-primary/10 text-primary rounded-full">Integritas</span>
-                    <span class="px-3 py-1 bg-primary/10 text-primary rounded-full">Keunggulan</span>
-                    <span class="px-3 py-1 bg-primary/10 text-primary rounded-full">Kolaborasi</span>
-                    <span class="px-3 py-1 bg-primary/10 text-primary rounded-full">Inovasi</span>
-                    <span class="px-3 py-1 bg-primary/10 text-primary rounded-full">Kepuasan Klien</span>
+
+            <article class="rounded-2xl border border-line bg-paper p-8">
+                <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-inset ring-primary/10">
+                    <i data-lucide="heart" class="h-5 w-5"></i>
+                </span>
+                <h3 class="mt-7 font-display text-xl font-medium tracking-tight text-ink">Nilai inti</h3>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="chip">Integritas</span>
+                    <span class="chip">Keunggulan</span>
+                    <span class="chip">Kolaborasi</span>
+                    <span class="chip">Inovasi</span>
+                    <span class="chip">Kepuasan Klien</span>
                 </div>
             </article>
         </div>
@@ -95,34 +126,36 @@
 
 <!-- Team -->
 {% if !team.is_empty() %}
-<section class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-16">
-            <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Tim Kami</h2>
-            <p class="text-lg text-slate-600">Para ahli di balik solusi teknologi yang kami bangun</p>
+<section class="py-24 lg:py-28">
+    <div class="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div class="mb-14 max-w-2xl">
+            <span class="eyebrow">Orang-orang di balik layar</span>
+            <h2 class="mt-5 font-display text-4xl font-light tracking-tight text-ink sm:text-5xl">Tim kami</h2>
+            <p class="mt-4 text-base leading-relaxed text-muted">Para ahli di balik solusi teknologi yang kami bangun.</p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {% for member in team %}
-            <article class="text-center group">
+            <article class="card-lift group rounded-2xl border border-line bg-surface p-7">
                 {% if !member.image.is_empty() %}
-                <img src="{{ member.image }}" alt="{{ member.name }}" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-primary/20 group-hover:border-primary transition-colors">
+                <img src="{{ member.image }}" alt="{{ member.name }}" class="h-24 w-24 rounded-2xl object-cover ring-1 ring-line">
                 {% else %}
-                <div class="w-32 h-32 rounded-full mx-auto mb-4 bg-primary/10 flex items-center justify-center border-4 border-primary/20 group-hover:border-primary transition-colors">
-                    <i data-lucide="user" class="w-12 h-12 text-primary"></i>
+                <div class="flex h-24 w-24 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-inset ring-primary/10">
+                    <i data-lucide="user" class="h-9 w-9"></i>
                 </div>
                 {% endif %}
-                <h3 class="text-lg font-semibold text-slate-900 mb-1">{{ member.name }}</h3>
-                <p class="text-primary text-sm font-medium mb-4">{{ member.role }}</p>
-                <p class="text-slate-600 text-sm mb-4">{{ member.bio }}</p>
-                <div class="flex justify-center gap-3">
+                <h3 class="mt-6 font-display text-lg font-medium tracking-tight text-ink">{{ member.name }}</h3>
+                <p class="mt-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">{{ member.role }}</p>
+                <p class="mt-4 text-sm leading-relaxed text-muted">{{ member.bio }}</p>
+                <div class="mt-5 flex gap-2">
                     {% if !member.social.linkedin.is_empty() %}
-                    <a href="{{ member.social.linkedin }}" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-primary hover:text-white flex items-center justify-center transition" aria-label="LinkedIn">
-                        <i data-lucide="linkedin" class="w-4 h-4 text-slate-600"></i>
+                    <a href="{{ member.social.linkedin }}" target="_blank" rel="noopener noreferrer" class="flex h-9 w-9 items-center justify-center rounded-full border border-line text-muted transition-colors hover:border-primary hover:text-primary" aria-label="LinkedIn">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05C20.3 8.65 21 11.1 21 14.3V21h-4v-5.9c0-1.4-.02-3.2-1.95-3.2-1.95 0-2.25 1.52-2.25 3.1V21H9z"/></svg>
                     </a>
                     {% endif %}
                     {% if !member.social.github.is_empty() %}
-                    <a href="{{ member.social.github }}" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-primary hover:text-white flex items-center justify-center transition" aria-label="GitHub">
-                        <i data-lucide="github" class="w-4 h-4 text-slate-600"></i>
+                    <a href="{{ member.social.github }}" target="_blank" rel="noopener noreferrer" class="flex h-9 w-9 items-center justify-center rounded-full border border-line text-muted transition-colors hover:border-primary hover:text-primary" aria-label="GitHub">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.62-2.81 5.64-5.49 5.94.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5z"/></svg>
                     </a>
                     {% endif %}
                 </div>
@@ -133,30 +166,34 @@
 </section>
 {% endif %}
 
-<!-- KLBI Codes -->
-<section class="py-24 bg-slate-900 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-16">
-            <h2 class="text-3xl sm:text-4xl font-bold mb-4">KLBI Terdaftar Resmi</h2>
-            <p class="text-lg text-slate-300">PT Perorangan WORKA SOLUTION terdaftar dengan 14 Kode Lapangan Usaha di bidang teknologi</p>
+<!-- KLBI -->
+<section class="relative overflow-hidden bg-pine-deep py-24 text-paper lg:py-28">
+    <div class="paper-grid-dark absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div class="mb-12 max-w-2xl">
+            <span class="eyebrow eyebrow-inverse">Legalitas</span>
+            <h2 class="mt-5 font-display text-4xl font-light tracking-tight text-paper sm:text-5xl">KLBI terdaftar resmi</h2>
+            <p class="mt-4 text-base leading-relaxed text-paper/60">
+                PT Perorangan {{ site.brand_name }} terdaftar dengan 14 Kode Lapangan Usaha di bidang teknologi.
+            </p>
         </div>
-        
-        <div class="overflow-x-auto">
+
+        <div class="overflow-x-auto rounded-2xl border border-paper/10 bg-pine-deep">
             <table class="w-full text-sm">
                 <thead>
-                    <tr class="border-b border-slate-700">
-                        <th class="text-left py-3 px-4 font-medium text-slate-400">Kode</th>
-                        <th class="text-left py-3 px-4 font-medium text-slate-400">Deskripsi</th>
-                        <th class="text-left py-3 px-4 font-medium text-slate-400">Kategori</th>
+                    <tr class="border-b border-paper/10 bg-paper/5">
+                        <th class="px-5 py-3.5 text-left text-[11px] font-semibold uppercase tracking-[0.16em] text-paper/50">Kode</th>
+                        <th class="px-5 py-3.5 text-left text-[11px] font-semibold uppercase tracking-[0.16em] text-paper/50">Deskripsi</th>
+                        <th class="px-5 py-3.5 text-left text-[11px] font-semibold uppercase tracking-[0.16em] text-paper/50">Kategori</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-800">
+                <tbody class="divide-y divide-paper/10">
                     {% for klbi in klbi_codes %}
-                    <tr class="hover:bg-slate-800/50 transition-colors">
-                        <td class="py-3 px-4 font-mono text-primary">{{ klbi.code }}</td>
-                        <td class="py-3 px-4 text-slate-300">{{ klbi.description }}</td>
-                        <td class="py-3 px-4">
-                            <span class="px-2 py-1 bg-primary/20 text-primary rounded-full text-xs">{{ klbi.category }}</span>
+                    <tr class="transition-colors hover:bg-paper/5">
+                        <td class="whitespace-nowrap px-5 py-3.5 font-mono text-gold">{{ klbi.code }}</td>
+                        <td class="px-5 py-3.5 text-paper/75">{{ klbi.description }}</td>
+                        <td class="px-5 py-3.5">
+                            <span class="chip chip-inverse">{{ klbi.category }}</span>
                         </td>
                     </tr>
                     {% endfor %}
@@ -167,21 +204,28 @@
 </section>
 
 <!-- CTA -->
-<section class="py-24 bg-primary text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl sm:text-4xl font-bold mb-4">Mari Bekerja Sama</h2>
-        <p class="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">Siap memulai transformasi digital bisnis Anda? Tim kami siap membantu.</p>
-        <a href="/contact" class="inline-flex items-center px-8 py-4 bg-white text-primary rounded-lg font-semibold hover:bg-slate-100 transition shadow-xl">
-            Hubungi Kami
-            <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
-        </a>
+<section class="py-24 lg:py-28">
+    <div class="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div class="flex flex-col items-start justify-between gap-8 rounded-3xl border border-line bg-surface p-10 lg:flex-row lg:items-center lg:p-14">
+            <div>
+                <span class="eyebrow">Mari bekerja sama</span>
+                <h2 class="mt-5 max-w-xl font-display text-3xl font-light leading-tight tracking-tight text-ink sm:text-4xl">
+                    Siap memulai transformasi digital bisnis Anda?
+                </h2>
+                <p class="mt-4 max-w-lg text-base leading-relaxed text-muted">Tim kami siap membantu dari perencanaan hingga implementasi.</p>
+            </div>
+            <a href="/contact" class="inline-flex flex-shrink-0 items-center gap-2 rounded-full bg-ink px-7 py-3.5 text-sm font-semibold text-paper transition-colors hover:bg-primary">
+                Hubungi Kami
+                <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
+            </a>
+        </div>
     </div>
 </section>
 {% endblock %}
 
 {% block scripts %}
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function () {
     lucide.createIcons();
 });
 </script>
