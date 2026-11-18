@@ -252,6 +252,11 @@ body {
 .prose h3 { font-size: 1.35rem; margin-top: 1.85rem; }
 .prose h4 { font-size: 1.1rem; margin-top: 1.5rem; }
 
+.prose > h2:first-child,
+.prose > h3:first-child {
+    margin-top: 0;
+}
+
 .prose p {
     margin-bottom: 0;
 }

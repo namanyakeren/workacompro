@@ -71,6 +71,8 @@ async fn main() -> anyhow::Result<()> {
         .push(Router::with_path("/contact").post(public::contact_submit_handler))
         .push(Router::with_path("/api/contact").post(public::contact_submit_handler))
         .push(Router::with_path("/newsletter").post(public::newsletter_submit_handler))
+        .push(Router::with_path("/privacy").get(public::privacy_handler))
+        .push(Router::with_path("/terms").get(public::terms_handler))
         // Static files
         .push(Router::with_path("/static/<**path>").get(StaticDir::new("static")))
         .push(Router::with_path("/css/<**path>").get(StaticDir::new("static/css")))

@@ -1,0 +1,122 @@
+{% extends "public/layout.html" %}
+
+{% block content %}
+<!-- Page header -->
+<section class="relative overflow-hidden bg-pine-deep text-paper">
+    <div class="paper-grid-dark absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-8xl px-5 pb-16 pt-32 sm:px-8 lg:px-12 lg:pb-20 lg:pt-36">
+        <nav class="mb-8 flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-paper/50" aria-label="Breadcrumb">
+            <a href="/" class="transition-colors hover:text-paper">Beranda</a>
+            <i data-lucide="chevron-right" class="h-3 w-3"></i>
+            <span class="text-paper">Syarat &amp; Ketentuan</span>
+        </nav>
+        <h1 class="max-w-3xl font-display text-4xl font-light leading-tight tracking-tight sm:text-6xl">Syarat &amp; Ketentuan</h1>
+        <p class="mt-6 max-w-2xl text-base leading-relaxed text-paper/65 sm:text-lg">
+            Ketentuan penggunaan situs dan layanan {{ site.brand_name }}.
+        </p>
+        <p class="mt-7 text-[11px] uppercase tracking-[0.18em] text-paper/40">Terakhir diperbarui &middot; 18 November 2026</p>
+    </div>
+</section>
+
+<!-- Content -->
+<section class="py-20 lg:py-24">
+    <div class="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div class="grid gap-12 lg:grid-cols-12">
+            <!-- Table of contents -->
+            <aside class="lg:col-span-3">
+                <div class="lg:sticky lg:top-28">
+                    <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">Daftar isi</p>
+                    <nav class="mt-4 space-y-2.5 text-sm" aria-label="Daftar isi syarat dan ketentuan">
+                        <a href="#penerimaan" class="block text-muted transition-colors hover:text-primary">1. Penerimaan syarat</a>
+                        <a href="#definisi" class="block text-muted transition-colors hover:text-primary">2. Definisi</a>
+                        <a href="#penggunaan" class="block text-muted transition-colors hover:text-primary">3. Penggunaan situs</a>
+                        <a href="#layanan" class="block text-muted transition-colors hover:text-primary">4. Layanan &amp; penawaran</a>
+                        <a href="#kekayaan-intelektual" class="block text-muted transition-colors hover:text-primary">5. Kekayaan intelektual</a>
+                        <a href="#tanggung-jawab" class="block text-muted transition-colors hover:text-primary">6. Batasan tanggung jawab</a>
+                        <a href="#pihak-ketiga" class="block text-muted transition-colors hover:text-primary">7. Tautan pihak ketiga</a>
+                        <a href="#privasi" class="block text-muted transition-colors hover:text-primary">8. Privasi</a>
+                        <a href="#perubahan" class="block text-muted transition-colors hover:text-primary">9. Perubahan syarat</a>
+                        <a href="#hukum" class="block text-muted transition-colors hover:text-primary">10. Hukum yang berlaku</a>
+                        <a href="#kontak" class="block text-muted transition-colors hover:text-primary">11. Hubungi kami</a>
+                    </nav>
+                    <div class="mt-8 rounded-2xl border border-line bg-surface p-5">
+                        <p class="text-xs leading-relaxed text-muted">Perlu klarifikasi atas ketentuan ini?</p>
+                        <a href="/contact" class="mt-3 inline-flex items-center gap-2 text-sm font-medium text-primary">
+                            Hubungi kami
+                            <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Body -->
+            <div class="lg:col-span-9">
+                <div class="prose max-w-none">
+                    <h2 id="penerimaan">1. Penerimaan Syarat</h2>
+                    <p>Dengan mengakses dan menggunakan situs {{ site.brand_name }}, Anda menyatakan telah membaca, memahami, dan menyetujui Syarat &amp; Ketentuan ini. Jika Anda tidak setuju dengan sebagian atau seluruh ketentuan, mohon untuk tidak menggunakan situs ini.</p>
+                    <p>Situs ini dioperasikan oleh {{ site.legal_name }} (&ldquo;kami&rdquo;), sebuah perseroan perorangan yang berkedudukan di Indonesia.</p>
+
+                    <h2 id="definisi">2. Definisi</h2>
+                    <ul>
+                        <li><strong>Situs</strong> berarti seluruh halaman dan layanan yang tersedia pada domain {{ site.website }}.</li>
+                        <li><strong>Kami</strong> berarti {{ site.legal_name }} beserta afiliasi dan perwakilannya.</li>
+                        <li><strong>Anda</strong> berarti setiap pengunjung atau pengguna situs.</li>
+                        <li><strong>Layanan</strong> berarti jasa teknologi informasi yang kami tawarkan, termasuk pengembangan perangkat lunak, konsultasi IT, desain, jaringan dan keamanan, serta dukungan teknis.</li>
+                    </ul>
+
+                    <h2 id="penggunaan">3. Penggunaan Situs</h2>
+                    <p>Anda setuju untuk menggunakan situs ini secara sah dan tidak menyalahgunakannya. Secara khusus, Anda dilarang:</p>
+                    <ul>
+                        <li>Mengakses sistem atau data tanpa izin, termasuk upaya peretasan atau pemindaian kerentanan tanpa persetujuan tertulis;</li>
+                        <li>Mengirimkan konten yang melanggar hukum, menyesatkan, memfitnah, atau mengandung malware;</li>
+                        <li>Mengganggu ketersediaan atau integritas situs, termasuk serangan denial-of-service;</li>
+                        <li>Menggunakan situs untuk mengumpulkan data pribadi pihak lain tanpa dasar yang sah;</li>
+                        <li>Melanggar hak kekayaan intelektual kami atau pihak ketiga.</li>
+                    </ul>
+
+                    <h2 id="layanan">4. Layanan &amp; Penawaran</h2>
+                    <p>Informasi mengenai layanan di situs ini bersifat umum dan tidak merupakan penawaran yang mengikat. Setiap pekerjaan atau proyek akan diatur dalam perjanjian, proposal, atau surat pesanan tersendiri yang disepakati para pihak.</p>
+                    <p>Ruang lingkup, jadwal, biaya, dan ketentuan pembayaran akan ditentukan secara tertulis sebelum pekerjaan dimulai. Kami berhak menolak atau membatasi permintaan layanan tertentu sesuai kebijakan kami dan ketentuan hukum yang berlaku.</p>
+
+                    <h2 id="kekayaan-intelektual">5. Kekayaan Intelektual</h2>
+                    <p>Seluruh konten pada situs ini, termasuk teks, desain, logo, grafis, ilustrasi, kode, dan tata letak, dilindungi oleh hak cipta dan hak kekayaan intelektual lainnya. Anda tidak diperkenankan menyalin, memodifikasi, mendistribusikan, atau menggunakan konten tersebut untuk tujuan komersial tanpa izin tertulis dari kami.</p>
+                    <p>Merek, nama dagang, dan logo yang ditampilkan tetap menjadi milik pemegang haknya masing-masing.</p>
+
+                    <h2 id="tanggung-jawab">6. Batasan Tanggung Jawab</h2>
+                    <p>Situs dan seluruh informasi di dalamnya disediakan &ldquo;sebagaimana adanya&rdquo;. Kami berupaya menjaga akurasi dan ketersediaan informasi, namun tidak menjamin bahwa situs akan selalu bebas dari kesalahan, gangguan, atau virus.</p>
+                    <p>Sejauh diizinkan oleh hukum, kami tidak bertanggung jawab atas kerugian langsung maupun tidak langsung yang timbul dari penggunaan atau ketidakmampuan menggunakan situs ini, termasuk kehilangan data, kehilangan keuntungan, atau gangguan bisnis.</p>
+
+                    <h2 id="pihak-ketiga">7. Tautan Pihak Ketiga</h2>
+                    <p>Situs ini dapat memuat tautan ke situs pihak ketiga. Tautan tersebut disediakan untuk kemudahan dan tidak berarti kami mendukung atau mengendalikan kontennya. Kami tidak bertanggung jawab atas isi, kebijakan, atau praktik pihak ketiga tersebut.</p>
+
+                    <h2 id="privasi">8. Privasi</h2>
+                    <p>Pengumpulan dan penggunaan data pribadi Anda diatur dalam <a href="/privacy">Kebijakan Privasi</a> kami, yang merupakan bagian tidak terpisahkan dari Syarat &amp; Ketentuan ini.</p>
+
+                    <h2 id="perubahan">9. Perubahan Syarat</h2>
+                    <p>Kami dapat mengubah Syarat &amp; Ketentuan ini sewaktu-waktu. Versi terbaru akan dipublikasikan di halaman ini beserta tanggal pembaruannya. Dengan terus menggunakan situs setelah perubahan berlaku, Anda dianggap menyetujui ketentuan yang diperbarui.</p>
+
+                    <h2 id="hukum">10. Hukum yang Berlaku &amp; Penyelesaian Sengketa</h2>
+                    <p>Syarat &amp; Ketentuan ini diatur oleh dan ditafsirkan sesuai hukum Republik Indonesia. Setiap sengketa akan diupayakan terlebih dahulu melalui musyawarah untuk mencapai kesepakatan. Apabila tidak tercapai, sengketa akan diselesaikan melalui pengadilan yang berwenang di Indonesia.</p>
+
+                    <h2 id="kontak">11. Hubungi Kami</h2>
+                    <p>Untuk pertanyaan mengenai Syarat &amp; Ketentuan ini, silakan hubungi:</p>
+                    <ul>
+                        <li><strong>{{ site.legal_name }}</strong> ({{ site.brand_name }})</li>
+                        <li>Email: <a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+                        <li>Telepon: <a href="tel:{{ site.phone }}">{{ site.phone }}</a></li>
+                        <li>Alamat: {{ site.address }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    lucide.createIcons();
+});
+</script>
+{% endblock %}

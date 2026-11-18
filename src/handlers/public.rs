@@ -96,6 +96,20 @@ pub struct ContactTemplate {
     pub page: PageInfo,
 }
 
+#[derive(Template)]
+#[template(path = "public/privacy.html")]
+pub struct PrivacyTemplate {
+    pub site: SiteInfo,
+    pub page: PageInfo,
+}
+
+#[derive(Template)]
+#[template(path = "public/terms.html")]
+pub struct TermsTemplate {
+    pub site: SiteInfo,
+    pub page: PageInfo,
+}
+
 // ============ Public Handlers ============
 
 #[handler]
@@ -546,6 +560,46 @@ pub async fn contact_handler(_req: &mut Request, depot: &mut Depot, res: &mut Re
         site,
         page,
     };
+
+    res.render(Text::Html(template.render().unwrap_or_default()));
+}
+
+#[handler]
+pub async fn privacy_handler(_req: &mut Request, depot: &mut Depot, res: &mut Response) {
+    let state = depot.obtain::<AppState>().unwrap();
+    let db = &state.db;
+    let config = &state.config;
+
+    let settings = get_all_settings_map(db).await.unwrap_or_default();
+    let site = build_site_info(config, &settings);
+    let page = PageInfo {
+        title: format!("Kebijakan Privasi - {}", config.app.brand_name),
+        description: "Kebijakan Privasi WORKA SOLUTION: bagaimana kami mengumpulkan, menggunakan, dan melindungi data pribadi Anda.".to_string(),
+        url: format!("{}/privacy", config.server.base_url),
+        og_image: format!("{}{}", config.server.base_url, settings.get("seo_og_image").cloned().unwrap_or_else(|| "/images/og-image.svg".to_string())),
+    };
+
+    let template = PrivacyTemplate { site, page };
+
+    res.render(Text::Html(template.render().unwrap_or_default()));
+}
+
+#[handler]
+pub async fn terms_handler(_req: &mut Request, depot: &mut Depot, res: &mut Response) {
+    let state = depot.obtain::<AppState>().unwrap();
+    let db = &state.db;
+    let config = &state.config;
+
+    let settings = get_all_settings_map(db).await.unwrap_or_default();
+    let site = build_site_info(config, &settings);
+    let page = PageInfo {
+        title: format!("Syarat & Ketentuan - {}", config.app.brand_name),
+        description: "Syarat dan Ketentuan penggunaan situs dan layanan WORKA SOLUTION.".to_string(),
+        url: format!("{}/terms", config.server.base_url),
+        og_image: format!("{}{}", config.server.base_url, settings.get("seo_og_image").cloned().unwrap_or_else(|| "/images/og-image.svg".to_string())),
+    };
+
+    let template = TermsTemplate { site, page };
 
     res.render(Text::Html(template.render().unwrap_or_default()));
 }

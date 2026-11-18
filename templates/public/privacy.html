@@ -1,0 +1,159 @@
+{% extends "public/layout.html" %}
+
+{% block content %}
+<!-- Page header -->
+<section class="relative overflow-hidden bg-pine-deep text-paper">
+    <div class="paper-grid-dark absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-8xl px-5 pb-16 pt-32 sm:px-8 lg:px-12 lg:pb-20 lg:pt-36">
+        <nav class="mb-8 flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-paper/50" aria-label="Breadcrumb">
+            <a href="/" class="transition-colors hover:text-paper">Beranda</a>
+            <i data-lucide="chevron-right" class="h-3 w-3"></i>
+            <span class="text-paper">Kebijakan Privasi</span>
+        </nav>
+        <h1 class="max-w-3xl font-display text-4xl font-light leading-tight tracking-tight sm:text-6xl">Kebijakan Privasi</h1>
+        <p class="mt-6 max-w-2xl text-base leading-relaxed text-paper/65 sm:text-lg">
+            Bagaimana {{ site.brand_name }} mengumpulkan, menggunakan, dan melindungi data pribadi Anda.
+        </p>
+        <p class="mt-7 text-[11px] uppercase tracking-[0.18em] text-paper/40">Terakhir diperbarui &middot; 18 November 2026</p>
+    </div>
+</section>
+
+<!-- Content -->
+<section class="py-20 lg:py-24">
+    <div class="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div class="grid gap-12 lg:grid-cols-12">
+            <!-- Table of contents -->
+            <aside class="lg:col-span-3">
+                <div class="lg:sticky lg:top-28">
+                    <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">Daftar isi</p>
+                    <nav class="mt-4 space-y-2.5 text-sm" aria-label="Daftar isi kebijakan privasi">
+                        <a href="#pendahuluan" class="block text-muted transition-colors hover:text-primary">1. Pendahuluan</a>
+                        <a href="#informasi" class="block text-muted transition-colors hover:text-primary">2. Informasi yang dikumpulkan</a>
+                        <a href="#penggunaan" class="block text-muted transition-colors hover:text-primary">3. Penggunaan informasi</a>
+                        <a href="#dasar-hukum" class="block text-muted transition-colors hover:text-primary">4. Dasar hukum</a>
+                        <a href="#berbagi" class="block text-muted transition-colors hover:text-primary">5. Berbagi informasi</a>
+                        <a href="#keamanan" class="block text-muted transition-colors hover:text-primary">6. Keamanan data</a>
+                        <a href="#retensi" class="block text-muted transition-colors hover:text-primary">7. Retensi data</a>
+                        <a href="#hak" class="block text-muted transition-colors hover:text-primary">8. Hak Anda</a>
+                        <a href="#cookie" class="block text-muted transition-colors hover:text-primary">9. Cookie</a>
+                        <a href="#pihak-ketiga" class="block text-muted transition-colors hover:text-primary">10. Tautan pihak ketiga</a>
+                        <a href="#perubahan" class="block text-muted transition-colors hover:text-primary">11. Perubahan kebijakan</a>
+                        <a href="#kontak" class="block text-muted transition-colors hover:text-primary">12. Hubungi kami</a>
+                    </nav>
+                    <div class="mt-8 rounded-2xl border border-line bg-surface p-5">
+                        <p class="text-xs leading-relaxed text-muted">Ada pertanyaan tentang data pribadi Anda?</p>
+                        <a href="/contact" class="mt-3 inline-flex items-center gap-2 text-sm font-medium text-primary">
+                            Hubungi kami
+                            <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Body -->
+            <div class="lg:col-span-9">
+                <div class="prose max-w-none">
+                    <h2 id="pendahuluan">1. Pendahuluan</h2>
+                    <p>{{ site.brand_name }} (&ldquo;kami&rdquo;) berkomitmen melindungi data pribadi Anda. Kebijakan Privasi ini menjelaskan jenis data yang kami kumpulkan melalui situs ini, cara kami menggunakannya, serta hak Anda sebagai subjek data.</p>
+                    <p>Kebijakan ini disusun dengan memperhatikan Undang-Undang Republik Indonesia Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi. Dengan menggunakan situs ini atau mengirimkan informasi melalui formulir kontak, Anda menyetujui praktik yang dijelaskan di sini.</p>
+
+                    <h2 id="informasi">2. Informasi yang Kami Kumpulkan</h2>
+                    <h3>a. Data yang Anda berikan</h3>
+                    <p>Ketika Anda menghubungi kami melalui formulir kontak atau saluran komunikasi lainnya, kami dapat menerima:</p>
+                    <ul>
+                        <li>Nama lengkap;</li>
+                        <li>Alamat email;</li>
+                        <li>Nomor telepon (opsional);</li>
+                        <li>Subjek dan isi pesan;</li>
+                        <li>Informasi lain yang Anda kirimkan secara sukarela.</li>
+                    </ul>
+
+                    <h3>b. Data teknis yang dikumpulkan otomatis</h3>
+                    <p>Saat Anda mengakses situs ini, server kami dapat mencatat data teknis seperti:</p>
+                    <ul>
+                        <li>Alamat IP dan perkiraan lokasi umum;</li>
+                        <li>Jenis perangkat, sistem operasi, dan peramban;</li>
+                        <li>Halaman yang dikunjungi dan waktu akses;</li>
+                        <li>Alamat perujuk (referrer) dan data diagnostik lainnya.</li>
+                    </ul>
+                    <p>Data ini digunakan untuk menjaga keamanan, mendiagnosis masalah teknis, dan memahami penggunaan situs secara agregat.</p>
+
+                    <h2 id="penggunaan">3. Cara Kami Menggunakan Informasi</h2>
+                    <p>Informasi yang kami kumpulkan digunakan untuk:</p>
+                    <ul>
+                        <li>Merespons pertanyaan, permintaan penawaran, dan konsultasi Anda;</li>
+                        <li>Menyediakan, memelihara, dan meningkatkan layanan serta situs kami;</li>
+                        <li>Mengirimkan komunikasi terkait layanan yang Anda minta;</li>
+                        <li>Mencegah penyalahgunaan, penipuan, dan aktivitas yang melanggar hukum;</li>
+                        <li>Memenuhi kewajiban hukum dan peraturan yang berlaku.</li>
+                    </ul>
+                    <p>Kami tidak menggunakan data pribadi Anda untuk tujuan yang tidak relevan dengan konteks saat data tersebut dikumpulkan.</p>
+
+                    <h2 id="dasar-hukum">4. Dasar Hukum Pemrosesan</h2>
+                    <p>Kami memproses data pribadi berdasarkan satu atau lebih dasar berikut:</p>
+                    <ul>
+                        <li><strong>Persetujuan</strong> Anda, misalnya saat mengirimkan formulir kontak;</li>
+                        <li><strong>Pelaksanaan kontrak</strong> atau langkah pra-kontrak atas permintaan Anda;</li>
+                        <li><strong>Kewajiban hukum</strong> yang harus kami penuhi;</li>
+                        <li><strong>Kepentingan sah</strong> kami, seperti menjaga keamanan sistem dan meningkatkan layanan, sepanjang tidak mengesampingkan hak Anda.</li>
+                    </ul>
+
+                    <h2 id="berbagi">5. Berbagi Informasi</h2>
+                    <p>Kami tidak menjual data pribadi Anda. Kami hanya membagikan informasi kepada pihak lain dalam kondisi berikut:</p>
+                    <ul>
+                        <li><strong>Penyedia layanan:</strong> penyedia hosting, email, dan infrastruktur yang membantu kami mengoperasikan situs, dengan kewajiban menjaga kerahasiaan;</li>
+                        <li><strong>Kewajiban hukum:</strong> apabila diwajibkan oleh undang-undang, perintah pengadilan, atau otoritas yang berwenang;</li>
+                        <li><strong>Perlindungan hak:</strong> untuk menegakkan hak, mencegah penipuan, atau melindungi keselamatan kami dan pengguna lain.</li>
+                    </ul>
+
+                    <h2 id="keamanan">6. Penyimpanan &amp; Keamanan Data</h2>
+                    <p>Kami menerapkan langkah teknis dan organisasi yang wajar untuk melindungi data pribadi dari akses tidak sah, kehilangan, atau perubahan. Langkah tersebut mencakup pembatasan akses, penyimpanan yang aman, dan pemantauan sistem.</p>
+                    <p>Meskipun demikian, tidak ada metode transmisi atau penyimpanan elektronik yang sepenuhnya bebas risiko. Kami tidak dapat menjamin keamanan absolut, namun kami berupaya semaksimal mungkin menjaga kerahasiaan data Anda.</p>
+
+                    <h2 id="retensi">7. Retensi Data</h2>
+                    <p>Kami menyimpan data pribadi hanya selama diperlukan untuk tujuan pengumpulannya, memenuhi kewajiban hukum, menyelesaikan sengketa, dan menegakkan perjanjian. Setelah tidak diperlukan, data akan dihapus atau dianonimkan secara aman.</p>
+
+                    <h2 id="hak">8. Hak Anda</h2>
+                    <p>Sebagai subjek data, Anda berhak untuk:</p>
+                    <ul>
+                        <li>Memperoleh informasi tentang pemrosesan data pribadi Anda;</li>
+                        <li>Mengakses dan memperoleh salinan data pribadi Anda;</li>
+                        <li>Meminta pembaruan atau perbaikan data yang tidak akurat;</li>
+                        <li>Meminta penghapusan data dalam kondisi tertentu;</li>
+                        <li>Menarik kembali persetujuan yang telah diberikan;</li>
+                        <li>Mengajukan keberatan atau permintaan pembatasan pemrosesan;</li>
+                        <li>Memperoleh data Anda dalam format yang dapat dibaca secara umum (portabilitas).</li>
+                    </ul>
+                    <p>Untuk menggunakan hak tersebut, silakan hubungi kami melalui alamat email di bagian Kontak. Kami akan menindaklanjuti permintaan Anda sesuai ketentuan yang berlaku.</p>
+
+                    <h2 id="cookie">9. Cookie &amp; Teknologi Serupa</h2>
+                    <p>Situs ini dapat menggunakan cookie atau penyimpanan lokal untuk menjaga fungsi dasar, mengingat preferensi, dan memahami pola penggunaan. Anda dapat mengatur peramban untuk menolak cookie; namun, beberapa bagian situs mungkin tidak berfungsi optimal.</p>
+
+                    <h2 id="pihak-ketiga">10. Tautan Pihak Ketiga</h2>
+                    <p>Situs ini dapat memuat tautan ke situs atau layanan pihak ketiga, termasuk platform media sosial. Kami tidak bertanggung jawab atas kebijakan privasi atau konten pihak ketiga tersebut. Kami menyarankan Anda membaca kebijakan privasi mereka sebelum memberikan data pribadi.</p>
+
+                    <h2 id="perubahan">11. Perubahan Kebijakan</h2>
+                    <p>Kami dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu. Versi terbaru akan selalu tersedia di halaman ini dengan tanggal pembaruan. Perubahan material akan diinformasikan melalui situs atau saluran komunikasi yang wajar.</p>
+
+                    <h2 id="kontak">12. Hubungi Kami</h2>
+                    <p>Jika Anda memiliki pertanyaan, keberatan, atau permintaan terkait data pribadi, silakan hubungi:</p>
+                    <ul>
+                        <li><strong>{{ site.legal_name }}</strong> ({{ site.brand_name }})</li>
+                        <li>Email: <a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+                        <li>Telepon: <a href="tel:{{ site.phone }}">{{ site.phone }}</a></li>
+                        <li>Alamat: {{ site.address }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    lucide.createIcons();
+});
+</script>
+{% endblock %}
