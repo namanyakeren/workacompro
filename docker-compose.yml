@@ -13,7 +13,7 @@ services:
       # Server
       WORKA_SERVER_HOST: "0.0.0.0"
       WORKA_SERVER_PORT: "8080"
-      WORKA_SERVER_BASE_URL: "${BASE_URL:-https://www.worka.my.id}"
+      WORKA_SERVER_BASE_URL: "${BASE_URL:-https://worka.my.id}"
       # Database
       WORKA_DATABASE_URL: "sqlite:///app/data/worka.db?mode=rwc"
       WORKA_DATABASE_MAX_CONNECTIONS: "5"
