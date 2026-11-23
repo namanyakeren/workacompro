@@ -1,33 +1,38 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="WORKA SOLUTION">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0a2e28"/>
-      <stop offset="0.55" stop-color="#12463d"/>
-      <stop offset="1" stop-color="#0a2e28"/>
-    </linearGradient>
-    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
-      <path d="M64 0H0v64" fill="none" stroke="#f6f1e8" stroke-opacity="0.06" stroke-width="1"/>
+    <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
+      <path d="M56 0H0v56" fill="none" stroke="#111111" stroke-opacity="0.12" stroke-width="2"/>
     </pattern>
-    <radialGradient id="glow" cx="0.78" cy="0.1" r="0.75">
-      <stop offset="0" stop-color="#e2542c" stop-opacity="0.22"/>
-      <stop offset="1" stop-color="#e2542c" stop-opacity="0"/>
-    </radialGradient>
   </defs>
 
-  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- Canvas -->
+  <rect width="1200" height="630" fill="#f5c400"/>
   <rect width="1200" height="630" fill="url(#grid)"/>
-  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Geometric composition -->
+  <circle cx="1040" cy="150" r="120" fill="#0057b8" stroke="#111111" stroke-width="8"/>
+  <rect x="1000" y="360" width="120" height="120" fill="#e03c31" stroke="#111111" stroke-width="8"/>
+  <path d="M900 560 L1040 380 L1180 560 Z" fill="#fbf7ec" stroke="#111111" stroke-width="8"/>
+
+  <!-- Top stripe -->
+  <rect x="0" y="0" width="400" height="10" fill="#e03c31"/>
+  <rect x="400" y="0" width="400" height="10" fill="#fbf7ec"/>
+  <rect x="800" y="0" width="400" height="10" fill="#0057b8"/>
 
   <!-- Brand mark -->
-  <rect x="96" y="84" width="64" height="64" rx="16" fill="#f6f1e8"/>
-  <path d="M111 100l6.5 30L128 114l10.5 16L145 100" fill="none" stroke="#12463d" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="96" y="84" width="72" height="72" fill="#111111"/>
+  <path d="M112 100l7 32 12-20 12 20 7-32" fill="none" stroke="#f5c400" stroke-width="5" stroke-linecap="square" stroke-linejoin="miter"/>
 
-  <g fill="#f6f1e8" font-family="Georgia, 'Times New Roman', serif">
-    <text x="96" y="250" font-size="26" letter-spacing="6" fill="#f6f1e8" fill-opacity="0.55" font-family="Arial, Helvetica, sans-serif">PT PERORANGAN &#183; 14 KLBI TEKNOLOGI</text>
-    <text x="96" y="370" font-size="96" font-weight="400">WORKA SOLUTION</text>
-    <text x="96" y="446" font-size="34" fill="#f6f1e8" fill-opacity="0.7" font-family="Arial, Helvetica, sans-serif">Solusi Teknologi Terintegrasi untuk Bisnis Modern</text>
+  <g fill="#111111" font-family="'Archivo Black', 'Arial Black', Arial, sans-serif">
+    <text x="96" y="262" font-size="24" letter-spacing="6" font-family="Arial, Helvetica, sans-serif" font-weight="700">PT PERORANGAN &#183; 14 KLBI TEKNOLOGI</text>
+    <text x="96" y="382" font-size="104">WORKA</text>
+    <text x="96" y="472" font-size="104">SOLUTION</text>
   </g>
 
-  <rect x="96" y="500" width="88" height="3" fill="#e2542c"/>
-  <text x="96" y="552" font-size="24" fill="#f6f1e8" fill-opacity="0.45" font-family="Arial, Helvetica, sans-serif">Software &#183; Design &#183; Network &#183; Support</text>
+  <g font-family="Jost, Arial, Helvetica, sans-serif">
+    <text x="96" y="540" font-size="32" fill="#111111" font-weight="600">Solusi Teknologi Terintegrasi untuk Bisnis Modern</text>
+    <text x="96" y="590" font-size="22" fill="#111111" fill-opacity="0.7" letter-spacing="2">SOFTWARE &#183; DESIGN &#183; NETWORK &#183; SUPPORT</text>
+  </g>
+
+  <rect x="96" y="506" width="88" height="6" fill="#e03c31"/>
 </svg>

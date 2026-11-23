@@ -1,8 +1,84 @@
-/* Admin Panel Styles for WORKA SOLUTION */
+/* ==========================================================================
+   WORKA SOLUTION — admin theme
+   Bauhaus skin: flat primary colours, 3px black outlines, offset shadows.
+   Plain CSS only — the Tailwind Play CDN does not process external files.
+   ========================================================================== */
 
-/* Sidebar */
+:root {
+    --paper: #efe7d6;
+    --surface: #fbf7ec;
+    --ink: #111111;
+    --muted: #57534a;
+    --red: #e03c31;
+    --blue: #0057b8;
+    --yellow: #f5c400;
+}
+
+*,
+*::before,
+*::after {
+    border-radius: 0 !important;
+}
+
+body {
+    background-color: var(--paper) !important;
+    color: var(--ink);
+    font-family: "Jost", ui-sans-serif, system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3 {
+    font-family: "Archivo Black", "Arial Black", sans-serif;
+    font-weight: 400 !important;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+}
+
+::selection {
+    background: var(--red);
+    color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   Sidebar
+   -------------------------------------------------------------------------- */
 #sidebar {
+    background: var(--ink) !important;
+    border-right: 4px solid var(--ink);
     transition: transform 0.3s ease;
+}
+
+#sidebar::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 6px;
+    background: linear-gradient(
+        90deg,
+        var(--red) 0 33.33%,
+        var(--yellow) 33.33% 66.66%,
+        var(--blue) 66.66% 100%
+    );
+}
+
+#sidebar nav a {
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    border: 2px solid transparent;
+}
+
+#sidebar nav a:hover,
+#sidebar nav a:focus-visible {
+    background: var(--red) !important;
+    color: #ffffff !important;
+    border-color: var(--ink);
+}
+
+#sidebar a[class*="bg-primary/20"] {
+    background: var(--yellow) !important;
+    color: var(--ink) !important;
+    border: 2px solid var(--ink);
 }
 
 @media (max-width: 1023px) {
@@ -14,178 +90,405 @@
     }
 }
 
-/* Table styles */
+/* --------------------------------------------------------------------------
+   Top bar
+   -------------------------------------------------------------------------- */
+main > header {
+    background: var(--yellow) !important;
+    border-bottom: 4px solid var(--ink) !important;
+}
+
+main > header a:hover {
+    color: var(--red) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Cards
+   -------------------------------------------------------------------------- */
+main .bg-white:not(header) {
+    background: var(--surface) !important;
+    border: 3px solid var(--ink) !important;
+    box-shadow: 6px 6px 0 var(--ink) !important;
+}
+
+/* One accent colour for every dashboard icon tile. */
+main [class*="bg-emerald-100"],
+main [class*="bg-amber-100"],
+main [class*="bg-sky-100"] {
+    background: var(--yellow) !important;
+    color: var(--ink) !important;
+    border: 2px solid var(--ink);
+}
+
+main [class*="text-emerald-600"],
+main [class*="text-amber-600"],
+main [class*="text-sky-600"] {
+    color: var(--ink) !important;
+}
+
+label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* --------------------------------------------------------------------------
+   Tables
+   -------------------------------------------------------------------------- */
 .table-container {
-    @apply overflow-x-auto;
+    overflow-x: auto;
 }
 
 table {
-    @apply w-full border-collapse;
+    width: 100%;
+    border-collapse: collapse;
 }
 
-th, td {
-    @apply px-4 py-3 text-left;
+th,
+td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 2px solid var(--ink);
 }
 
 th {
-    @apply text-xs font-semibold uppercase tracking-wider;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: var(--yellow);
+    border-bottom: 3px solid var(--ink);
 }
 
-tbody tr {
-    @apply border-b border-slate-100 transition-colors;
+tbody tr:last-child td {
+    border-bottom: 0;
 }
 
-tbody tr:last-child {
-    @apply border-b-0;
+tbody tr:hover {
+    background: rgba(245, 196, 0, 0.22);
 }
 
-/* Badge styles */
+/* --------------------------------------------------------------------------
+   Badges
+   -------------------------------------------------------------------------- */
 .badge {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.55rem;
+    border: 2px solid var(--ink);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
 
 .badge-success {
-    @apply bg-green-100 text-green-800;
+    background: #2fa36b;
+    color: #ffffff;
 }
 
 .badge-warning {
-    @apply bg-amber-100 text-amber-800;
+    background: var(--yellow);
+    color: var(--ink);
 }
 
 .badge-danger {
-    @apply bg-red-100 text-red-800;
+    background: var(--red);
+    color: #ffffff;
 }
 
 .badge-primary {
-    @apply bg-primary/10 text-primary;
+    background: var(--blue);
+    color: #ffffff;
 }
 
 .badge-info {
-    @apply bg-slate-100 text-slate-600;
+    background: var(--surface);
+    color: var(--ink);
 }
 
-/* Form styles */
+/* --------------------------------------------------------------------------
+   Buttons / actions
+   -------------------------------------------------------------------------- */
+.bg-primary {
+    border: 2px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink) !important;
+    font-weight: 700;
+}
+
+.bg-primary:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0 var(--ink) !important;
+}
+
+[class*="bg-primary/10"] {
+    background: var(--yellow) !important;
+    color: var(--ink) !important;
+    border: 2px solid var(--ink);
+}
+
+/* --------------------------------------------------------------------------
+   Forms
+   -------------------------------------------------------------------------- */
 .form-group {
-    @apply space-y-2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .form-label {
-    @apply block text-sm font-medium text-slate-700;
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink);
 }
 
-.form-input {
-    @apply w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition;
+.form-input,
+.form-textarea,
+.form-select,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="url"],
+input[type="number"],
+input[type="date"],
+input[type="datetime-local"],
+select,
+textarea {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 3px solid var(--ink) !important;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: inherit;
+    transition: box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    background: #ffffff;
+    box-shadow: 4px 4px 0 var(--ink);
 }
 
 .form-input:disabled {
-    @apply bg-slate-50 cursor-not-allowed;
+    background: #e2dac8;
+    cursor: not-allowed;
 }
 
 .form-textarea {
-    @apply form-input resize-none font-mono text-sm;
+    resize: none;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.875rem;
 }
 
 .form-select {
-    @apply form-input appearance-none bg-white;
+    appearance: none;
+    background: var(--surface);
 }
 
 .form-checkbox {
-    @apply w-4 h-4 text-primary border-slate-300 rounded focus:ring-primary;
+    width: 1.1rem;
+    height: 1.1rem;
+    accent-color: var(--red);
+    border: 2px solid var(--ink);
 }
 
-/* Media grid */
+/* --------------------------------------------------------------------------
+   Media grid
+   -------------------------------------------------------------------------- */
 .media-grid {
-    @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+@media (min-width: 640px) {
+    .media-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .media-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
 }
 
 .media-item {
-    @apply bg-slate-50 rounded-lg overflow-hidden border border-slate-100 transition-all duration-200;
+    background: var(--surface);
+    border: 2px solid var(--ink);
+    overflow: hidden;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
 
 .media-item:hover {
-    @apply shadow-lg border-slate-200;
+    border-color: var(--ink);
+    box-shadow: 5px 5px 0 var(--ink);
+    transform: translate(-2px, -2px);
 }
 
-/* Modal */
+/* --------------------------------------------------------------------------
+   Modal
+   -------------------------------------------------------------------------- */
 .modal {
-    @apply fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50;
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(17, 17, 17, 0.7);
 }
 
 .modal-content {
-    @apply bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto;
+    background: var(--surface);
+    border: 3px solid var(--ink);
+    box-shadow: 8px 8px 0 var(--ink);
+    max-width: 28rem;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
-/* Upload drop zone */
+/* --------------------------------------------------------------------------
+   Upload drop zone
+   -------------------------------------------------------------------------- */
 .drop-zone {
-    @apply border-2 border-dashed border-slate-300 rounded-lg p-8 text-center transition-all duration-200 cursor-pointer;
+    border: 3px dashed var(--ink);
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.15s ease;
 }
 
-.drop-zone:hover, .drop-zone.drag-active {
-    @apply border-primary bg-primary/5;
-}
-
+.drop-zone:hover,
 .drop-zone.drag-active {
-    @apply scale-[1.01];
+    background: var(--yellow);
+    border-color: var(--ink);
 }
 
-/* Pagination */
+/* --------------------------------------------------------------------------
+   Pagination
+   -------------------------------------------------------------------------- */
 .pagination {
-    @apply flex items-center justify-center gap-2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
-.pagination a, .pagination span {
-    @apply px-3 py-1.5 rounded-lg text-sm transition;
+.pagination a,
+.pagination span {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.875rem;
+    border: 2px solid var(--ink);
 }
 
 .pagination a {
-    @apply bg-white border border-slate-300 text-slate-700 hover:bg-slate-50;
+    background: var(--surface);
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.pagination a:hover {
+    background: var(--yellow);
 }
 
 .pagination .active {
-    @apply bg-primary text-white;
+    background: var(--red);
+    color: #ffffff;
 }
 
 .pagination .ellipsis {
-    @apply px-2 text-slate-400 cursor-default;
+    border-color: transparent;
+    padding: 0 0.5rem;
+    cursor: default;
 }
 
-/* Dashboard stats cards */
+/* --------------------------------------------------------------------------
+   Dashboard stats cards
+   -------------------------------------------------------------------------- */
 .stat-card {
-    @apply bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow;
+    background: var(--surface);
+    border: 3px solid var(--ink);
+    box-shadow: 6px 6px 0 var(--ink);
+    padding: 1.5rem;
 }
 
 .stat-value {
-    @apply text-3xl font-bold text-primary;
+    font-family: "Archivo Black", "Arial Black", sans-serif;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--red);
 }
 
 .stat-label {
-    @apply text-sm text-slate-600 mt-1;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-top: 0.4rem;
 }
 
-/* Loading states */
+/* --------------------------------------------------------------------------
+   Loading + toasts
+   -------------------------------------------------------------------------- */
 .loading-skeleton {
-    @apply bg-slate-200 animate-pulse rounded;
+    background: #ddd3bd;
+    animation: pulse 1.5s ease-in-out infinite;
 }
 
-/* Toast notifications */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
 .toast-container {
-    @apply fixed bottom-4 right-4 z-50 flex flex-col gap-2;
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .toast {
-    @apply px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 min-w-[280px] max-w-md animate-slide-in;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 280px;
+    max-width: 28rem;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+    animation: slide-in 0.3s ease-out;
 }
 
 .toast-success {
-    @apply bg-green-600 text-white;
+    background: #2fa36b;
+    color: #ffffff;
 }
 
 .toast-error {
-    @apply bg-red-600 text-white;
+    background: var(--red);
+    color: #ffffff;
 }
 
 .toast-info {
-    @apply bg-blue-600 text-white;
+    background: var(--blue);
+    color: #ffffff;
 }
 
 @keyframes slide-in {
@@ -193,38 +496,71 @@ tbody tr:last-child {
     to { transform: translateX(0); opacity: 1; }
 }
 
-/* Code/pre blocks in admin */
+/* --------------------------------------------------------------------------
+   Content helpers
+   -------------------------------------------------------------------------- */
 .admin-content pre {
-    @apply bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto my-4 text-sm;
+    background: var(--ink);
+    color: var(--paper);
+    border: 3px solid var(--ink);
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-size: 0.875rem;
 }
 
 .admin-content code {
-    @apply bg-slate-100 text-primary px-1.5 py-0.5 rounded text-sm font-mono;
+    background: var(--yellow);
+    color: var(--ink);
+    padding: 0.1rem 0.35rem;
+    font-size: 0.875rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 .admin-content pre code {
-    @apply bg-transparent text-inherit p-0;
+    background: transparent;
+    color: inherit;
+    padding: 0;
 }
 
-/* Responsive table */
+/* --------------------------------------------------------------------------
+   Login screen
+   -------------------------------------------------------------------------- */
+.min-h-screen {
+    background: var(--paper) !important;
+}
+
+.w-full.max-w-md .bg-white {
+    background: var(--surface) !important;
+    border: 3px solid var(--ink) !important;
+    box-shadow: 8px 8px 0 var(--ink) !important;
+}
+
+.w-full.max-w-md input {
+    padding-left: 2.5rem !important;
+}
+
 @media (max-width: 768px) {
     .table-responsive {
-        @apply overflow-x-auto -mx-4 px-4;
-    }
-    
-    .media-grid {
-        @apply grid-cols-2 sm:grid-cols-3;
+        overflow-x: auto;
+        margin: 0 -1rem;
+        padding: 0 1rem;
     }
 }
 
-/* Focus visible for accessibility */
 *:focus-visible {
-    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-white;
+    outline: 3px solid var(--red);
+    outline-offset: 3px;
 }
 
-/* Dark mode support for admin (optional) */
-@media (prefers-color-scheme: dark) {
-    .admin-dark {
-        @apply bg-slate-900 text-slate-100;
-    }
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+::-webkit-scrollbar-track {
+    background: var(--paper);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--red);
+    border: 2px solid var(--ink);
 }

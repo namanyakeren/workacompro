@@ -33,11 +33,11 @@ impl From<HeroBanner> for HeroView {
         let background_color = h
             .background_color
             .filter(|v| !v.trim().is_empty())
-            .unwrap_or_else(|| "#0f172a".to_string());
+            .unwrap_or_else(|| "#f5c400".to_string());
         let text_color = h
             .text_color
             .filter(|v| !v.trim().is_empty())
-            .unwrap_or_else(|| "#ffffff".to_string());
+            .unwrap_or_else(|| "#111111".to_string());
         Self {
             id: h.id.to_string(),
             title: h.title,

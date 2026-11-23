@@ -2,7 +2,7 @@
 
 {% block content %}
 <!-- Hero -->
-<section class="relative overflow-hidden" style="background-color: {{ hero.background_color }}; color: {{ hero.text_color }};">
+<section class="relative overflow-hidden" style="background-color: {% if !hero.background_color.is_empty() %}{{ hero.background_color }}{% else %}{{ site.hero_background_color }}{% endif %}; color: {% if !hero.text_color.is_empty() %}{{ hero.text_color }}{% else %}{{ site.hero_text_color }}{% endif %};">
     <div class="paper-grid absolute inset-0" aria-hidden="true"></div>
     <div class="orb absolute -right-40 -top-48 h-[44rem] w-[44rem] rounded-full" aria-hidden="true"></div>
     <div class="orb-accent absolute -bottom-52 -left-40 h-[34rem] w-[34rem] rounded-full" aria-hidden="true"></div>

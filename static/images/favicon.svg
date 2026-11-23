@@ -1,5 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="WORKA SOLUTION">
-  <rect width="64" height="64" rx="15" fill="#12463d"/>
-  <path d="M15 19l6.5 26L32 30l10.5 15L49 19" fill="none" stroke="#f6f1e8" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="49" cy="49" r="3.5" fill="#e2542c"/>
+  <rect width="64" height="64" fill="#f5c400"/>
+  <rect x="4" y="4" width="56" height="56" fill="none" stroke="#111111" stroke-width="4"/>
+  <path d="M15 19l6.5 26L32 30l10.5 15L49 19" fill="none" stroke="#111111" stroke-width="4.5" stroke-linecap="square" stroke-linejoin="miter"/>
+  <circle cx="49" cy="49" r="5" fill="#e03c31"/>
 </svg>
